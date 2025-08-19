@@ -1,0 +1,30 @@
+{
+  "name": "@frontend-feature-home/shared",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/frontend/feature-home/shared/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/frontend/feature-home/shared",
+        "tsConfig": "libs/frontend/feature-home/shared/tsconfig.lib.json",
+        "project": "libs/frontend/feature-home/shared/package.json",
+        "entryFile": "libs/frontend/feature-home/shared/src/index.ts",
+        "external": ["react/jsx-runtime"],
+        "rollupConfig": "@nx/react/plugins/bundle-rollup"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/frontend/feature-home/shared/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    }
+  }
+}

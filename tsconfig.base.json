@@ -6,7 +6,9 @@
     "importHelpers": true,
     "isolatedModules": true,
     "lib": ["es2022"],
-    "module": "nodenext",
+    "module": "esnext",
+    "rootDir": ".",
+    "baseUrl": ".",
     "moduleResolution": "nodenext",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
@@ -16,6 +18,18 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["development"]
+    "customConditions": ["development"],
+    "paths": {
+      "@frontend/feature-home/mobile/*": [
+        "libs/frontend/feature-home/mobile/src/lib/*"
+      ],
+      "@frontend/feature-home/shared/*": [
+        "libs/frontend/feature-home/shared/src/lib/*"
+      ],
+      "@frontend/feature-home/web/*": [
+        "libs/frontend/feature-home/web/src/lib/*"
+      ],
+      "@monorepo-heaven/theme": ["libs/frontend/shared/theme/src/index.ts"]
+    }
   }
 }

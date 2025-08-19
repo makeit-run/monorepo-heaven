@@ -1,0 +1,1 @@
+export const Greeting = "How can I help you today?"

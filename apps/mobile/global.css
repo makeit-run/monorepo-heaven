@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+  .debug {
+    @apply !border-[3px] !border-red-500;
+  }
+}

@@ -22,7 +22,8 @@
           "buildDepsName": "build-deps",
           "watchDepsName": "watch-deps"
         }
-      }
+      },
+      "exclude": ["libs/frontend/shared/theme/*"]
     },
     {
       "plugin": "@nx/next/plugin",
@@ -65,6 +66,15 @@
         "runAndroidTargetName": "run-android",
         "buildDepsTargetName": "build-deps",
         "watchDepsTargetName": "watch-deps"
+      }
+    },
+    {
+      "plugin": "@nx/js/typescript",
+      "include": ["libs/frontend/shared/theme/*"],
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        }
       }
     }
   ],
