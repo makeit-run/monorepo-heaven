@@ -14,7 +14,10 @@
   "include": [],
   "references": [
     {
-      "path": "../shared"
+      "path": "../../../shared/utils"
+    },
+    {
+      "path": "../../shared/ui"
     },
     {
       "path": "./tsconfig.lib.json"

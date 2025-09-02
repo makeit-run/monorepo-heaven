@@ -3,10 +3,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "moduleResolution": "node",
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -14,10 +11,14 @@
     "declaration": true
   },
   "files": [],
-  "include": [
-    "nativewind-env.d.ts"
-  ],
+  "include": ["nativewind-env.d.ts"],
   "references": [
+    {
+      "path": "../../libs/frontend/feature-home/mobile"
+    },
+    {
+      "path": "../../libs/frontend/feature-themeing"
+    },
     {
       "path": "./tsconfig.app.json"
     }

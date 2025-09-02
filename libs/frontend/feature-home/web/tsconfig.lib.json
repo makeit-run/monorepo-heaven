@@ -11,7 +11,14 @@
       "../../../types/next-auth.d.ts"
     ]
   },
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
+  "include": [
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "../../../../libs/**/*.ts",
+    "../../../../libs/**/*.tsx"
+  ],
   "exclude": [
     "**/*.spec.ts",
     "**/*.test.ts",
@@ -24,7 +31,10 @@
   ],
   "references": [
     {
-      "path": "../shared/tsconfig.lib.json"
+      "path": "../../../shared/utils/tsconfig.lib.json"
+    },
+    {
+      "path": "../../shared/ui/tsconfig.lib.json"
     }
   ]
 }

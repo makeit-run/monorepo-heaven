@@ -22,6 +22,14 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.js",
-    "**/*.jsx"]
-
+    "**/*.jsx"
+  ],
+  "references": [
+    {
+      "path": "../../libs/frontend/feature-home/mobile/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/frontend/feature-themeing/tsconfig.lib.json"
+    }
+  ]
 }

@@ -22,7 +22,7 @@
   ],
   "references": [
     {
-      "path": "../../../../apps/mobile/tsconfig.app.json"
+      "path": "../../shared/ui/tsconfig.lib.json"
     }
   ]
 }

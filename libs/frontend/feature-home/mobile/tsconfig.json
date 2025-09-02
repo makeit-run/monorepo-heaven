@@ -14,7 +14,7 @@
   "include": [],
   "references": [
     {
-      "path": "../../../../apps/mobile"
+      "path": "../../shared/ui"
     },
     {
       "path": "./tsconfig.lib.json"

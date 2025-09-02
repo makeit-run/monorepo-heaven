@@ -20,6 +20,30 @@
     },
     {
       "path": "./apps/web"
+    },
+    {
+      "path": "./libs/frontend/feature-themeing"
+    },
+    {
+      "path": "./libs/frontend/shared/mobile-ui"
+    },
+    {
+      "path": "./libs/frontend/feature-landing"
+    },
+    {
+      "path": "./libs/frontend/shared/hooks"
+    },
+    {
+      "path": "./libs/frontend/shared/ui"
+    },
+    {
+      "path": "./libs/shared/utils"
+    },
+    {
+      "path": "./apps/landing"
+    },
+    {
+      "path": "./apps/admin"
     }
   ]
 }

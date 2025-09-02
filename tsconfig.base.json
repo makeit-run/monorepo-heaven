@@ -35,13 +35,13 @@
       "@frontend/feature-landing/*": [
         "libs/frontend/feature-landing/src/lib/*"
       ],
-      "@todo/feature-themeing/*": ["libs/frontend/feature-themeing/src/lib/*"],
-      "@shared/utils/*": ["libs/shared/utils/src/lib/*"],
       "@frontend/shared/hooks/*": ["libs/frontend/shared/hooks/src/lib/*"],
       "@frontend/shared/mobile-ui/*": [
         "libs/frontend/shared/mobile-ui/src/lib/*"
       ],
-      "@frontend/shared/ui/*": ["libs/frontend/shared/ui/src/lib/*"]
+      "@frontend/shared/ui/*": ["libs/frontend/shared/ui/src/lib/*"],
+      "@shared/utils/*": ["libs/shared/utils/src/lib/*"],
+      "@todo/feature-themeing/*": ["libs/frontend/feature-themeing/src/lib/*"]
     }
   }
 }
