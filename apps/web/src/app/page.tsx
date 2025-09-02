@@ -1,5 +1,4 @@
+import Page from '@frontend/feature-home/web/pages/page';
 
-export default function  test() {
-  return <>test</>
-}
+export default Page
 

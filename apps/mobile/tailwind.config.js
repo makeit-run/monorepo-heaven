@@ -1,5 +1,8 @@
 import { join } from "path"
 import { createGlobPatternsForDependencies } from "@nx/react/tailwind"
+const {
+  sharedTheme,
+} = require('../../libs/frontend/feature-themeing/src/lib/tailwind-theme');
 import { hairlineWidth } from "nativewind/theme"
 
 import { lightTheme } from "../../libs/frontend/shared/feature-themeing/src/lib/themes/light/light"
@@ -18,11 +21,13 @@ module.exports = {
   },
   presets: [require("nativewind/preset")],
   theme: {
+    container: sharedTheme.container,
     extend: {
-      colors: {
-        primary: "#0d4800"
-      }
-    }
+      colors: sharedTheme.colors,
+      borderRadius: sharedTheme.borderRadius,
+      keyframes: sharedTheme.keyframes,
+      animation: sharedTheme.animation,
+    },
   },
-  plugins: []
+  plugins: [require('tailwindcss-animate')],
 }

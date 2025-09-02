@@ -1,3 +1,4 @@
+'use client';
 import { CheckCircle, ListTodo, Target, Zap } from 'lucide-react';
 import { UiButton } from '@frontend/shared/ui/UiButton/UiButton';
 import heroImage from '../assets/hero.jpg';
@@ -16,7 +17,7 @@ export const Hero = () => {
       {/* Hero Image */}
       <div className="absolute inset-0 opacity-30">
         <img
-          src={heroImage.src || heroImage as any}
+          src={heroImage.src || (heroImage as any)}
           alt="Beautiful todo workspace"
           className="w-full h-full object-cover"
         />
@@ -31,8 +32,8 @@ export const Hero = () => {
               My Todo App
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Welcome to your productivity companion. Get organized and accomplish 
-              more with our elegant todo management solution.
+              Welcome to your productivity companion. Get organized and
+              accomplish more with our elegant todo management solution.
             </p>
           </div>
 

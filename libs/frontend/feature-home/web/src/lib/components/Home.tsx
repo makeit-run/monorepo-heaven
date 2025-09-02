@@ -1,9 +1,12 @@
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import { Greeting } from '@frontend/feature-home/shared/greeting';
 
-
-export const Home = ({user, onChangeUser}:{user:any, onChangeUser:()=>void})=> {
-
+export const Home = ({
+  user,
+  onChangeUser,
+}: {
+  user: any;
+  onChangeUser: () => void;
+}) => {
   return (
     <div>
       <div className="wrapper">
@@ -14,7 +17,18 @@ export const Home = ({user, onChangeUser}:{user:any, onChangeUser:()=>void})=> {
               <span>{Greeting}</span>
             </h1>
           </div>
-          <button className={'!bg-primary'} style={{background:'black', color:'white', padding:6, borderRadius:4}} onClick={onChangeUser}>Change User</button>
+          <button
+            className={'!bg-primary'}
+            style={{
+              background: 'black',
+              color: 'white',
+              padding: 6,
+              borderRadius: 4,
+            }}
+            onClick={onChangeUser}
+          >
+            Change User
+          </button>
           <div id="hero" className="rounded">
             <div className="text-container">
               <h2>
@@ -464,4 +478,4 @@ export const Home = ({user, onChangeUser}:{user:any, onChangeUser:()=>void})=> {
       </div>
     </div>
   );
-}
+};

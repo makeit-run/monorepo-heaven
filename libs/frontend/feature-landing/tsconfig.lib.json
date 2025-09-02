@@ -2,15 +2,23 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
+    "declaration": true,
     "types": [
       "node",
-      "react",
-      "react-dom",
       "@nx/react/typings/cssmodule.d.ts",
       "@nx/react/typings/image.d.ts",
-      "vite/client"
+      "vite/client",
+      "../../../types/next-auth.d.ts"
     ]
   },
+  "include": [
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "../../../libs/**/*.ts",
+    "../../../libs/**/*.tsx"
+  ],
   "exclude": [
     "**/*.spec.ts",
     "**/*.test.ts",
@@ -21,12 +29,5 @@
     "**/*.spec.jsx",
     "**/*.test.jsx"
   ],
-  "include": [
-    "src/**/*.js",
-    "src/**/*.jsx",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "../../../libs/**/*.ts",
-    "../../../libs/**/*.tsx"
-  ]
+  "references": []
 }
