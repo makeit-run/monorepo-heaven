@@ -4,31 +4,13 @@
   "files": [],
   "references": [
     {
-      "path": "./libs/frontend/shared/hooks"
-    },
-    {
-      "path": "./libs/frontend/shared/mobile-ui"
-    },
-    {
-      "path": "./libs/frontend/shared/ui"
-    },
-    {
-      "path": "./libs/frontend/feature-themeing"
+      "path": "./libs/frontend/feature-home/mobile"
     },
     {
       "path": "./libs/frontend/feature-home/shared"
     },
     {
-      "path": "./libs/frontend/feature-home/mobile"
-    },
-    {
       "path": "./libs/frontend/feature-home/web"
-    },
-    {
-      "path": "./libs/shared/utils"
-    },
-    {
-      "path": "./libs/frontend/feature-landing"
     },
     {
       "path": "./apps/mobile"
@@ -38,12 +20,6 @@
     },
     {
       "path": "./apps/web"
-    },
-    {
-      "path": "./apps/admin"
-    },
-    {
-      "path": "./apps/landing"
     }
   ]
 }

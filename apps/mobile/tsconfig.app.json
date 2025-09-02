@@ -16,11 +16,5 @@
     "**/*.spec.jsx",
     "src/test-setup.ts"
   ],
-  "include": [
-    "../../libs/**/*.ts",
-    "../../libs/**/*.tsx",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js",
-    "**/*.jsx"]
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
 }

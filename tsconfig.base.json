@@ -1,6 +1,6 @@
 {
-  "include": ["libs/**/*.ts", "libs/**/*.tsx"],
   "compilerOptions": {
+    "composite": true,
     "declarationMap": true,
     "emitDeclarationOnly": true,
     "importHelpers": true,
@@ -9,7 +9,7 @@
     "module": "esnext",
     "rootDir": ".",
     "baseUrl": ".",
-    "moduleResolution": "bundler",
+    "moduleResolution": "nodenext",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,

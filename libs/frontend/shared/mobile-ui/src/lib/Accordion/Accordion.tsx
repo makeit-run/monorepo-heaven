@@ -1,4 +1,4 @@
-import { cn } from "@shared/utils/cn"
+import { cn } from "@shared/"
 import { ChevronDown } from "lucide-react-native"
 import * as React from "react"
 import { Platform, Pressable, View } from "react-native"

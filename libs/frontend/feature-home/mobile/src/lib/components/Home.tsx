@@ -23,7 +23,7 @@ export const Home = ({
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView className="flex-1 bg-white">
         <View className="flex-1 p-4">
-          <View className=w"bg-white rounded-lg p-6 mb-4">
+          <View className="bg-white rounded-lg p-6 mb-4">
             <Text className="text-2xl font-bold text-gray-900 mb-2">
               Hello there, {user.name}
             </Text>
