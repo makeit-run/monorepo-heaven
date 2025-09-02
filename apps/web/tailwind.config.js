@@ -1,14 +1,10 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import { createGlobPatternsForDependencies } from '@nx/react/tailwind';
-import { sharedTheme } from '../../libs/frontend/feature-themeing/src/lib/tailwind-theme';
-import tailwindcssAnimate from 'tailwindcss-animate';
+const path = require('path');
+const { createGlobPatternsForDependencies } = require('@nx/react/tailwind');
+const {
+  sharedTheme,
+} = require('../../libs/frontend/feature-themeing/src/lib/tailwind-theme');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-export default {
+module.exports = {
   content: [
     path.join(__dirname, 'src/**/*.{js,ts,jsx,tsx}'),
     ...createGlobPatternsForDependencies(__dirname),
@@ -22,5 +18,5 @@ export default {
       animation: sharedTheme.animation,
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [require('tailwindcss-animate')],
 };

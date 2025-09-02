@@ -20,9 +20,5 @@
     "expo-env.d.ts",
     "nativewind-env.d.ts"
   ],
-  "references": [
-    {
-      "path": "../../../../apps/mobile/tsconfig.app.json"
-    }
-  ]
+  "references": []
 }
