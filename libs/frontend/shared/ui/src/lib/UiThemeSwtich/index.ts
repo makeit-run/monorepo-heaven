@@ -1,0 +1,1 @@
+export { UiThemeSwitch } from "./UiThemeSwitch"

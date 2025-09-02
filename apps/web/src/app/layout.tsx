@@ -1,4 +1,4 @@
-import './global.css';
+import '@todo/feature-themeing/global.css';
 
 export const metadata = {
   title: 'Welcome to web',

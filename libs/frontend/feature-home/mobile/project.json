@@ -1,0 +1,28 @@
+{
+  "name": "@frontend-feature-home/mobile",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/frontend/feature-home/mobile/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/frontend/feature-home/mobile",
+        "tsConfig": "libs/frontend/feature-home/mobile/tsconfig.lib.json",
+        "project": "libs/frontend/feature-home/mobile/package.json",
+        "entryFile": "libs/frontend/feature-home/mobile/src/index.ts",
+        "external": ["react/jsx-runtime"],
+        "rollupConfig": "@nx/react/plugins/bundle-rollup"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/frontend/feature-home/mobile/jest.config.ts"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "extends": ["plugin:@nx/react", "../../../../.eslintrc.json"],
+  "ignorePatterns": [
+    "!**/*",
+    ".expo",
+    "web-build",
+    "cache",
+    "dist",
+    "storybook-static"
+  ],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {}
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "rules": {}
+    }
+  ]
+}

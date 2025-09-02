@@ -1,0 +1,19 @@
+{
+  "name": "feature-themeing",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/frontend/feature-themeing/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/frontend/feature-themeing",
+        "main": "libs/frontend/feature-themeing/src/index.ts",
+        "tsConfig": "libs/frontend/feature-themeing/tsconfig.lib.json",
+        "assets": ["libs/frontend/feature-themeing/*.md"]
+      }
+    }
+  },
+  "tags": []
+}

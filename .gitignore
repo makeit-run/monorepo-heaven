@@ -61,4 +61,5 @@ npm-debug.*
 *.orig.*
 web-build/
 cache/
-
+vite.config.*.timestamp*
+vitest.config.*.timestamp*

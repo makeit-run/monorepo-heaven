@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "Mobile Ui",
+    "slug": "mobile-ui",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "newArchEnabled": true,
+    "experiments": { "tsconfigPaths": true },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "extra": {
+      "storybookEnabled": true
+    },
+    "plugins": []
+  }
+}

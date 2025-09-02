@@ -1,4 +1,5 @@
 {
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
   "compilerOptions": {
     "composite": true,
     "declarationMap": true,
@@ -6,8 +7,10 @@
     "importHelpers": true,
     "isolatedModules": true,
     "lib": ["es2022"],
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "esnext",
+    "rootDir": ".",
+    "baseUrl": ".",
+    "moduleResolution": "bundler",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
@@ -16,6 +19,30 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["development"]
+    "customConditions": ["development"],
+    "paths": {
+      "@frontend/feature-home/mobile/*": [
+        "libs/frontend/feature-home/mobile/src/lib/*"
+      ],
+      "@frontend/feature-home/shared/*": [
+        "libs/frontend/feature-home/shared/src/lib/*"
+      ],
+      "@frontend/feature-home/web/*": [
+        "libs/frontend/feature-home/web/src/lib/*"
+      ],
+      "@frontend/feature-landing": [
+        "libs/frontend/feature-landing/src/index.ts"
+      ],
+      "@frontend/feature-landing/*": [
+        "libs/frontend/feature-landing/src/lib/*"
+      ],
+      "@todo/feature-themeing/*": ["libs/frontend/feature-themeing/src/lib/*"],
+      "@shared/utils/*": ["libs/shared/utils/src/lib/*"],
+      "@frontend/shared/hooks/*": ["libs/frontend/shared/hooks/src/lib/*"],
+      "@frontend/shared/mobile-ui/*": [
+        "libs/frontend/shared/mobile-ui/src/lib/*"
+      ],
+      "@frontend/shared/ui/*": ["libs/frontend/shared/ui/src/lib/*"]
+    }
   }
 }

@@ -1,15 +1,15 @@
-const { join } = require('path');
+import { join } from "path"
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
 
-// Note: If you use library-specific PostCSS/Tailwind configuration then you should remove the `postcssConfig` build
-// option from your application's configuration (i.e. project.json).
-//
-// See: https://nx.dev/guides/using-tailwind-css-in-react#step-4:-applying-configuration-to-libraries
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
-module.exports = {
+export default {
   plugins: {
     tailwindcss: {
-      config: join(__dirname, 'tailwind.config.js'),
+      config: join(__dirname, "tailwind.config.js")
     },
-    autoprefixer: {},
-  },
-};
+    autoprefixer: {}
+  }
+}
