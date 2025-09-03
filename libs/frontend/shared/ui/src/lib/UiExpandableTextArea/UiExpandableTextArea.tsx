@@ -1,121 +1,62 @@
-"use client"
+'use client';
 
-import { useDebounce } from "@frontend/shared/hooks/hooks/useDebounce"
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import React, {
-  forwardRef,
-  RefObject,
-  useEffect,
-  useId,
-  useImperativeHandle,
-  useRef
-} from "react"
+import * as React from 'react';
+import { useId } from 'react';
+import { type VariantProps } from 'class-variance-authority';
 
-import { UiLabel } from "../UiLabel/UiLabel"
-import { expandableTextAreaStyles } from "./config"
+import { cn } from '@shared/utils/cn';
+import { UiLabel } from '../UiLabel';
+import { expandableTextAreaVariants } from './config';
 
-interface UiExpandableTextareaProps
+export interface UiExpandableTextAreaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-    VariantProps<typeof expandableTextAreaStyles> {
-  label?: string
-  error?: string
-  minHeight?: number
-  maxHeight?: number
+    VariantProps<typeof expandableTextAreaVariants> {
+  label?: string;
+  error?: string;
 }
 
-interface UseAutosizeTextAreaProps {
-  textAreaRef: RefObject<HTMLTextAreaElement | null>
-  triggerAutoSize: string
-  maxHeight: number
-  minHeight: number
-}
-
-function useAutosizeTextArea({
-  textAreaRef,
-  triggerAutoSize,
-  maxHeight,
-  minHeight
-}: UseAutosizeTextAreaProps) {
-  const adjustHeight = () => {
-    const offsetBorder = 2
-    if (textAreaRef.current) {
-      textAreaRef.current.style.minHeight = `${minHeight + offsetBorder}px`
-      textAreaRef.current.style.maxHeight = `${maxHeight}px`
-      textAreaRef.current.style.height = `${minHeight + offsetBorder}px`
-      const scrollHeight = textAreaRef.current.scrollHeight
-      textAreaRef.current.style.height =
-        scrollHeight > maxHeight
-          ? `${maxHeight}px`
-          : `${scrollHeight + offsetBorder}px`
-    }
-  }
-
-  const debouncedAdjustHeight = useDebounce(adjustHeight, 50)
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window?.addEventListener("resize", debouncedAdjustHeight)
-      adjustHeight()
-    }
-    return () => {
-      window?.removeEventListener("resize", debouncedAdjustHeight)
-    }
-  }, [textAreaRef?.current?.value, triggerAutoSize, maxHeight, minHeight])
-}
-const UiExpandableTextArea = forwardRef<
+const UiExpandableTextArea = React.forwardRef<
   HTMLTextAreaElement,
-  UiExpandableTextareaProps
->(
-  (
-    {
-      id,
-      minHeight = 100,
-      maxHeight = 100,
-      className,
-      variant,
-      label,
-      error,
-      ...props
-    },
-    ref
-  ) => {
-    const reactId = useId()
-    const textAreaRef = useRef<HTMLTextAreaElement>(null)
+  UiExpandableTextAreaProps
+>(({ className, variant, label, error, id, ...props }, ref) => {
+  const reactId = useId();
+  const idGenerated = id ? id : reactId;
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
-    const idGenerated = id ? id : reactId
+  const adjustHeight = React.useCallback(() => {
+    const textarea = textareaRef.current || (ref as React.RefObject<HTMLTextAreaElement>)?.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  }, [ref]);
 
-    useImperativeHandle(ref, () => textAreaRef.current as HTMLTextAreaElement)
+  React.useEffect(() => {
+    adjustHeight();
+  }, [adjustHeight, props.value]);
 
-    useAutosizeTextArea({
-      textAreaRef,
-      triggerAutoSize:
-        textAreaRef?.current?.value || props?.defaultValue?.toString() || "",
-      maxHeight,
-      minHeight
-    })
+  const handleInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    adjustHeight();
+    props.onInput?.(e);
+  };
 
-    return (
-      <>
-        {label && <UiLabel htmlFor={idGenerated}>{label}</UiLabel>}
+  return (
+    <>
+      {label && <UiLabel htmlFor={idGenerated}>{label}</UiLabel>}
+      <textarea
+        data-slot="expandable-textarea"
+        name={id}
+        id={idGenerated}
+        className={cn(expandableTextAreaVariants({ variant }), { 'border-red-500': error }, className)}
+        ref={ref || textareaRef}
+        onInput={handleInput}
+        {...props}
+      />
+      <div className="mt-[1.5] min-h-6 text-xs text-red-600">{error}</div>
+    </>
+  );
+});
 
-        <textarea
-          aria-label={id}
-          name={id}
-          id={idGenerated}
-          ref={textAreaRef}
-          className={cn(
-            expandableTextAreaStyles({ variant }),
-            { "border-red-500": error },
-            className
-          )}
-          {...props}
-        />
-        <div className="mt-[1.5] min-h-6 text-xs text-red-600">{error}</div>
-      </>
-    )
-  }
-)
+UiExpandableTextArea.displayName = 'UiExpandableTextArea';
 
-UiExpandableTextArea.displayName = "UiExpandableTextarea"
-export { UiExpandableTextArea }
+export { UiExpandableTextArea };

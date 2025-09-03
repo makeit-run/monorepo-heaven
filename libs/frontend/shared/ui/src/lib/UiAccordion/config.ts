@@ -1,63 +1,66 @@
-import { cva } from "class-variance-authority"
+import { cva } from 'class-variance-authority';
 
-export const accordionTriggerStyles = cva(
-  "flex  flex-1 !items-start !text-left !py-3 md:px-8 sm:px-6 px-4 focus:border-none focus-visible:border-none justify-between  data-[state=open]:font-bold  transition-all [&[data-state=open]>div>svg]:rotate-90 ",
+export const accordionItemVariants = cva('', {
+  variants: {
+    variant: {
+      default: 'border-b last:border-b-0',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+export const accordionTriggerVariants = cva(
+  'flex flex-1 items-start justify-between gap-4 text-left transition-all outline-none disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180',
   {
     variants: {
       variant: {
         default:
-          "py-4 text-text-500 font-medium max-md:text-md text-xl data-[state=open]:bg-primary data-[state=open]:text-white [&[data-state=open]>div]:bg-landing-background",
-        white:
-          "py-4 bg-white data-[state=open]:!rounded-b-none font-medium max-md:text-md text-xl data-[state=open]:bg-white data-[state=open]:text-text-500 [&[data-state=open]>div]:bg-transparent"
-      }
+          'rounded-md py-4 text-sm font-medium hover:underline focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+      },
     },
     defaultVariants: {
-      variant: "default"
-    }
+      variant: 'default',
+    },
   }
-)
+);
 
-export const accordionTriggerIconStyles = cva(
-  "shrink-0 transition-transform duration-600 md:size-6 size-5 max-mini:size-4",
+export const accordionContentVariants = cva(
+  'overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down',
   {
     variants: {
       variant: {
-        default: "text-secondary",
-        white: "text-primary"
-      }
+        default: 'text-sm',
+      },
     },
     defaultVariants: {
-      variant: "default"
-    }
+      variant: 'default',
+    },
   }
-)
+);
 
-export const accordionTriggerIconWrapperStyles = cva(
-  "ml-1 flex items-center justify-center rounded-full p-1 transition-all sm:ml-3",
+export const accordionContentInnerVariants = cva('', {
+  variants: {
+    variant: {
+      default: 'pt-0 pb-4',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+export const accordionIconVariants = cva(
+  'pointer-events-none shrink-0 transition-transform duration-200',
   {
     variants: {
       variant: {
-        default: "border-text-landing-highlight bg-primary-100/50",
-        white: ""
-      }
+        default: 'text-muted-foreground size-4 translate-y-0.5',
+      },
     },
     defaultVariants: {
-      variant: "default"
-    }
-  }
-)
-
-export const accordionContentStyles = cva(
-  "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden transition-all",
-  {
-    variants: {
-      variant: {
-        default: "",
-        white: "bg-white rounded-b-lg"
-      }
+      variant: 'default',
     },
-    defaultVariants: {
-      variant: "default"
-    }
   }
-)
+);

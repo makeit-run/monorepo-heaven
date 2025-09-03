@@ -1,44 +1,57 @@
-import { cn } from "@shared/utils/cn"
-import { type VariantProps } from "class-variance-authority"
-import * as React from "react"
+import * as React from 'react';
+import { type VariantProps } from 'class-variance-authority';
+import { cn } from '@shared/utils/cn';
+import {
+  alertVariants,
+  alertTitleVariants,
+  alertDescriptionVariants,
+} from './config';
 
-import { alertStyles } from "./config"
+interface UiAlertProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof alertVariants> {}
 
-const UiAlert = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertStyles>
->(({ className, variant, ...props }, ref) => (
-  <div
-    ref={ref}
-    role="alert"
-    className={cn(alertStyles({ variant }), className)}
-    {...props}
-  />
-))
-UiAlert.displayName = "UiAlert"
+function UiAlert({ className, variant, ...props }: UiAlertProps) {
+  return (
+    <div
+      data-slot="alert"
+      role="alert"
+      className={cn(alertVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
 
-const UiAlertTitle = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
-  <h5
-    ref={ref}
-    className={cn("mb-1 font-medium leading-none tracking-tight", className)}
-    {...props}
-  />
-))
-UiAlertTitle.displayName = "UiAlertTitle"
+interface UiAlertTitleProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof alertTitleVariants> {}
 
-const UiAlertDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("text-sm [&_p]:leading-relaxed", className)}
-    {...props}
-  />
-))
-UiAlertDescription.displayName = "UiAlertDescription"
+function UiAlertTitle({ className, variant, ...props }: UiAlertTitleProps) {
+  return (
+    <div
+      data-slot="alert-title"
+      className={cn(alertTitleVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
 
-export { UiAlert, UiAlertTitle, UiAlertDescription }
+interface UiAlertDescriptionProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof alertDescriptionVariants> {}
+
+function UiAlertDescription({
+  className,
+  variant,
+  ...props
+}: UiAlertDescriptionProps) {
+  return (
+    <div
+      data-slot="alert-description"
+      className={cn(alertDescriptionVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+export { UiAlert, UiAlertTitle, UiAlertDescription };

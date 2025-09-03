@@ -1,6 +1,1 @@
-export {
-  UiInputOTP,
-  UiInputOTPGroup,
-  UiInputOTPSeparator,
-  UiInputOTPSlot
-} from "./UiInputOtp"
+export { UiInputOTP, UiInputOTPGroup, UiInputOTPSlot } from './UiInputOtp';

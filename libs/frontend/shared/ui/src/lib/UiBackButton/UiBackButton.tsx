@@ -1,25 +1,36 @@
-import { useRouter } from "next/router"
+import { useRouter } from 'next/router';
+import { cn } from '@shared/utils/cn';
+import { type VariantProps } from 'class-variance-authority';
+import { backButtonVariants, backButtonIconVariants } from './config';
 
-interface BackButtonProps {
-  prevPage: string
+interface UiBackButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof backButtonVariants> {
+  prevPage: string;
 }
 
-export const UiBackButton = ({ prevPage }: BackButtonProps) => {
-  const router = useRouter()
+export const UiBackButton = ({
+  prevPage,
+  variant,
+  className,
+  ...props
+}: UiBackButtonProps) => {
+  const router = useRouter();
 
   const handleClick = () => {
-    router.push(prevPage)
-  }
+    router.push(prevPage);
+  };
 
   return (
     <button
       onClick={handleClick}
       aria-label="back-button"
       type="button"
-      className="hover:bg-secondary/10 bg-app-background me-2 inline-flex items-center rounded-full p-2.5 text-black"
+      className={cn(backButtonVariants({ variant }), className)}
+      {...props}
     >
       <svg
-        className="size-4"
+        className={backButtonIconVariants({ variant })}
         xmlns="http://www.w3.org/2000/svg"
         width="24"
         height="24"
@@ -35,6 +46,6 @@ export const UiBackButton = ({ prevPage }: BackButtonProps) => {
         />
       </svg>
     </button>
-  )
-}
-UiBackButton.displayName = "BackButton"
+  );
+};
+UiBackButton.displayName = 'BackButton';

@@ -1,20 +1,45 @@
-import { cva } from "class-variance-authority"
+import { cva } from 'class-variance-authority';
 
-export const datePickerTriggerStyles = cva(
-  "flex w-full gap-2 items-center justify-start text-left disabled:opacity-50",
-  {
-    variants: {
-      variant: {
-        default: "text-base text-black border border-black/30 rounded-md"
-      },
-      size: {
-        default: "py-5 px-4"
-      }
+export const datePickerContainerVariants = cva('flex flex-col', {
+  variants: {
+    variant: {
+      default: 'gap-3',
     },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
 
-    defaultVariants: {
-      variant: "default",
-      size: "default"
-    }
-  }
-)
+export const datePickerLabelVariants = cva('', {
+  variants: {
+    variant: {
+      default: 'px-1',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+export const datePickerTriggerVariants = cva('justify-between', {
+  variants: {
+    variant: {
+      default: 'w-48 font-normal',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+export const datePickerPopoverContentVariants = cva('overflow-hidden', {
+  variants: {
+    variant: {
+      default: 'w-auto p-0',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});

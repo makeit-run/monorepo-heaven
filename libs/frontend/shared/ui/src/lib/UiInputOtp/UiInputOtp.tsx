@@ -1,71 +1,114 @@
-"use client"
+'use client';
 
-import { cn } from "@shared/utils/cn"
-import { OTPInput, OTPInputContext } from "input-otp"
-import { Dot } from "lucide-react"
-import * as React from "react"
+import * as React from 'react';
+import { OTPInput, OTPInputContext } from 'input-otp';
+import { MinusIcon } from 'lucide-react';
+import { type VariantProps } from 'class-variance-authority';
 
-const UiInputOTP = React.forwardRef<
-  React.ElementRef<typeof OTPInput>,
-  React.ComponentPropsWithoutRef<typeof OTPInput>
->(({ className, containerClassName, ...props }, ref) => (
-  <OTPInput
-    ref={ref}
-    containerClassName={cn(
-      "flex items-center gap-2 has-[:disabled]:opacity-50",
-      containerClassName
-    )}
-    className={cn("disabled:cursor-not-allowed", className)}
-    {...props}
-  />
-))
-UiInputOTP.displayName = "InputOTP"
+import { cn } from '@shared/utils/cn';
+import {
+  inputOTPVariants,
+  inputOTPGroupVariants,
+  inputOTPSlotVariants,
+  inputOTPSeparatorVariants,
+  inputOTPCaretVariants,
+  inputOTPCaretLineVariants,
+} from './config';
 
-const UiInputOTPGroup = React.forwardRef<
-  React.ElementRef<"div">,
-  React.ComponentPropsWithoutRef<"div">
->(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("flex items-center", className)} {...props} />
-))
-UiInputOTPGroup.displayName = "InputOTPGroup"
+export interface UiInputOTPProps
+  extends React.ComponentProps<typeof OTPInput>,
+    VariantProps<typeof inputOTPVariants> {
+  containerClassName?: string;
+}
 
-const UiInputOTPSlot = React.forwardRef<
-  React.ElementRef<"div">,
-  React.ComponentPropsWithoutRef<"div"> & { index: number; error?: boolean }
->(({ index, className, error, ...props }, ref) => {
-  const inputOTPContext = React.useContext(OTPInputContext)
-  const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index]
+function UiInputOTP({
+  className,
+  containerClassName,
+  variant,
+  ...props
+}: UiInputOTPProps) {
+  return (
+    <OTPInput
+      data-slot="input-otp"
+      containerClassName={cn(
+        'flex items-center gap-2 has-disabled:opacity-50',
+        containerClassName
+      )}
+      className={cn(inputOTPVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+export interface UiInputOTPGroupProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof inputOTPGroupVariants> {}
+
+function UiInputOTPGroup({
+  className,
+  variant,
+  ...props
+}: UiInputOTPGroupProps) {
+  return (
+    <div
+      data-slot="input-otp-group"
+      className={cn(inputOTPGroupVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+export interface UiInputOTPSlotProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof inputOTPSlotVariants> {
+  index: number;
+}
+
+function UiInputOTPSlot({
+  index,
+  className,
+  variant,
+  ...props
+}: UiInputOTPSlotProps) {
+  const inputOTPContext = React.useContext(OTPInputContext);
+  const { char, hasFakeCaret, isActive } = inputOTPContext?.slots[index] ?? {};
 
   return (
     <div
-      ref={ref}
-      className={cn(
-        "flexible-text-[3rem] text-text-700 relative flex size-24 items-center justify-center rounded-lg border border-gray-300 transition-all",
-        (isActive || char) && "ring-ring ring-offset-primary z-10 ring-2",
-        !char && error && "z-10 ring-2 ring-red-500 ring-offset-0",
-        className
-      )}
+      data-slot="input-otp-slot"
+      data-active={isActive}
+      className={cn(inputOTPSlotVariants({ variant }), className)}
       {...props}
     >
       {char}
       {hasFakeCaret && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="animate-caret-blink bg-primary h-4 w-px duration-1000" />
+        <div className={inputOTPCaretVariants({ variant })}>
+          <div className={inputOTPCaretLineVariants({ variant })} />
         </div>
       )}
     </div>
-  )
-})
-UiInputOTPSlot.displayName = "InputOTPSlot"
+  );
+}
 
-const UiInputOTPSeparator = React.forwardRef<
-  React.ElementRef<"div">,
-  React.ComponentPropsWithoutRef<"div">
->(({ ...props }, ref) => (
-  <div ref={ref} role="separator" {...props}>
-    <Dot />
-  </div>
-))
-UiInputOTPSeparator.displayName = "InputOTPSeparator"
+export interface UiInputOTPSeparatorProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof inputOTPSeparatorVariants> {}
 
-export { UiInputOTP, UiInputOTPGroup, UiInputOTPSlot, UiInputOTPSeparator }
+function UiInputOTPSeparator({
+  className,
+  variant,
+  ...props
+}: UiInputOTPSeparatorProps) {
+  return (
+    <div
+      data-slot="input-otp-separator"
+      role="separator"
+      className={cn(inputOTPSeparatorVariants({ variant }), className)}
+      {...props}
+    >
+      <MinusIcon />
+    </div>
+  );
+}
+
+export { UiInputOTP, UiInputOTPGroup, UiInputOTPSlot, UiInputOTPSeparator };

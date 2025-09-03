@@ -1,218 +1,297 @@
-import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import { Check, ChevronRight, Circle } from "lucide-react"
-import * as React from "react"
+'use client';
 
+import * as React from 'react';
+import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
+import { CheckIcon, ChevronRightIcon, CircleIcon } from 'lucide-react';
+import { type VariantProps } from 'class-variance-authority';
+
+import { cn } from '@shared/utils/cn';
 import {
-  dropdownMenuCheckboxItemStyles,
-  dropdownMenuContentStyles,
-  dropdownMenuItemStyles,
-  dropdownMenuLabelStyles,
-  dropdownMenuRadioItemStyles,
-  dropdownMenuShortcutStyles,
-  dropdownMenuSubContentStyles,
-  dropdownMenuSubTriggerStyles,
-  itemIndicatorStyles
-} from "./config"
+  dropdownMenuContentVariants,
+  dropdownMenuItemVariants,
+  dropdownMenuCheckboxItemVariants,
+  dropdownMenuRadioItemVariants,
+  dropdownMenuItemIndicatorVariants,
+  dropdownMenuCheckIconVariants,
+  dropdownMenuRadioIconVariants,
+  dropdownMenuLabelVariants,
+  dropdownMenuSeparatorVariants,
+  dropdownMenuShortcutVariants,
+  dropdownMenuSubTriggerVariants,
+  dropdownMenuSubTriggerChevronVariants,
+  dropdownMenuSubContentVariants,
+} from './config';
 
-const UiDropdownMenu = ({
-  modal = false,
+function UiDropdownMenu({
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) => {
-  return <DropdownMenuPrimitive.Root modal={modal} {...props} />
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
+  return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />;
 }
 
-const UiDropdownMenuTrigger = DropdownMenuPrimitive.Trigger
-const UiDropdownMenuGroup = DropdownMenuPrimitive.Group
-const UiDropdownMenuPortal = DropdownMenuPrimitive.Portal
-const UiDropdownMenuSub = DropdownMenuPrimitive.Sub
-const UiDropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
+function UiDropdownMenuPortal({
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Portal>) {
+  return (
+    <DropdownMenuPrimitive.Portal
+      data-slot="dropdown-menu-portal"
+      {...props}
+    />
+  );
+}
 
-const UiDropdownMenuSubTrigger = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubTrigger> &
-    VariantProps<typeof dropdownMenuSubTriggerStyles> & {
-      inset?: boolean
-    }
->(({ className, variant, inset, children, ...props }, ref) => (
-  <DropdownMenuPrimitive.SubTrigger
-    ref={ref}
-    className={cn(
-      dropdownMenuSubTriggerStyles({ variant }),
-      { "pl-8": inset },
-      className
-    )}
-    {...props}
-  >
-    {children}
-    <ChevronRight className="ml-auto size-4" />
-  </DropdownMenuPrimitive.SubTrigger>
-))
-UiDropdownMenuSubTrigger.displayName =
-  DropdownMenuPrimitive.SubTrigger.displayName
+function UiDropdownMenuTrigger({
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
+  return (
+    <DropdownMenuPrimitive.Trigger
+      data-slot="dropdown-menu-trigger"
+      {...props}
+    />
+  );
+}
 
-const UiDropdownMenuSubContent = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.SubContent>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent> &
-    VariantProps<typeof dropdownMenuSubContentStyles>
->(({ className, variant, ...props }, ref) => (
-  <DropdownMenuPrimitive.SubContent
-    ref={ref}
-    className={cn(dropdownMenuSubContentStyles({ variant }), className)}
-    {...props}
-  />
-))
-UiDropdownMenuSubContent.displayName =
-  DropdownMenuPrimitive.SubContent.displayName
+export interface UiDropdownMenuContentProps
+  extends React.ComponentProps<typeof DropdownMenuPrimitive.Content>,
+    VariantProps<typeof dropdownMenuContentVariants> {}
 
-const UiDropdownMenuContent = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content> &
-    VariantProps<typeof dropdownMenuContentStyles>
->(({ className, variant, shadow, sideOffset = 4, ...props }, ref) => {
+function UiDropdownMenuContent({
+  className,
+  sideOffset = 4,
+  variant,
+  ...props
+}: UiDropdownMenuContentProps) {
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
-        ref={ref}
+        data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
-        className={cn(
-          dropdownMenuContentStyles({ variant, shadow }),
-          className
-        )}
+        className={cn(dropdownMenuContentVariants({ variant }), className)}
         {...props}
       />
     </DropdownMenuPrimitive.Portal>
-  )
-})
-UiDropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName
+  );
+}
 
-const UiDropdownMenuItem = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> &
-    VariantProps<typeof dropdownMenuItemStyles> & {
-      inset?: boolean
-    }
->(({ className, variant, inset, ...props }, ref) => (
-  <DropdownMenuPrimitive.Item
-    ref={ref}
-    className={cn(
-      dropdownMenuItemStyles({ variant }),
-      { "pl-8": inset },
-      className
-    )}
-    {...props}
-  />
-))
-UiDropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName
-
-const UiDropdownMenuCheckboxItem = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem> &
-    VariantProps<typeof dropdownMenuCheckboxItemStyles>
->(({ className, variant, children, checked, ...props }, ref) => (
-  <DropdownMenuPrimitive.CheckboxItem
-    ref={ref}
-    className={cn(dropdownMenuCheckboxItemStyles({ variant }), className)}
-    checked={checked}
-    {...props}
-  >
-    <span className={itemIndicatorStyles()}>
-      <DropdownMenuPrimitive.ItemIndicator>
-        <Check className="size-4" />
-      </DropdownMenuPrimitive.ItemIndicator>
-    </span>
-    {children}
-  </DropdownMenuPrimitive.CheckboxItem>
-))
-UiDropdownMenuCheckboxItem.displayName =
-  DropdownMenuPrimitive.CheckboxItem.displayName
-
-const UiDropdownMenuRadioItem = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem> &
-    VariantProps<typeof dropdownMenuRadioItemStyles>
->(({ className, variant, children, ...props }, ref) => (
-  <DropdownMenuPrimitive.RadioItem
-    ref={ref}
-    className={cn(dropdownMenuRadioItemStyles({ variant }), className)}
-    {...props}
-  >
-    <span className={itemIndicatorStyles()}>
-      <DropdownMenuPrimitive.ItemIndicator>
-        <Circle className="size-2 fill-current" />
-      </DropdownMenuPrimitive.ItemIndicator>
-    </span>
-    {children}
-  </DropdownMenuPrimitive.RadioItem>
-))
-UiDropdownMenuRadioItem.displayName =
-  DropdownMenuPrimitive.RadioItem.displayName
-
-const UiDropdownMenuLabel = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.Label>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label> &
-    VariantProps<typeof dropdownMenuLabelStyles> & {
-      inset?: boolean
-    }
->(({ className, variant, inset, ...props }, ref) => (
-  <DropdownMenuPrimitive.Label
-    ref={ref}
-    className={cn(
-      dropdownMenuLabelStyles({ variant }),
-      inset && "pl-8",
-      className
-    )}
-    {...props}
-  />
-))
-UiDropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName
-
-const UiDropdownMenuSeparator = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.Separator>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator>
->(({ className, ...props }, ref) => (
-  <DropdownMenuPrimitive.Separator
-    className={cn("-mx-1 my-1 h-px bg-gray-200", className)}
-    ref={ref}
-    {...props}
-  />
-))
-UiDropdownMenuSeparator.displayName =
-  DropdownMenuPrimitive.Separator.displayName
-
-interface UiDropdownMenuShortcutProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof dropdownMenuShortcutStyles> {}
-
-const UiDropdownMenuShortcut = ({
-  variant,
-  className,
+function UiDropdownMenuGroup({
   ...props
-}: UiDropdownMenuShortcutProps) => {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Group>) {
   return (
-    <span
-      className={cn(dropdownMenuShortcutStyles({ variant }), className)}
+    <DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />
+  );
+}
+
+export interface UiDropdownMenuItemProps
+  extends React.ComponentProps<typeof DropdownMenuPrimitive.Item>,
+    VariantProps<typeof dropdownMenuItemVariants> {
+  inset?: boolean;
+}
+
+function UiDropdownMenuItem({
+  className,
+  inset,
+  variant = 'default',
+  ...props
+}: UiDropdownMenuItemProps) {
+  return (
+    <DropdownMenuPrimitive.Item
+      data-slot="dropdown-menu-item"
+      data-inset={inset}
+      data-variant={variant}
+      className={cn(dropdownMenuItemVariants({ variant }), className)}
       {...props}
     />
-  )
+  );
 }
-UiDropdownMenuShortcut.displayName = "DropdownMenuShortcut"
+
+export interface UiDropdownMenuCheckboxItemProps
+  extends React.ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem>,
+    VariantProps<typeof dropdownMenuCheckboxItemVariants> {}
+
+function UiDropdownMenuCheckboxItem({
+  className,
+  children,
+  checked,
+  variant,
+  ...props
+}: UiDropdownMenuCheckboxItemProps) {
+  return (
+    <DropdownMenuPrimitive.CheckboxItem
+      data-slot="dropdown-menu-checkbox-item"
+      className={cn(dropdownMenuCheckboxItemVariants({ variant }), className)}
+      checked={checked}
+      {...props}
+    >
+      <span className={dropdownMenuItemIndicatorVariants({ variant })}>
+        <DropdownMenuPrimitive.ItemIndicator>
+          <CheckIcon className={dropdownMenuCheckIconVariants({ variant })} />
+        </DropdownMenuPrimitive.ItemIndicator>
+      </span>
+      {children}
+    </DropdownMenuPrimitive.CheckboxItem>
+  );
+}
+
+function UiDropdownMenuRadioGroup({
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.RadioGroup>) {
+  return (
+    <DropdownMenuPrimitive.RadioGroup
+      data-slot="dropdown-menu-radio-group"
+      {...props}
+    />
+  );
+}
+
+export interface UiDropdownMenuRadioItemProps
+  extends React.ComponentProps<typeof DropdownMenuPrimitive.RadioItem>,
+    VariantProps<typeof dropdownMenuRadioItemVariants> {}
+
+function UiDropdownMenuRadioItem({
+  className,
+  children,
+  variant,
+  ...props
+}: UiDropdownMenuRadioItemProps) {
+  return (
+    <DropdownMenuPrimitive.RadioItem
+      data-slot="dropdown-menu-radio-item"
+      className={cn(dropdownMenuRadioItemVariants({ variant }), className)}
+      {...props}
+    >
+      <span className={dropdownMenuItemIndicatorVariants({ variant })}>
+        <DropdownMenuPrimitive.ItemIndicator>
+          <CircleIcon className={dropdownMenuRadioIconVariants({ variant })} />
+        </DropdownMenuPrimitive.ItemIndicator>
+      </span>
+      {children}
+    </DropdownMenuPrimitive.RadioItem>
+  );
+}
+
+export interface UiDropdownMenuLabelProps
+  extends React.ComponentProps<typeof DropdownMenuPrimitive.Label>,
+    VariantProps<typeof dropdownMenuLabelVariants> {
+  inset?: boolean;
+}
+
+function UiDropdownMenuLabel({
+  className,
+  inset,
+  variant,
+  ...props
+}: UiDropdownMenuLabelProps) {
+  return (
+    <DropdownMenuPrimitive.Label
+      data-slot="dropdown-menu-label"
+      data-inset={inset}
+      className={cn(dropdownMenuLabelVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+export interface UiDropdownMenuSeparatorProps
+  extends React.ComponentProps<typeof DropdownMenuPrimitive.Separator>,
+    VariantProps<typeof dropdownMenuSeparatorVariants> {}
+
+function UiDropdownMenuSeparator({
+  className,
+  variant,
+  ...props
+}: UiDropdownMenuSeparatorProps) {
+  return (
+    <DropdownMenuPrimitive.Separator
+      data-slot="dropdown-menu-separator"
+      className={cn(dropdownMenuSeparatorVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+export interface UiDropdownMenuShortcutProps
+  extends React.ComponentProps<'span'>,
+    VariantProps<typeof dropdownMenuShortcutVariants> {}
+
+function UiDropdownMenuShortcut({
+  className,
+  variant,
+  ...props
+}: UiDropdownMenuShortcutProps) {
+  return (
+    <span
+      data-slot="dropdown-menu-shortcut"
+      className={cn(dropdownMenuShortcutVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+function UiDropdownMenuSub({
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Sub>) {
+  return (
+    <DropdownMenuPrimitive.Sub data-slot="dropdown-menu-sub" {...props} />
+  );
+}
+
+export interface UiDropdownMenuSubTriggerProps
+  extends React.ComponentProps<typeof DropdownMenuPrimitive.SubTrigger>,
+    VariantProps<typeof dropdownMenuSubTriggerVariants> {
+  inset?: boolean;
+}
+
+function UiDropdownMenuSubTrigger({
+  className,
+  inset,
+  children,
+  variant,
+  ...props
+}: UiDropdownMenuSubTriggerProps) {
+  return (
+    <DropdownMenuPrimitive.SubTrigger
+      data-slot="dropdown-menu-sub-trigger"
+      data-inset={inset}
+      className={cn(dropdownMenuSubTriggerVariants({ variant }), className)}
+      {...props}
+    >
+      {children}
+      <ChevronRightIcon className={dropdownMenuSubTriggerChevronVariants({ variant })} />
+    </DropdownMenuPrimitive.SubTrigger>
+  );
+}
+
+export interface UiDropdownMenuSubContentProps
+  extends React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>,
+    VariantProps<typeof dropdownMenuSubContentVariants> {}
+
+function UiDropdownMenuSubContent({
+  className,
+  variant,
+  ...props
+}: UiDropdownMenuSubContentProps) {
+  return (
+    <DropdownMenuPrimitive.SubContent
+      data-slot="dropdown-menu-sub-content"
+      className={cn(dropdownMenuSubContentVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
 
 export {
   UiDropdownMenu,
+  UiDropdownMenuPortal,
   UiDropdownMenuTrigger,
   UiDropdownMenuContent,
+  UiDropdownMenuGroup,
+  UiDropdownMenuLabel,
   UiDropdownMenuItem,
   UiDropdownMenuCheckboxItem,
+  UiDropdownMenuRadioGroup,
   UiDropdownMenuRadioItem,
-  UiDropdownMenuLabel,
   UiDropdownMenuSeparator,
   UiDropdownMenuShortcut,
-  UiDropdownMenuGroup,
-  UiDropdownMenuPortal,
   UiDropdownMenuSub,
-  UiDropdownMenuSubContent,
   UiDropdownMenuSubTrigger,
-  UiDropdownMenuRadioGroup
-}
+  UiDropdownMenuSubContent,
+};

@@ -1,20 +1,30 @@
-import { cn } from "@shared/utils/cn"
-import { type VariantProps } from "class-variance-authority"
-import * as React from "react"
+import * as React from 'react';
+import { Slot } from '@radix-ui/react-slot';
+import { type VariantProps } from 'class-variance-authority';
+import { cn } from '@shared/utils/cn';
+import { badgeVariants } from './config';
 
-import { badgeStyles } from "./config"
-
-export interface BadgeProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "color">,
-    VariantProps<typeof badgeStyles> {}
-
-function UiBadge({ color, className, variant, size, ...props }: BadgeProps) {
-  return (
-    <div
-      className={cn(badgeStyles({ color, variant, size }), className)}
-      {...props}
-    />
-  )
+export interface UiBadgeProps
+  extends React.ComponentProps<'span'>,
+    VariantProps<typeof badgeVariants> {
+  asChild?: boolean;
 }
 
-export { UiBadge }
+function UiBadge({
+  className,
+  variant,
+  asChild = false,
+  ...props
+}: UiBadgeProps) {
+  const Comp = asChild ? Slot : 'span';
+
+  return (
+    <Comp
+      data-slot="badge"
+      className={cn(badgeVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+export { UiBadge, badgeVariants };

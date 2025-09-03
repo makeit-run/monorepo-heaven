@@ -1,9 +1,9 @@
-"use client"
+'use client';
 
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import { X } from "lucide-react"
-import { ComponentProps, FC, ReactNode, useEffect } from "react"
+import { cn } from '@shared/utils/cn';
+import { VariantProps } from 'class-variance-authority';
+import { X } from 'lucide-react';
+import { ComponentProps, FC, ReactNode, useEffect } from 'react';
 
 import {
   UiDialog,
@@ -12,29 +12,29 @@ import {
   UiDialogDescription,
   UiDialogHeader,
   UiDialogTitle,
-  UiDialogTrigger
-} from "../UiDialog"
-import { UiScrollArea } from "../UiScrollArea"
-import { modalCloseStyles, modalStyles } from "./config"
+  UiDialogTrigger,
+} from '../UiDialog';
+import { UiScrollArea } from '../UiScrollArea';
+import { modalCloseStyles, modalStyles } from './config';
 
-export type ModalScrollType = "behavior" | "container"
+export type ModalScrollType = 'behavior' | 'container';
 
-const UiModalClose = UiDialogClose
+const UiModalClose = UiDialogClose;
 
 export interface UiModalProps
   extends VariantProps<typeof modalStyles>,
-    ComponentProps<typeof UiDialogContent> {
-  children?: ReactNode
-  header?: ReactNode
-  trigger?: ReactNode
-  triggerProps?: ComponentProps<typeof UiDialogTrigger>
-  open?: boolean
-  defaultOpen?: boolean
-  onOpenChange?: (open: boolean) => void
-  className?: string
-  scrollType?: ModalScrollType
-  pointerDownOutsideClose?: boolean
-  closeStyles?: VariantProps<typeof modalCloseStyles>
+    Omit<ComponentProps<typeof UiDialogContent>, 'variant'> {
+  children?: ReactNode;
+  header?: ReactNode;
+  trigger?: ReactNode;
+  triggerProps?: ComponentProps<typeof UiDialogTrigger>;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  className?: string;
+  scrollType?: ModalScrollType;
+  pointerDownOutsideClose?: boolean;
+  closeStyles?: VariantProps<typeof modalCloseStyles>;
 }
 
 const UiModal: FC<UiModalProps> = ({
@@ -48,24 +48,24 @@ const UiModal: FC<UiModalProps> = ({
   onOpenChange,
   className,
   closeStyles,
-  scrollType = "behavior",
+  scrollType = 'behavior',
   withCloseBtn = true,
   pointerDownOutsideClose = false,
   ...rest
 }) => {
   useEffect(() => {
     if (open) {
-      document.body.style.pointerEvents = "all"
+      document.body.style.pointerEvents = 'all';
     }
-  }, [open])
+  }, [open]);
 
   const onPointerDownOutside = (
     e: CustomEvent<{ originalEvent: PointerEvent }>
   ) => {
     if (!pointerDownOutsideClose) {
-      e?.preventDefault()
+      e?.preventDefault();
     }
-  }
+  };
 
   return (
     <UiDialog defaultOpen={defaultOpen} onOpenChange={onOpenChange} open={open}>
@@ -78,15 +78,14 @@ const UiModal: FC<UiModalProps> = ({
       </UiDialogTrigger>
       <UiDialogContent
         onOpenAutoFocus={(e) => e.preventDefault()}
-        scrollType={scrollType}
         onPointerDownOutside={onPointerDownOutside}
         className={cn(modalStyles({ variant, scrollType }), className)}
         {...rest}
       >
         <UiDialogHeader
           className={cn(
-            "mt-5 h-min w-full",
-            header ? "justify-between" : "justify-end"
+            'mt-5 h-min w-full',
+            header ? 'justify-between' : 'justify-end'
           )}
         >
           {header}
@@ -97,8 +96,8 @@ const UiModal: FC<UiModalProps> = ({
             </UiModalClose>
           )}
         </UiDialogHeader>
-        {scrollType === "container" ? (
-          <UiScrollArea className={"h-full max-h-[90vh]"}>
+        {scrollType === 'container' ? (
+          <UiScrollArea className={'h-full max-h-[90vh]'}>
             {children}
           </UiScrollArea>
         ) : (
@@ -106,7 +105,7 @@ const UiModal: FC<UiModalProps> = ({
         )}
       </UiDialogContent>
     </UiDialog>
-  )
-}
+  );
+};
 
-export { UiModalClose, UiModal }
+export { UiModalClose, UiModal };

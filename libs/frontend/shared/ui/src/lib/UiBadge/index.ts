@@ -1,2 +1,2 @@
-export { badgeStyles } from "./config"
-export { UiBadge, type BadgeProps } from "./UiBadge"
+export { badgeVariants } from './config';
+export { UiBadge, type UiBadgeProps } from './UiBadge';

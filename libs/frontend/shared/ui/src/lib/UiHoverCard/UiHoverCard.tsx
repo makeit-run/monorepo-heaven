@@ -1,29 +1,48 @@
-"use client"
+'use client';
 
-import * as HoverCardPrimitive from "@radix-ui/react-hover-card"
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import * as React from "react"
+import * as React from 'react';
+import * as HoverCardPrimitive from '@radix-ui/react-hover-card';
+import { type VariantProps } from 'class-variance-authority';
 
-import { hoverCardContentStyles } from "./config"
+import { cn } from '@shared/utils/cn';
+import { hoverCardContentVariants } from './config';
 
-const UiHoverCard = HoverCardPrimitive.Root
+function UiHoverCard({
+  ...props
+}: React.ComponentProps<typeof HoverCardPrimitive.Root>) {
+  return <HoverCardPrimitive.Root data-slot="hover-card" {...props} />;
+}
 
-const UiHoverCardTrigger = HoverCardPrimitive.Trigger
+function UiHoverCardTrigger({
+  ...props
+}: React.ComponentProps<typeof HoverCardPrimitive.Trigger>) {
+  return (
+    <HoverCardPrimitive.Trigger data-slot="hover-card-trigger" {...props} />
+  );
+}
 
-const UiHoverCardContent = React.forwardRef<
-  React.ElementRef<typeof HoverCardPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content> &
-    VariantProps<typeof hoverCardContentStyles>
->(({ className, variant, align = "center", sideOffset = 4, ...props }, ref) => (
-  <HoverCardPrimitive.Content
-    ref={ref}
-    align={align}
-    sideOffset={sideOffset}
-    className={cn(hoverCardContentStyles({ variant }), className)}
-    {...props}
-  />
-))
-UiHoverCardContent.displayName = HoverCardPrimitive.Content.displayName
+export interface UiHoverCardContentProps
+  extends React.ComponentProps<typeof HoverCardPrimitive.Content>,
+    VariantProps<typeof hoverCardContentVariants> {}
 
-export { UiHoverCard, UiHoverCardTrigger, UiHoverCardContent }
+function UiHoverCardContent({
+  className,
+  variant,
+  align = 'center',
+  sideOffset = 4,
+  ...props
+}: UiHoverCardContentProps) {
+  return (
+    <HoverCardPrimitive.Portal>
+      <HoverCardPrimitive.Content
+        data-slot="hover-card-content"
+        align={align}
+        sideOffset={sideOffset}
+        className={cn(hoverCardContentVariants({ variant }), className)}
+        {...props}
+      />
+    </HoverCardPrimitive.Portal>
+  );
+}
+
+export { UiHoverCard, UiHoverCardTrigger, UiHoverCardContent };

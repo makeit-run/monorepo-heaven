@@ -10,7 +10,7 @@ export const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden font-sans antialiased">
       {/* Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary-light/10 to-background" />
 
@@ -24,36 +24,36 @@ export const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
+      <div className="relative z-10 text-center max-w-4xl mx-auto px-6 box-border">
         <div className="space-y-8">
           {/* Main Heading */}
           <div className="space-y-4">
-            <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent leading-tight">
+            <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent leading-none m-0 tracking-tight">
               Horse Medicine
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed m-0">
               Welcome to your productivity companion. Get organized and
               accomplish more with our elegant todo management solution.
             </p>
           </div>
 
           {/* Feature Pills */}
-          <div className="flex flex-wrap justify-center gap-4">
-            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/20">
-              <ListTodo className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium">Organize Tasks</span>
+          <div className="flex flex-wrap justify-center gap-4 transition-all duration-150 ease-in-out">
+            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/20 transition-all duration-150 ease-in-out hover:bg-green-100 hover:text-white box-border">
+              <ListTodo className="h-4 w-4 text-primary transition-all duration-150 ease-in-out" />
+              <span className="text-sm font-medium transition-all duration-150 ease-in-out">Organize Tasks</span>
             </div>
-            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/20">
-              <Target className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium">Set Goals</span>
+            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/20 transition-all duration-150 ease-in-out hover:bg-green-100 hover:text-white box-border">
+              <Target className="h-4 w-4 text-primary transition-all duration-150 ease-in-out" />
+              <span className="text-sm font-medium transition-all duration-150 ease-in-out">Set Goals</span>
             </div>
-            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/20">
-              <CheckCircle className="h-4 w-4 text-success" />
-              <span className="text-sm font-medium">Track Progress</span>
+            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/20 transition-all duration-150 ease-in-out hover:bg-green-100 hover:text-white box-border">
+              <CheckCircle className="h-4 w-4 text-success transition-all duration-150 ease-in-out" />
+              <span className="text-sm font-medium transition-all duration-150 ease-in-out">Track Progress</span>
             </div>
-            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/20">
-              <Zap className="h-4 w-4 text-warning" />
-              <span className="text-sm font-medium">Boost Productivity</span>
+            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/20 transition-all duration-150 ease-in-out hover:bg-green-100 hover:text-white box-border">
+              <Zap className="h-4 w-4 text-warning transition-all duration-150 ease-in-out" />
+              <span className="text-sm font-medium transition-all duration-150 ease-in-out">Boost Productivity</span>
             </div>
           </div>
 

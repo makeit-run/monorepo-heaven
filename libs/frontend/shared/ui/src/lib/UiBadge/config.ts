@@ -1,26 +1,22 @@
-import { cva } from "class-variance-authority"
+import { cva } from 'class-variance-authority';
 
-export const badgeStyles = cva(
-  "inline-flex items-center transition-colors font-semibold focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+export const badgeVariants = cva(
+  'inline-flex items-center justify-center rounded-md border w-fit whitespace-nowrap shrink-0 [&>svg]:pointer-events-none gap-1 transition-[color,box-shadow] overflow-hidden focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
   {
     variants: {
       variant: {
-        default: "rounded-full !text-white border-transparent border text-xs",
-        outline: "!bg-transparent text-foreground rounded-full border text-xs"
+        default:
+          'border-transparent bg-primary text-primary-foreground px-2 py-0.5 text-xs font-medium [&>svg]:size-3 [a&]:hover:bg-primary/90 focus-visible:border-ring focus-visible:ring-ring/50',
+        secondary:
+          'border-transparent bg-secondary text-secondary-foreground px-2 py-0.5 text-xs font-medium [&>svg]:size-3 [a&]:hover:bg-secondary/90 focus-visible:border-ring focus-visible:ring-ring/50',
+        destructive:
+          'border-transparent bg-destructive text-white px-2 py-0.5 text-xs font-medium [&>svg]:size-3 [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
+        outline:
+          'text-foreground px-2 py-0.5 text-xs font-medium [&>svg]:size-3 [a&]:hover:bg-accent [a&]:hover:text-accent-foreground focus-visible:border-ring focus-visible:ring-ring/50',
       },
-      color: {
-        default: "bg-primary text-primary hover:bg-primary/80 border-primary",
-        gray: "bg-gray-300 !text-gray-800 hover:bg-gray-300/80 !border-gray-3=400"
-      },
-      size: {
-        default: "px-2.5 py-0.5",
-        small: "px-2 !text-xs"
-      }
     },
     defaultVariants: {
-      size: "default",
-      variant: "default",
-      color: "default"
-    }
+      variant: 'default',
+    },
   }
-)
+);

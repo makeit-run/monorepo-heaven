@@ -14,11 +14,11 @@ export const TodoList = () => {
   const totalCount = todos.length;
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-6">
+    <div className="w-full max-w-2xl mx-auto space-y-6 box-border font-sans">
       {/* Stats Card */}
-      <UiCard className="p-6 border-0 bg-card/60 backdrop-blur-sm shadow-lg">
-        <h3 className="text-xl font-semibold mb-2">Sample Todo List</h3>
-        <div className="text-sm text-muted-foreground">
+      <UiCard className="p-6 border-0 bg-card/60 backdrop-blur-sm shadow-lg box-border">
+        <h3 className="text-xl font-semibold mb-2 m-0 font-inherit tracking-tight">Sample Todo List</h3>
+        <div className="text-sm text-muted-foreground font-light leading-4">
           {completedCount} of {totalCount} tasks completed
         </div>
       </UiCard>

@@ -1,73 +1,87 @@
-"use client"
+'use client';
 
-import * as AccordionPrimitive from "@radix-ui/react-accordion"
-import type { VariantProps } from "class-variance-authority"
-import { ChevronRight } from "lucide-react"
-import * as React from "react"
-
+import * as React from 'react';
+import * as AccordionPrimitive from '@radix-ui/react-accordion';
+import { ChevronDownIcon } from 'lucide-react';
+import { cn } from '@shared/utils/cn';
+import { type VariantProps } from 'class-variance-authority';
 import {
-  accordionContentStyles,
-  accordionTriggerIconStyles,
-  accordionTriggerIconWrapperStyles,
-  accordionTriggerStyles
-} from "./config"
-import { cn } from "@shared/utils/cn"
+  accordionItemVariants,
+  accordionTriggerVariants,
+  accordionContentVariants,
+  accordionContentInnerVariants,
+  accordionIconVariants,
+} from './config';
 
-const UiAccordion = AccordionPrimitive.Root
-
-const UiAccordionItem = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
->((props, ref) => <AccordionPrimitive.Item ref={ref} {...props} />)
-UiAccordionItem.displayName = "AccordionItem"
-
-interface UiAccordionTriggerProps
-  extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>,
-    VariantProps<typeof accordionTriggerStyles> {
-  iconStyles?: VariantProps<typeof accordionTriggerStyles>
-  customIcon?: React.ReactNode
+function UiAccordion({
+  ...props
+}: React.ComponentProps<typeof AccordionPrimitive.Root>) {
+  return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
 }
 
-const UiAccordionTrigger = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Trigger>,
-  UiAccordionTriggerProps
->(({ variant, iconStyles, customIcon, className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex">
-    <AccordionPrimitive.Trigger
-      ref={ref}
-      className={cn(accordionTriggerStyles({ variant }), className)}
+interface UiAccordionItemProps
+  extends React.ComponentProps<typeof AccordionPrimitive.Item>,
+    VariantProps<typeof accordionItemVariants> {}
+
+function UiAccordionItem({
+  className,
+  variant,
+  ...props
+}: UiAccordionItemProps) {
+  return (
+    <AccordionPrimitive.Item
+      data-slot="accordion-item"
+      className={cn(accordionItemVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+interface UiAccordionTriggerProps
+  extends React.ComponentProps<typeof AccordionPrimitive.Trigger>,
+    VariantProps<typeof accordionTriggerVariants> {}
+
+function UiAccordionTrigger({
+  className,
+  children,
+  variant,
+  ...props
+}: UiAccordionTriggerProps) {
+  return (
+    <AccordionPrimitive.Header className="flex">
+      <AccordionPrimitive.Trigger
+        data-slot="accordion-trigger"
+        className={cn(accordionTriggerVariants({ variant }), className)}
+        {...props}
+      >
+        {children}
+        <ChevronDownIcon className={accordionIconVariants({ variant })} />
+      </AccordionPrimitive.Trigger>
+    </AccordionPrimitive.Header>
+  );
+}
+
+interface UiAccordionContentProps
+  extends React.ComponentProps<typeof AccordionPrimitive.Content>,
+    VariantProps<typeof accordionContentVariants> {}
+
+function UiAccordionContent({
+  className,
+  children,
+  variant,
+  ...props
+}: UiAccordionContentProps) {
+  return (
+    <AccordionPrimitive.Content
+      data-slot="accordion-content"
+      className={accordionContentVariants({ variant })}
       {...props}
     >
-      {children}
-      {customIcon || (
-        <div className={accordionTriggerIconWrapperStyles({ variant })}>
-          <ChevronRight
-            strokeWidth={2}
-            className={accordionTriggerIconStyles({
-              className: iconStyles,
-              variant: variant
-            })}
-          />
-        </div>
-      )}
-    </AccordionPrimitive.Trigger>
-  </AccordionPrimitive.Header>
-))
-UiAccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
+      <div className={cn(accordionContentInnerVariants({ variant }), className)}>
+        {children}
+      </div>
+    </AccordionPrimitive.Content>
+  );
+}
 
-const UiAccordionContent = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content> &
-    VariantProps<typeof accordionTriggerStyles>
->(({ variant, className, children, ...props }, ref) => (
-  <AccordionPrimitive.Content
-    ref={ref}
-    className={cn(accordionContentStyles({ variant }), className)}
-    {...props}
-  >
-    <div className={"m-3"}>{children}</div>
-  </AccordionPrimitive.Content>
-))
-UiAccordionContent.displayName = AccordionPrimitive.Content.displayName
-
-export { UiAccordion, UiAccordionItem, UiAccordionTrigger, UiAccordionContent }
+export { UiAccordion, UiAccordionItem, UiAccordionTrigger, UiAccordionContent };

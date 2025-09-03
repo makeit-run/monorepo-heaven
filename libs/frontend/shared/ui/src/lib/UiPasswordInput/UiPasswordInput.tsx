@@ -1,26 +1,25 @@
-"use client"
+'use client';
 
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import { Eye, EyeOff } from "lucide-react"
-import * as React from "react"
-import { forwardRef, InputHTMLAttributes, useState } from "react"
+import { cn } from '@shared/utils/cn';
+import { VariantProps } from 'class-variance-authority';
+import { Eye, EyeOff } from 'lucide-react';
+import { forwardRef, InputHTMLAttributes, useState } from 'react';
 
-import { UiLabel } from "../UiLabel"
-import { passwordInputIconStyles, passwordInputStyles } from "./config"
+import { UiLabel } from '../UiLabel';
+import { passwordInputIconStyles, passwordInputVariants } from './config';
 
 interface InputProps
   extends Omit<
       InputHTMLAttributes<HTMLInputElement>,
-      "size" | "color" | "type"
+      'size' | 'color' | 'type'
     >,
-    VariantProps<typeof passwordInputStyles> {
-  label?: string
-  error?: string
-  fullWidth?: boolean
-  visiblePassword?: boolean
-  wrapperClassName?: string
-  iconStyles?: VariantProps<typeof passwordInputIconStyles>
+    VariantProps<typeof passwordInputVariants> {
+  label?: string;
+  error?: string;
+  fullWidth?: boolean;
+  visiblePassword?: boolean;
+  wrapperClassName?: string;
+  iconStyles?: VariantProps<typeof passwordInputIconStyles>;
 }
 
 export const UiPasswordInput = forwardRef<HTMLInputElement, InputProps>(
@@ -40,14 +39,14 @@ export const UiPasswordInput = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const [isVisible, setIsVisible] = useState<boolean>(false)
-    const onClickHandler = () => setIsVisible(!isVisible)
+    const [isVisible, setIsVisible] = useState<boolean>(false);
+    const onClickHandler = () => setIsVisible(!isVisible);
 
     return (
       <div
         className={cn(
-          "font-roboto inline-block text-left",
-          fullWidth ? "w-full" : "w-auto",
+          'font-roboto inline-block text-left',
+          fullWidth ? 'w-full' : 'w-auto',
           wrapperClassName
         )}
       >
@@ -57,15 +56,15 @@ export const UiPasswordInput = forwardRef<HTMLInputElement, InputProps>(
           </UiLabel>
         )}
         {label && <UiLabel htmlFor={id}>{label}</UiLabel>}
-        <div className={"relative"}>
+        <div className={'relative'}>
           <input
-            type={isVisible ? "text" : "password"}
+            type={isVisible ? 'text' : 'password'}
             id={id}
             autoCapitalize="none"
             autoComplete="password"
             className={cn(
-              passwordInputStyles({ size, color }),
-              error ? "border-red-500" : "",
+              passwordInputVariants({ size, color }),
+              error ? 'border-red-500' : '',
               className
             )}
             ref={ref}
@@ -77,7 +76,7 @@ export const UiPasswordInput = forwardRef<HTMLInputElement, InputProps>(
                 onClick={onClickHandler}
                 className={passwordInputIconStyles({
                   ...iconStyles,
-                  variant: "active"
+                  variant: 'active',
                 })}
               />
             ) : (
@@ -89,8 +88,8 @@ export const UiPasswordInput = forwardRef<HTMLInputElement, InputProps>(
         </div>
         {error && <p className="px-1 text-xs text-red-600">{error}</p>}
       </div>
-    )
+    );
   }
-)
+);
 
-UiPasswordInput.displayName = "Input"
+UiPasswordInput.displayName = 'Input';

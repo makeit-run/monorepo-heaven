@@ -1,108 +1,172 @@
-"use client"
+'use client';
 
-import { VariantProps } from "class-variance-authority"
-import { X } from "lucide-react"
-import * as React from "react"
+import * as React from 'react';
+import { X } from 'lucide-react';
+import { type VariantProps } from 'class-variance-authority';
 
-import { UiBadge } from "../UiBadge"
-import { UiCommand, UiCommandGroup, UiCommandItem } from "../UiCommand"
-import { multiSelectInputStyles } from "./config"
+import { cn } from '@shared/utils/cn';
+import { UiBadge } from '../UiBadge';
+import { UiCommand, UiCommandGroup, UiCommandItem } from '../UiCommand';
+import {
+  multiSelectVariants,
+  multiSelectTriggerVariants,
+  multiSelectInputVariants,
+  multiSelectTagsVariants,
+  multiSelectRemoveButtonVariants,
+  multiSelectDropdownVariants,
+  multiSelectContentVariants,
+} from './config';
 
-type ItemType = Record<"value" | "label", string>
+type ItemType = Record<'value' | 'label', string>;
 
-interface UiMultiSelectProps {
-  data: ItemType[] | null | undefined
-  inputStyle?: VariantProps<typeof multiSelectInputStyles>
+export interface UiMultiSelectProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof multiSelectVariants>,
+    VariantProps<typeof multiSelectTriggerVariants> {
+  data: ItemType[] | null | undefined;
+  selected?: ItemType[];
+  onSelectionChange?: (selected: ItemType[]) => void;
+  placeholder?: string;
+  disabled?: boolean;
 }
 
-export function UiMultiSelect({ data, inputStyle }: UiMultiSelectProps) {
-  const inputRef = React.useRef<HTMLInputElement>(null)
-  const [open, setOpen] = React.useState(false)
-  const [selected, setSelected] = React.useState<ItemType[]>([])
+function UiMultiSelect({
+  className,
+  variant,
+  size,
+  data,
+  selected: controlledSelected,
+  onSelectionChange,
+  placeholder = 'Select items...',
+  disabled = false,
+  defaultValue,
+  ...props
+}: UiMultiSelectProps) {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [open, setOpen] = React.useState(false);
+  const [internalSelected, setInternalSelected] = React.useState<ItemType[]>(
+    []
+  );
 
-  const handleUnselect = React.useCallback((item: ItemType) => {
-    setSelected((prev) => prev.filter((s) => s.value !== item.value))
-  }, [])
+  const selected = controlledSelected ?? internalSelected;
+  const setSelected = onSelectionChange ?? setInternalSelected;
+
+  const handleUnselect = React.useCallback(
+    (item: ItemType) => {
+      if (disabled) return;
+      const newSelected = selected.filter((s) => s.value !== item.value);
+      setSelected(newSelected);
+    },
+    [disabled, selected, setSelected]
+  );
+
+  const handleSelect = React.useCallback(
+    (item: ItemType) => {
+      if (disabled) return;
+      const newSelected = [...selected, item];
+      setSelected(newSelected);
+      setOpen(false);
+    },
+    [disabled, selected, setSelected]
+  );
 
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
-      const input = inputRef.current
+      if (disabled) return;
+      const input = inputRef.current;
       if (input) {
-        if (e.key === "Delete" || e.key === "Backspace") {
-          if (input.value === "") {
-            setSelected((prev) => {
-              const newSelected = [...prev]
-              newSelected.pop()
-              return newSelected
-            })
+        if (e.key === 'Delete' || e.key === 'Backspace') {
+          if (input.value === '' && selected.length > 0) {
+            const newSelected = [...selected];
+            newSelected.pop();
+            setSelected(newSelected);
           }
         }
-        // This is not a default behaviour of the <input /> field
-        if (e.key === "Escape") {
-          input.blur()
+        if (e.key === 'Escape') {
+          input.blur();
+          setOpen(false);
         }
       }
     },
-    []
-  )
+    [disabled, selected, setSelected]
+  );
 
-  const selectables = data?.filter((framework) => !selected.includes(framework))
+  const selectables = data?.filter(
+    (item) => !selected.some((s) => s.value === item.value)
+  );
 
   return (
     <UiCommand
+      defaultValue={defaultValue?.toString()}
+      data-slot="multi-select"
       onKeyDown={handleKeyDown}
-      className="!w-fit !min-w-[200px] overflow-visible bg-transparent"
+      className={cn(multiSelectVariants({ variant }), className)}
+      {...props}
     >
-      <div className="group relative flex min-h-[48px] w-full items-center rounded-md border px-3 py-2 text-sm">
+      <div
+        className={cn(
+          multiSelectTriggerVariants({ variant, size }),
+          disabled && 'opacity-50 cursor-not-allowed'
+        )}
+      >
         <input
-          readOnly
           ref={inputRef}
+          readOnly
+          disabled={disabled}
+          placeholder={selected.length === 0 ? placeholder : ''}
           onBlur={() => setOpen(false)}
-          onFocus={() => setOpen(true)}
-          className={multiSelectInputStyles(inputStyle)}
+          onFocus={() => !disabled && setOpen(true)}
+          className={cn(multiSelectInputVariants({ variant }))}
         />
-        <div className="z-[1] flex flex-wrap gap-1">
+        <div className={cn(multiSelectTagsVariants({ variant }))}>
           {selected.map((item) => (
-            <UiBadge className={"z-[1]"} key={item.value} variant="outline">
+            <UiBadge key={item.value} variant="secondary" className="z-[1]">
               {item.label}
               <button
-                className="ring-offset-background focus:ring-ring ml-1 rounded-full outline-none focus:ring-2 focus:ring-offset-2"
+                type="button"
+                disabled={disabled}
+                className={cn(multiSelectRemoveButtonVariants({ variant }))}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") handleUnselect(item)
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleUnselect(item);
+                  }
                 }}
                 onMouseDown={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
+                  e.preventDefault();
+                  e.stopPropagation();
                 }}
                 onClick={() => handleUnselect(item)}
               >
-                <X className="text-muted-foreground hover:text-foreground size-3" />
+                <X className="size-3 text-muted-foreground hover:text-foreground" />
               </button>
             </UiBadge>
           ))}
         </div>
       </div>
-      <div className="relative mt-2 w-full">
-        {open && selectables && selectables?.length > 0 ? (
-          <div className="animate-in absolute top-0 z-[1] w-full rounded-md border bg-white shadow-md outline-none">
-            <UiCommandGroup className="h-full overflow-auto">
-              {selectables?.map((item) => (
+      <div className={cn(multiSelectContentVariants({ variant }))}>
+        {open && selectables && selectables.length > 0 && (
+          <div className={cn(multiSelectDropdownVariants({ variant }))}>
+            <UiCommandGroup className="h-full max-h-64 overflow-auto">
+              {selectables.map((item) => (
                 <UiCommandItem
                   key={item.value}
                   onMouseDown={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
+                    e.preventDefault();
+                    e.stopPropagation();
                   }}
-                  onSelect={() => setSelected((prev) => [...prev, item])}
-                  className={"cursor-pointer"}
+                  onSelect={() => handleSelect(item)}
+                  className="cursor-pointer"
                 >
                   {item.label}
                 </UiCommandItem>
               ))}
             </UiCommandGroup>
           </div>
-        ) : null}
+        )}
       </div>
     </UiCommand>
-  )
+  );
 }
+
+export { UiMultiSelect };

@@ -1,95 +1,124 @@
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import * as React from "react"
-
-import { cardContentStyles, cardStyles, cardTitleStyles } from "./config"
+import * as React from 'react';
+import { cn } from '@shared/utils/cn';
+import { type VariantProps } from 'class-variance-authority';
+import {
+  cardVariants,
+  cardHeaderVariants,
+  cardTitleVariants,
+  cardDescriptionVariants,
+  cardActionVariants,
+  cardContentVariants,
+  cardFooterVariants,
+} from './config';
 
 export interface UiCardProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardStyles> {}
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof cardVariants> {}
 
-const UiCard = React.forwardRef<HTMLDivElement, UiCardProps>(
-  ({ className, variant, border, ...props }, ref) => (
+function UiCard({ className, variant, ...props }: UiCardProps) {
+  return (
     <div
-      ref={ref}
-      className={cn(cardStyles({ variant, border }), className)}
+      data-slot="card"
+      className={cn(cardVariants({ variant }), className)}
       {...props}
     />
-  )
-)
-UiCard.displayName = "Card"
+  );
+}
 
-const UiCardHeader = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("flex flex-col px-5 pb-4", className)}
-    {...props}
-  />
-))
-UiCardHeader.displayName = "CardHeader"
+export interface UiCardHeaderProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof cardHeaderVariants> {}
+
+function UiCardHeader({ className, variant, ...props }: UiCardHeaderProps) {
+  return (
+    <div
+      data-slot="card-header"
+      className={cn(cardHeaderVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
 
 export interface UiCardTitleProps
-  extends React.HTMLAttributes<HTMLParagraphElement>,
-    VariantProps<typeof cardTitleStyles> {}
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof cardTitleVariants> {}
 
-const UiCardTitle = React.forwardRef<HTMLParagraphElement, UiCardTitleProps>(
-  ({ className, variant, ...props }, ref) => (
-    <h3
-      ref={ref}
-      className={cn(
-        cardTitleStyles({ variant }),
-        "font-semibold leading-normal tracking-tight",
-        className
-      )}
+function UiCardTitle({ className, variant, ...props }: UiCardTitleProps) {
+  return (
+    <div
+      data-slot="card-title"
+      className={cn(cardTitleVariants({ variant }), className)}
       {...props}
     />
-  )
-)
-UiCardTitle.displayName = "CardTitle"
+  );
+}
 
-const UiCardDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-  <p ref={ref} className={cn("text-md text-text-650", className)} {...props} />
-))
-UiCardDescription.displayName = "CardDescription"
+export interface UiCardDescriptionProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof cardDescriptionVariants> {}
+
+function UiCardDescription({
+  className,
+  variant,
+  ...props
+}: UiCardDescriptionProps) {
+  return (
+    <div
+      data-slot="card-description"
+      className={cn(cardDescriptionVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+export interface UiCardActionProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof cardActionVariants> {}
+
+function UiCardAction({ className, variant, ...props }: UiCardActionProps) {
+  return (
+    <div
+      data-slot="card-action"
+      className={cn(cardActionVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
 
 export interface UiCardContentProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardContentStyles> {}
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof cardContentVariants> {}
 
-const UiCardContent = React.forwardRef<HTMLDivElement, UiCardContentProps>(
-  ({ className, padding, ...props }, ref) => (
+function UiCardContent({ className, variant, ...props }: UiCardContentProps) {
+  return (
     <div
-      ref={ref}
-      className={cn(cardContentStyles({ padding }), className)}
+      data-slot="card-content"
+      className={cn(cardContentVariants({ variant }), className)}
       {...props}
     />
-  )
-)
-UiCardContent.displayName = "CardContent"
+  );
+}
 
-const UiCardFooter = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("flex items-center p-6 pt-0", className)}
-    {...props}
-  />
-))
-UiCardFooter.displayName = "CardFooter"
+export interface UiCardFooterProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof cardFooterVariants> {}
+
+function UiCardFooter({ className, variant, ...props }: UiCardFooterProps) {
+  return (
+    <div
+      data-slot="card-footer"
+      className={cn(cardFooterVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
 
 export {
   UiCard,
   UiCardHeader,
   UiCardFooter,
   UiCardTitle,
+  UiCardAction,
   UiCardDescription,
-  UiCardContent
-}
+  UiCardContent,
+};

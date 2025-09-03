@@ -1,115 +1,147 @@
-import { Slot } from "@radix-ui/react-slot"
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import { ChevronRight, MoreHorizontal } from "lucide-react"
-import Link from "next/link"
-import * as React from "react"
+import * as React from 'react';
+import { Slot } from '@radix-ui/react-slot';
+import { ChevronRight, MoreHorizontal } from 'lucide-react';
+import { cn } from '@shared/utils/cn';
+import { type VariantProps } from 'class-variance-authority';
+import {
+  breadcrumbListVariants,
+  breadcrumbItemVariants,
+  breadcrumbLinkVariants,
+  breadcrumbPageVariants,
+  breadcrumbSeparatorVariants,
+  breadcrumbEllipsisVariants,
+  breadcrumbEllipsisIconVariants,
+} from './config';
 
-import { breadcrumbStyles } from "./config"
+function UiBreadcrumb({ ...props }: React.ComponentProps<'nav'>) {
+  return <nav aria-label="breadcrumb" data-slot="breadcrumb" {...props} />;
+}
 
-const UiBreadcrumb = React.forwardRef<
-  HTMLElement,
-  React.ComponentPropsWithoutRef<"nav"> & {
-    separator?: React.ReactNode
-  }
->(({ ...props }, ref) => <nav ref={ref} aria-label="breadcrumb" {...props} />)
-UiBreadcrumb.displayName = "UiBreadcrumb"
+interface UiBreadcrumbListProps
+  extends React.ComponentProps<'ol'>,
+    VariantProps<typeof breadcrumbListVariants> {}
 
-const UiBreadcrumbList = React.forwardRef<
-  HTMLOListElement,
-  React.ComponentPropsWithoutRef<"ol">
->(({ className, ...props }, ref) => (
-  <ol
-    ref={ref}
-    className={cn(
-      "text-muted-foreground flex flex-wrap items-center gap-1.5 break-words text-sm sm:gap-2.5",
-      className
-    )}
-    {...props}
-  />
-))
-UiBreadcrumbList.displayName = "UiBreadcrumbList"
-
-interface UiBreadcrumbItemProps
-  extends VariantProps<typeof breadcrumbStyles>,
-    Omit<React.ComponentPropsWithoutRef<"li">, "variant" | "color"> {}
-const UiBreadcrumbItem = React.forwardRef<HTMLLIElement, UiBreadcrumbItemProps>(
-  ({ className, variant, color, ...props }, ref) => (
-    <li
-      ref={ref}
-      className={cn(breadcrumbStyles({ variant, color }), className)}
+function UiBreadcrumbList({
+  className,
+  variant,
+  ...props
+}: UiBreadcrumbListProps) {
+  return (
+    <ol
+      data-slot="breadcrumb-list"
+      className={cn(breadcrumbListVariants({ variant }), className)}
       {...props}
     />
-  )
-)
-UiBreadcrumbItem.displayName = "UiBreadcrumbItem"
-
-export interface UiBreadcrumbLinkProps
-  extends React.ComponentPropsWithoutRef<typeof Link> {
-  asChild?: boolean
+  );
 }
-const UiBreadcrumbLink = React.forwardRef<
-  HTMLAnchorElement,
-  UiBreadcrumbLinkProps
->(({ asChild, className, ...props }, ref) => {
-  const Comp = asChild ? Slot : Link
+
+interface UiBreadcrumbItemProps
+  extends React.ComponentProps<'li'>,
+    VariantProps<typeof breadcrumbItemVariants> {}
+
+function UiBreadcrumbItem({
+  className,
+  variant,
+  ...props
+}: UiBreadcrumbItemProps) {
+  return (
+    <li
+      data-slot="breadcrumb-item"
+      className={cn(breadcrumbItemVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+interface UiBreadcrumbLinkProps
+  extends React.ComponentProps<'a'>,
+    VariantProps<typeof breadcrumbLinkVariants> {
+  asChild?: boolean;
+}
+
+function UiBreadcrumbLink({
+  asChild,
+  className,
+  variant,
+  ...props
+}: UiBreadcrumbLinkProps) {
+  const Comp = asChild ? Slot : 'a';
 
   return (
     <Comp
-      ref={ref}
-      className={cn("hover:text-foreground transition-colors", className)}
+      data-slot="breadcrumb-link"
+      className={cn(breadcrumbLinkVariants({ variant }), className)}
       {...props}
     />
-  )
-})
-UiBreadcrumbLink.displayName = "UiBreadcrumbLink"
+  );
+}
 
-const UiBreadcrumbPage = React.forwardRef<
-  HTMLSpanElement,
-  React.ComponentPropsWithoutRef<"span">
->(({ className, ...props }, ref) => (
-  <span
-    ref={ref}
-    role="link"
-    aria-disabled="true"
-    aria-current="page"
-    className={cn("text-foreground font-normal", className)}
-    {...props}
-  />
-))
-UiBreadcrumbPage.displayName = "UiBreadcrumbPage"
+interface UiBreadcrumbPageProps
+  extends React.ComponentProps<'span'>,
+    VariantProps<typeof breadcrumbPageVariants> {}
 
-const UiBreadcrumbSeparator = ({
+function UiBreadcrumbPage({
+  className,
+  variant,
+  ...props
+}: UiBreadcrumbPageProps) {
+  return (
+    <span
+      data-slot="breadcrumb-page"
+      role="link"
+      aria-disabled="true"
+      aria-current="page"
+      className={cn(breadcrumbPageVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+interface UiBreadcrumbSeparatorProps
+  extends React.ComponentProps<'li'>,
+    VariantProps<typeof breadcrumbSeparatorVariants> {}
+
+function UiBreadcrumbSeparator({
   children,
   className,
+  variant,
   ...props
-}: React.ComponentProps<"li">) => (
-  <li
-    role="presentation"
-    aria-hidden="true"
-    className={cn("[&>svg]:size-3.5", className)}
-    {...props}
-  >
-    {children ?? <ChevronRight />}
-  </li>
-)
-UiBreadcrumbSeparator.displayName = "UiBreadcrumbSeparator"
+}: UiBreadcrumbSeparatorProps) {
+  return (
+    <li
+      data-slot="breadcrumb-separator"
+      role="presentation"
+      aria-hidden="true"
+      className={cn(breadcrumbSeparatorVariants({ variant }), className)}
+      {...props}
+    >
+      {children ?? <ChevronRight />}
+    </li>
+  );
+}
 
-const UiBreadcrumbEllipsis = ({
+interface UiBreadcrumbEllipsisProps
+  extends React.ComponentProps<'span'>,
+    VariantProps<typeof breadcrumbEllipsisVariants> {}
+
+function UiBreadcrumbEllipsis({
   className,
+  variant,
   ...props
-}: React.ComponentProps<"span">) => (
-  <span
-    role="presentation"
-    aria-hidden="true"
-    className={cn("flex size-9 items-center justify-center", className)}
-    {...props}
-  >
-    <MoreHorizontal className="size-4" />
-    <span className="sr-only">More</span>
-  </span>
-)
-UiBreadcrumbEllipsis.displayName = "UiBreadcrumbElipssis"
+}: UiBreadcrumbEllipsisProps) {
+  return (
+    <span
+      data-slot="breadcrumb-ellipsis"
+      role="presentation"
+      aria-hidden="true"
+      className={cn(breadcrumbEllipsisVariants({ variant }), className)}
+      {...props}
+    >
+      <MoreHorizontal className={breadcrumbEllipsisIconVariants({ variant })} />
+      <span className="sr-only">More</span>
+    </span>
+  );
+}
 
 export {
   UiBreadcrumb,
@@ -118,5 +150,5 @@ export {
   UiBreadcrumbLink,
   UiBreadcrumbPage,
   UiBreadcrumbSeparator,
-  UiBreadcrumbEllipsis
-}
+  UiBreadcrumbEllipsis,
+};

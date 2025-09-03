@@ -1,18 +1,16 @@
-import { cn } from "@shared/utils/cn"
-import type { VariantProps } from "class-variance-authority"
-import React from "react"
+import { cn } from '@shared/utils/cn';
+import type { VariantProps } from 'class-variance-authority';
 
-import { UiText } from "../UiText"
-import { UiToggleGroup, UiToggleGroupItem } from "../UiToggleGroup"
-import { daysSelectorItemStyles, daysSelectorStyles } from "./config"
-import { DayKeys, days } from "./days"
+import { UiToggleGroup, UiToggleGroupItem } from '../UiToggleGroup';
+import { daysSelectorItemStyles, daysSelectorStyles } from './config';
+import { DayKeys, days } from './days';
 
 interface UiDaysSelectorProps extends VariantProps<typeof daysSelectorStyles> {
-  selectedDays: DayKeys[]
-  onDaysSelected: (days: DayKeys[]) => void
-  className?: string
-  itemVariant?: VariantProps<typeof daysSelectorItemStyles>["variant"]
-  itemSize?: VariantProps<typeof daysSelectorItemStyles>["size"]
+  selectedDays: DayKeys[];
+  onDaysSelected: (days: DayKeys[]) => void;
+  className?: string;
+  itemVariant?: VariantProps<typeof daysSelectorItemStyles>['variant'];
+  itemSize?: VariantProps<typeof daysSelectorItemStyles>['size'];
 }
 
 export function UiDaysSelector({
@@ -22,12 +20,12 @@ export function UiDaysSelector({
   variant,
   size,
   layout,
-  itemVariant = "default",
-  itemSize = "default"
+  itemVariant = 'default',
+  itemSize = 'default',
 }: UiDaysSelectorProps) {
   const onDaysSelectedHandler = (value: string[]) => {
-    onDaysSelected(value as DayKeys[])
-  }
+    onDaysSelected(value as DayKeys[]);
+  };
 
   return (
     <UiToggleGroup
@@ -49,5 +47,5 @@ export function UiDaysSelector({
         </UiToggleGroupItem>
       ))}
     </UiToggleGroup>
-  )
+  );
 }

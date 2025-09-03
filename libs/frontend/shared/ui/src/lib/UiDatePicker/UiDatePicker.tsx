@@ -1,93 +1,85 @@
-"use client"
+'use client';
 
-import { cn } from "@shared/utils/cn"
-import type { VariantProps } from "class-variance-authority"
-import dayjs from "dayjs"
-import { Calendar as CalendarIcon } from "lucide-react"
-import * as React from "react"
-import { DayPickerSingleProps } from "react-day-picker"
+import * as React from 'react';
+import { ChevronDownIcon } from 'lucide-react';
+import { type VariantProps } from 'class-variance-authority';
 
-import { UiCalendar } from "../UiCalendar"
-import { UiPopover, UiPopoverContent, UiPopoverTrigger } from "../UiPopover"
-import { UiText } from "../UiText/UiText"
-import { datePickerTriggerStyles } from "./config"
+import { UiButton } from '../UiButton/UiButton';
+import { UiCalendar } from '../UiCalendar/UiCalendar';
+import { UiLabel } from '../UiLabel/UiLabel';
+import {
+  UiPopover,
+  UiPopoverContent,
+  UiPopoverTrigger,
+} from '../UiPopover/UiPopover';
+import { cn } from '@shared/utils/cn';
+import {
+  datePickerContainerVariants,
+  datePickerLabelVariants,
+  datePickerTriggerVariants,
+  datePickerPopoverContentVariants,
+} from './config';
 
-interface UiDataRangePickerProps
-  extends Omit<DayPickerSingleProps, "mode">,
-    VariantProps<typeof datePickerTriggerStyles> {
-  triggerClassName?: string
-  containerClassName?: string
-  label?: string
-  calendarWrapperClassName?: string
-  resetStyles?: boolean
-  icon?: React.ReactNode
+export interface UiDatePickerProps extends VariantProps<typeof datePickerContainerVariants> {
+  label?: string;
+  placeholder?: string;
+  value?: Date;
+  onChange?: (date: Date | undefined) => void;
+  className?: string;
+  disabled?: boolean;
 }
 
-const UiDatePicker = React.forwardRef<HTMLDivElement, UiDataRangePickerProps>(
-  (
-    {
-      variant,
-      size,
-      selected,
-      triggerClassName,
-      calendarWrapperClassName,
-      label,
-      containerClassName,
-      resetStyles,
-      icon,
-      ...rest
-    },
-    ref
-  ) => {
-    return (
-      <UiPopover>
-        <div
-          ref={ref}
-          className={cn({ "min-w-52": !resetStyles }, containerClassName)}
-        >
-          {label && (
-            <label
-              className={
-                "inline-block pb-2.5 text-[12px] font-medium text-gray-500"
-              }
-            >
-              {label}
-            </label>
-          )}
-          <UiPopoverTrigger
-            disabled={!!rest?.disabled}
-            className={cn(
-              !resetStyles && datePickerTriggerStyles({ variant, size }),
-              { "text-gray-400": !selected },
-              triggerClassName
-            )}
-          >
-            {icon === undefined ? (
-              <CalendarIcon className="text-primary mr-2 size-5" />
-            ) : (
-              icon
-            )}
-            {selected ? (
-              dayjs(selected).format("MMMM D, YYYY")
-            ) : (
-              <UiText variant={"body1"}>Pick a date</UiText>
-            )}
-          </UiPopoverTrigger>
-          <UiPopoverContent
-            className={cn("w-auto p-0", calendarWrapperClassName)}
-          >
-            <UiCalendar
-              mode={"single"}
-              selected={selected}
-              initialFocus
-              {...rest}
-            />
-          </UiPopoverContent>
-        </div>
-      </UiPopover>
-    )
-  }
-)
-UiDatePicker.displayName = UiDatePicker.name
+export function UiDatePicker({
+  label = 'Date of birth',
+  placeholder = 'Select date',
+  value,
+  onChange,
+  className,
+  disabled = false,
+  variant,
+}: UiDatePickerProps) {
+  const [open, setOpen] = React.useState(false);
+  const [date, setDate] = React.useState<Date | undefined>(value);
 
-export { UiDatePicker }
+  React.useEffect(() => {
+    setDate(value);
+  }, [value]);
+
+  const handleDateSelect = (selectedDate: Date | undefined) => {
+    setDate(selectedDate);
+    onChange?.(selectedDate);
+    setOpen(false);
+  };
+
+  return (
+    <div className={cn(datePickerContainerVariants({ variant }), className)}>
+      <UiLabel htmlFor="date" className={datePickerLabelVariants({ variant })}>
+        {label}
+      </UiLabel>
+      <UiPopover open={open} onOpenChange={setOpen}>
+        <UiPopoverTrigger asChild>
+          <UiButton
+            variant="outline"
+            id="date"
+            className={datePickerTriggerVariants({ variant })}
+            disabled={disabled}
+          >
+            {date ? date.toLocaleDateString() : placeholder}
+            <ChevronDownIcon />
+          </UiButton>
+        </UiPopoverTrigger>
+        <UiPopoverContent
+          className={datePickerPopoverContentVariants({ variant })}
+          align="start"
+        >
+          <UiCalendar
+            mode="single"
+            selected={date}
+            captionLayout="dropdown"
+            onSelect={handleDateSelect}
+          />
+        </UiPopoverContent>
+      </UiPopover>
+    </div>
+  );
+}

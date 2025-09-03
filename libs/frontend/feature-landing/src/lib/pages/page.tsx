@@ -3,7 +3,7 @@ import { TodoList } from '../components/TodoList';
 
 export const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-primary-light/10">
+    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-primary-light/10 font-sans leading-relaxed antialiased box-border">
       {/* Hero Section */}
       <Hero />
 
@@ -30,9 +30,9 @@ export const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 text-center border-t border-border/50">
+      <footer className="py-12 text-center border-t border-border/50 mt-14 text-sm opacity-60">
         <p className="text-muted-foreground">
-          Made with ❤️ using React, TypeScript & Tailwind CSS
+          Made with <span className="text-red-300 inline-block">❤️</span> using React, TypeScript & Tailwind CSS
         </p>
       </footer>
     </div>

@@ -1,101 +1,89 @@
-import { cva } from "class-variance-authority"
+import { cva } from 'class-variance-authority';
 
-export const dialogOverlayStyles = cva(
-  "fixed inset-0 z-50 h-full backdrop-blur-sm",
+export const dialogOverlayVariants = cva(
+  'fixed inset-0 z-50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
   {
     variants: {
       variant: {
-        default: "bg-white/80",
-        plain: "bg-white/80"
+        default: 'bg-black/50',
       },
-      scrollType: {
-        behavior: "grid place-items-center overflow-y-auto",
-        container: ""
-      }
     },
     defaultVariants: {
-      variant: "default"
-    }
-  }
-)
-
-export const dialogContentStyles = cva(
-  "data-[state=closed]:zoom-out-95 z-50 data-[state=open]:zoom-in-95",
-  {
-    variants: {
-      variant: {
-        default: "grid gap-4 border bg-white shadow-2xl rounded-md",
-        plain: "flex gap-4 border bg-white shadow-2xl rounded-md"
-      },
-      scrollType: {
-        behavior: "lg:p-6 lg:my-5 lg:mx-6",
-        container:
-          "fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]"
-      }
+      variant: 'default',
     },
-    defaultVariants: { variant: "default", scrollType: "container" }
   }
-)
+);
 
-export const dialogCloseStyles = cva(
-  "absolute right-3 top-2 opacity-60 ring-offset-white transition-opacity hover:opacity-100 disabled:pointer-events-none",
+export const dialogContentVariants = cva(
+  'fixed top-[50%] left-[50%] z-50 grid translate-x-[-50%] translate-y-[-50%] gap-4 border shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
   {
     variants: {
       variant: {
         default:
-          "data-[state=open]:bg-secondary data-[state=open]:text-gray-300",
-        plain: "data-[state=open]:bg-secondary data-[state=open]:text-gray-300"
-      }
+          'bg-background w-full max-w-[calc(100%-2rem)] rounded-lg p-6 sm:max-w-lg',
+      },
     },
     defaultVariants: {
-      variant: "default"
-    }
+      variant: 'default',
+    },
   }
-)
+);
 
-export const dialogHeaderStyles = cva(
-  "flex items-center text-center sm:text-left",
-  {
-    variants: {},
-    defaultVariants: {}
-  }
-)
-
-export const dialogFooterStyles = cva(
-  "flex flex-col-reverse sm:flex-row sm:justify-end",
+export const dialogCloseVariants = cva(
+  'absolute top-4 right-4 rounded-xs transition-opacity hover:opacity-100 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*="size-"])]:size-4',
   {
     variants: {
       variant: {
-        default: "sm:space-x-2",
-        plain: "sm:space-x-2"
-      }
+        default:
+          'ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground opacity-70 focus:ring-2 focus:ring-offset-2',
+      },
     },
     defaultVariants: {
-      variant: "default"
-    }
+      variant: 'default',
+    },
   }
-)
+);
 
-export const dialogTitleStyles = cva("leading-none tracking-tight", {
+export const dialogHeaderVariants = cva('flex flex-col text-center sm:text-left', {
   variants: {
     variant: {
-      default: "text-lg font-semibold",
-      plain: "text-lg font-semibold"
-    }
+      default: 'gap-2',
+    },
   },
   defaultVariants: {
-    variant: "default"
-  }
-})
+    variant: 'default',
+  },
+});
 
-export const dialogDescriptionStyles = cva("", {
+export const dialogFooterVariants = cva('flex', {
   variants: {
     variant: {
-      default: "text-sm text-gray-500",
-      plain: "text-sm text-gray-500"
-    }
+      default: 'flex-col-reverse gap-2 sm:flex-row sm:justify-end',
+    },
   },
   defaultVariants: {
-    variant: "default"
-  }
-})
+    variant: 'default',
+  },
+});
+
+export const dialogTitleVariants = cva('leading-none', {
+  variants: {
+    variant: {
+      default: 'text-lg font-semibold',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+export const dialogDescriptionVariants = cva('', {
+  variants: {
+    variant: {
+      default: 'text-muted-foreground text-sm',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});

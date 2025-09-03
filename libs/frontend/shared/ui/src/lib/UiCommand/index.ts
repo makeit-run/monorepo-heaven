@@ -8,6 +8,5 @@ export {
   UiCommandShortcut,
   UiCommand,
   UiCommandDialog,
-  UiCommandLoading,
-  type UiCommandInputProps
-} from "./UiCommand"
+  type UiCommandInputProps,
+} from './UiCommand';

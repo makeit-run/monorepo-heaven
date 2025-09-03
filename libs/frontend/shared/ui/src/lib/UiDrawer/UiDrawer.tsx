@@ -1,107 +1,146 @@
-"use client"
+'use client';
 
-import { cn } from "@shared/utils/cn"
-import * as React from "react"
-import { Drawer as DrawerPrimitive } from "vaul"
+import * as React from 'react';
+import { Drawer as DrawerPrimitive } from 'vaul';
+import { type VariantProps } from 'class-variance-authority';
 
-const UiDrawer = ({
-  shouldScaleBackground = true,
+import { cn } from '@shared/utils/cn';
+import {
+  drawerOverlayVariants,
+  drawerContentVariants,
+  drawerHandleVariants,
+  drawerHeaderVariants,
+  drawerFooterVariants,
+  drawerTitleVariants,
+  drawerDescriptionVariants,
+} from './config';
+
+function UiDrawer({
   ...props
-}: React.ComponentProps<typeof DrawerPrimitive.Root>) => (
-  <DrawerPrimitive.Root
-    shouldScaleBackground={shouldScaleBackground}
-    {...props}
-  />
-)
-UiDrawer.displayName = "Drawer"
+}: React.ComponentProps<typeof DrawerPrimitive.Root>) {
+  return <DrawerPrimitive.Root data-slot="drawer" {...props} />;
+}
 
-const UiDrawerTrigger = DrawerPrimitive.Trigger
+function UiDrawerTrigger({
+  ...props
+}: React.ComponentProps<typeof DrawerPrimitive.Trigger>) {
+  return <DrawerPrimitive.Trigger data-slot="drawer-trigger" {...props} />;
+}
 
-const UiDrawerPortal = DrawerPrimitive.Portal
+function UiDrawerPortal({
+  ...props
+}: React.ComponentProps<typeof DrawerPrimitive.Portal>) {
+  return <DrawerPrimitive.Portal data-slot="drawer-portal" {...props} />;
+}
 
-const UiDrawerClose = DrawerPrimitive.Close
+function UiDrawerClose({
+  ...props
+}: React.ComponentProps<typeof DrawerPrimitive.Close>) {
+  return <DrawerPrimitive.Close data-slot="drawer-close" {...props} />;
+}
 
-const UiDrawerOverlay = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
->(({ className, ...props }, ref) => (
-  <DrawerPrimitive.Overlay
-    ref={ref}
-    className={cn("fixed inset-0 z-50 bg-black/80", className)}
-    {...props}
-  />
-))
-UiDrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName
+export interface UiDrawerOverlayProps
+  extends React.ComponentProps<typeof DrawerPrimitive.Overlay>,
+    VariantProps<typeof drawerOverlayVariants> {}
 
-const UiDrawerContent = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <UiDrawerPortal>
-    <UiDrawerOverlay />
-    <DrawerPrimitive.Content
-      ref={ref}
-      className={cn(
-        "rounded-t-2.5 fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col border bg-white",
-        className
-      )}
+function UiDrawerOverlay({
+  className,
+  variant,
+  ...props
+}: UiDrawerOverlayProps) {
+  return (
+    <DrawerPrimitive.Overlay
+      data-slot="drawer-overlay"
+      className={cn(drawerOverlayVariants({ variant }), className)}
       {...props}
-    >
-      <div className="mx-auto mt-4 h-2 w-[100px] rounded-full" />
-      {children}
-    </DrawerPrimitive.Content>
-  </UiDrawerPortal>
-))
-UiDrawerContent.displayName = "DrawerContent"
+    />
+  );
+}
 
-const UiDrawerHeader = ({
+export interface UiDrawerContentProps
+  extends React.ComponentProps<typeof DrawerPrimitive.Content>,
+    VariantProps<typeof drawerContentVariants> {}
+
+function UiDrawerContent({
   className,
+  children,
+  variant,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn("grid gap-1.5 p-4 text-center sm:text-left", className)}
-    {...props}
-  />
-)
-UiDrawerHeader.displayName = "DrawerHeader"
+}: UiDrawerContentProps) {
+  return (
+    <UiDrawerPortal data-slot="drawer-portal">
+      <UiDrawerOverlay />
+      <DrawerPrimitive.Content
+        data-slot="drawer-content"
+        className={cn(drawerContentVariants({ variant }), className)}
+        {...props}
+      >
+        <div className={drawerHandleVariants({ variant })} />
+        {children}
+      </DrawerPrimitive.Content>
+    </UiDrawerPortal>
+  );
+}
 
-const UiDrawerFooter = ({
+export interface UiDrawerHeaderProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof drawerHeaderVariants> {}
+
+function UiDrawerHeader({ className, variant, ...props }: UiDrawerHeaderProps) {
+  return (
+    <div
+      data-slot="drawer-header"
+      className={cn(drawerHeaderVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+export interface UiDrawerFooterProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof drawerFooterVariants> {}
+
+function UiDrawerFooter({ className, variant, ...props }: UiDrawerFooterProps) {
+  return (
+    <div
+      data-slot="drawer-footer"
+      className={cn(drawerFooterVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+export interface UiDrawerTitleProps
+  extends React.ComponentProps<typeof DrawerPrimitive.Title>,
+    VariantProps<typeof drawerTitleVariants> {}
+
+function UiDrawerTitle({ className, variant, ...props }: UiDrawerTitleProps) {
+  return (
+    <DrawerPrimitive.Title
+      data-slot="drawer-title"
+      className={cn(drawerTitleVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+export interface UiDrawerDescriptionProps
+  extends React.ComponentProps<typeof DrawerPrimitive.Description>,
+    VariantProps<typeof drawerDescriptionVariants> {}
+
+function UiDrawerDescription({
   className,
+  variant,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn("mt-auto flex flex-col gap-2 p-4", className)}
-    {...props}
-  />
-)
-UiDrawerFooter.displayName = "DrawerFooter"
-
-const UiDrawerTitle = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Title>
->(({ className, ...props }, ref) => (
-  <DrawerPrimitive.Title
-    ref={ref}
-    className={cn(
-      "text-lg font-semibold leading-none tracking-tight",
-      className
-    )}
-    {...props}
-  />
-))
-UiDrawerTitle.displayName = DrawerPrimitive.Title.displayName
-
-const UiDrawerDescription = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Description>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Description>
->(({ className, ...props }, ref) => (
-  <DrawerPrimitive.Description
-    ref={ref}
-    className={cn("text-sm", className)}
-    {...props}
-  />
-))
-UiDrawerDescription.displayName = DrawerPrimitive.Description.displayName
+}: UiDrawerDescriptionProps) {
+  return (
+    <DrawerPrimitive.Description
+      data-slot="drawer-description"
+      className={cn(drawerDescriptionVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
 
 export {
   UiDrawer,
@@ -113,5 +152,5 @@ export {
   UiDrawerHeader,
   UiDrawerFooter,
   UiDrawerTitle,
-  UiDrawerDescription
-}
+  UiDrawerDescription,
+};

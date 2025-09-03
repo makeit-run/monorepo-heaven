@@ -1,13 +1,12 @@
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import { Loader } from "lucide-react"
-import React from "react"
+import { cn } from '@shared/utils/cn';
+import { VariantProps } from 'class-variance-authority';
+import { Loader } from 'lucide-react';
 
-import { loaderStyles } from "./config"
+import { loaderStyles } from './config';
 
 interface UiLoaderProps extends VariantProps<typeof loaderStyles> {
-  className?: string
+  className?: string;
 }
 export const UiLoader = ({ variant, className }: UiLoaderProps) => {
-  return <Loader className={cn(loaderStyles({ variant }), className)} />
-}
+  return <Loader className={cn(loaderStyles({ variant }), className)} />;
+};

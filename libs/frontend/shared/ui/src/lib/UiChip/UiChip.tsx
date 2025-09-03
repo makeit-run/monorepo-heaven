@@ -1,11 +1,11 @@
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import React, { HTMLAttributes } from "react"
+import { cn } from '@shared/utils/cn';
+import { VariantProps } from 'class-variance-authority';
+import { HTMLAttributes } from 'react';
 
-import { chipStyles } from "./config"
+import { chipStyles } from './config';
 
 export interface UiChipProps
-  extends Omit<HTMLAttributes<HTMLSpanElement>, "color">,
+  extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'>,
     VariantProps<typeof chipStyles> {}
 
 export function UiChip({
@@ -19,5 +19,5 @@ export function UiChip({
     <div className={cn(chipStyles({ size, color }), className)} {...props}>
       {children}
     </div>
-  )
+  );
 }

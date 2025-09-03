@@ -1,6 +1,1 @@
-export {
-  UiAvatarFallback,
-  UiAvatar,
-  UiAvatarImage,
-  UiAvatarGroup
-} from "./UiAvatar"
+export { UiAvatarFallback, UiAvatar, UiAvatarImage } from './UiAvatar';

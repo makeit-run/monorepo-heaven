@@ -1,1 +1,1 @@
-export { UiButton, buttonStyles, type ButtonProps } from './UiButton';
+export { UiButton, buttonVariants, type UiButtonProps } from './UiButton';

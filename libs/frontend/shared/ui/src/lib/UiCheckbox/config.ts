@@ -1,48 +1,38 @@
-import { cva } from "class-variance-authority"
+import { cva } from 'class-variance-authority';
 
-export const checkboxStyles = cva(
-  "peer cursor-pointer disabled:cursor-not-allowed shrink-0 disabled:opacity-50 appearance-none bg-white focus:outline-none focus:ring-offset-0 focus:ring-1 focus:ring-blue-100",
+export const checkboxVariants = cva(
+  'peer shrink-0 rounded-[4px] border transition-shadow outline-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
   {
     variants: {
       variant: {
         default:
-          "rounded-sm border-2 checked:bg-primary checked:border-0 disabled:border-steel-400 disabled:bg-steel-400"
+          'border-input dark:bg-input/30 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground dark:data-[state=checked]:bg-primary data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 size-4 shadow-xs',
       },
-      color: {
-        primary: "border-primary hover:opacity-80",
-        secondary: "border-secondary hover:opacity-80"
-      },
-      size: {
-        small: "size-3",
-        medium: "size-4",
-        large: "size-5",
-        extraLarge: "size-6",
-        huge: "size-7"
-      }
     },
     defaultVariants: {
-      variant: "default",
-      color: "primary",
-      size: "medium"
-    }
+      variant: 'default',
+    },
   }
-)
+);
 
-export const checkboxLabelStyles = cva(
-  "antialiased tracking-normal content-center font-geographeditweb",
-  {
-    variants: {
-      size: {
-        huge: "flexible-text-[21px]",
-        extraLarge: "flexible-text-[18px]",
-        large: "flexible-text-[16px]",
-        medium: "flexible-text-[14px]",
-        small: "flexible-text-[12px]"
-      },
-      color: {
-        primary: "text-primary",
-        secondary: "text-secondary"
-      }
-    }
-  }
-)
+export const checkboxIndicatorVariants = cva('flex items-center justify-center transition-none', {
+  variants: {
+    variant: {
+      default: 'text-current',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+export const checkboxIconVariants = cva('', {
+  variants: {
+    variant: {
+      default: 'size-3.5',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});

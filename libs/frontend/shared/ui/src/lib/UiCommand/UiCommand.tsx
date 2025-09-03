@@ -1,212 +1,191 @@
 'use client';
 
-import { DialogProps } from '@radix-ui/react-dialog';
-import { cn } from '@shared/utils/cn';
-import { VariantProps } from 'class-variance-authority';
-import { Command as CommandPrimitive } from 'cmdk';
-import { Loader, X } from 'lucide-react';
 import * as React from 'react';
+import { Command as CommandPrimitive } from 'cmdk';
+import { SearchIcon } from 'lucide-react';
+import { type VariantProps } from 'class-variance-authority';
 
-import { UiButton } from '../UiButton/UiButton';
-import { UiDialog, UiDialogContent } from '../UiDialog';
 import {
-  commandDialogStyles,
-  commandEmptyStyles,
-  commandGroupStyles,
-  commandInputStyles,
-  commandItemStyles,
-  commandListStyles,
-  commandSeparatorStyles,
-  commandShortcutStyles,
-  commandStyles,
+  UiDialog,
+  UiDialogContent,
+  UiDialogDescription,
+  UiDialogHeader,
+  UiDialogTitle,
+} from '../UiDialog';
+import { cn } from '@shared/utils/cn';
+import {
+  commandVariants,
+  commandDialogContentVariants,
+  commandDialogCommandVariants,
+  commandInputWrapperVariants,
+  commandInputIconVariants,
+  commandInputVariants,
+  commandListVariants,
+  commandEmptyVariants,
+  commandGroupVariants,
+  commandSeparatorVariants,
+  commandItemVariants,
+  commandShortcutVariants,
 } from './config';
 
-const UiCommandLoading = React.forwardRef<
-  React.ElementRef<typeof CommandPrimitive.Loading>,
-  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Loading>
->(({ className, ...props }, ref) => (
-  <CommandPrimitive.Loading
-    ref={ref}
-    className={cn(commandItemStyles({}), className)}
-    {...props}
-  />
-));
-UiCommandLoading.displayName = CommandPrimitive.Loading.displayName;
+export interface UiCommandProps
+  extends React.ComponentProps<typeof CommandPrimitive>,
+    VariantProps<typeof commandVariants> {}
 
-const UiCommand = React.forwardRef<
-  React.ElementRef<typeof CommandPrimitive>,
-  React.ComponentPropsWithoutRef<typeof CommandPrimitive> &
-    VariantProps<typeof commandStyles>
->(({ variant, className, ...props }, ref) => (
-  <CommandPrimitive
-    ref={ref}
-    className={cn(commandStyles({ variant }), className)}
-    {...props}
-  />
-));
-UiCommand.displayName = CommandPrimitive.displayName;
+function UiCommand({ className, variant, ...props }: UiCommandProps) {
+  return (
+    <CommandPrimitive
+      data-slot="command"
+      className={cn(commandVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
 
-interface CommandDialogProps
-  extends DialogProps,
-    VariantProps<typeof commandDialogStyles> {}
+interface UiCommandDialogProps extends React.ComponentProps<typeof UiDialog> {
+  title?: string;
+  description?: string;
+  className?: string;
+  showCloseButton?: boolean;
+}
 
-const UiCommandDialog = ({
-  variant,
+function UiCommandDialog({
+  title = 'Command Palette',
+  description = 'Search for a command to run...',
   children,
+  className,
+  showCloseButton = true,
   ...props
-}: CommandDialogProps) => {
+}: UiCommandDialogProps) {
   return (
     <UiDialog {...props}>
-      <UiDialogContent className="overflow-hidden p-0 shadow-lg">
-        <UiCommand className={commandDialogStyles({ variant })}>
+      <UiDialogHeader className="sr-only">
+        <UiDialogTitle>{title}</UiDialogTitle>
+        <UiDialogDescription>{description}</UiDialogDescription>
+      </UiDialogHeader>
+      <UiDialogContent
+        className={cn(commandDialogContentVariants({}), className)}
+        withCloseBtn={showCloseButton}
+      >
+        <UiCommand className={commandDialogCommandVariants({})}>
           {children}
         </UiCommand>
       </UiDialogContent>
     </UiDialog>
   );
-};
-
-interface UiCommandInputProps
-  extends React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>,
-    VariantProps<typeof commandInputStyles> {
-  loading?: boolean;
-  icon?: React.ReactNode;
-  iconPosition?: 'left' | 'right';
-  onDelete?: (() => void | null | undefined) | undefined;
 }
 
-const UiCommandInput = React.forwardRef<
-  React.ElementRef<typeof CommandPrimitive.Input>,
-  UiCommandInputProps
->(
-  (
-    {
-      iconPosition = 'right',
-      onDelete,
-      variant,
-      className,
-      loading,
-      icon,
-      ...props
-    },
-    ref
-  ) => (
+export interface UiCommandInputProps
+  extends React.ComponentProps<typeof CommandPrimitive.Input>,
+    VariantProps<typeof commandInputVariants> {}
+
+function UiCommandInput({ className, variant, ...props }: UiCommandInputProps) {
+  return (
     <div
-      className={cn('relative flex items-center', {
-        '[&_>svg]:opacity-50': props?.disabled,
-      })}
+      data-slot="command-input-wrapper"
+      className={commandInputWrapperVariants({ variant })}
     >
-      {iconPosition === 'left' && icon}
+      <SearchIcon className={commandInputIconVariants({ variant })} />
       <CommandPrimitive.Input
-        ref={ref}
-        className={cn(commandInputStyles({ variant }), className)}
+        data-slot="command-input"
+        className={cn(commandInputVariants({ variant }), className)}
         {...props}
       />
-      {iconPosition === 'right' && !loading && icon}
-      {loading ? (
-        <div className="absolute bottom-0 right-4 top-1/2 z-10 flex -translate-y-2/4 items-center justify-center">
-          <Loader className="text-primary animate-spin" />
-        </div>
-      ) : (
-        onDelete &&
-        !loading && (
-          <UiButton onClick={onDelete} className="mr-3" variant={'text'}>
-            <X className={'size-5'} />
-          </UiButton>
-        )
-      )}
     </div>
-  )
-);
+  );
+}
 
-UiCommandInput.displayName = CommandPrimitive.Input.displayName;
+export interface UiCommandListProps
+  extends React.ComponentProps<typeof CommandPrimitive.List>,
+    VariantProps<typeof commandListVariants> {}
 
-const UiCommandList = React.forwardRef<
-  React.ElementRef<typeof CommandPrimitive.List>,
-  React.ComponentPropsWithoutRef<typeof CommandPrimitive.List> &
-    VariantProps<typeof commandListStyles>
->(({ variant, className, ...props }, ref) => (
-  <CommandPrimitive.List
-    ref={ref}
-    className={cn(commandListStyles({ variant }), className)}
-    {...props}
-  />
-));
-
-UiCommandList.displayName = CommandPrimitive.List.displayName;
-
-const UiCommandEmpty = React.forwardRef<
-  React.ElementRef<typeof CommandPrimitive.Empty>,
-  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Empty> &
-    VariantProps<typeof commandEmptyStyles>
->(({ variant, ...rest }, ref) => (
-  <CommandPrimitive.Empty
-    ref={ref}
-    className={commandEmptyStyles({ variant })}
-    {...rest}
-  />
-));
-
-UiCommandEmpty.displayName = CommandPrimitive.Empty.displayName;
-
-const UiCommandGroup = React.forwardRef<
-  React.ElementRef<typeof CommandPrimitive.Group>,
-  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Group> &
-    VariantProps<typeof commandGroupStyles>
->(({ className, variant, ...rest }, ref) => (
-  <CommandPrimitive.Group
-    ref={ref}
-    className={cn(commandGroupStyles({ variant }), className)}
-    {...rest}
-  />
-));
-
-UiCommandGroup.displayName = CommandPrimitive.Group.displayName;
-
-const UiCommandSeparator = React.forwardRef<
-  React.ElementRef<typeof CommandPrimitive.Separator>,
-  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Separator> &
-    VariantProps<typeof commandSeparatorStyles>
->(({ className, variant, ...rest }, ref) => (
-  <CommandPrimitive.Separator
-    ref={ref}
-    className={cn(commandSeparatorStyles({ variant }), className)}
-    {...rest}
-  />
-));
-UiCommandSeparator.displayName = CommandPrimitive.Separator.displayName;
-
-const UiCommandItem = React.forwardRef<
-  React.ElementRef<typeof CommandPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item> &
-    VariantProps<typeof commandItemStyles>
->(({ variant, className, ...rest }, ref) => (
-  <CommandPrimitive.Item
-    ref={ref}
-    className={cn(commandItemStyles({ variant }), className)}
-    {...rest}
-  />
-));
-
-UiCommandItem.displayName = CommandPrimitive.Item.displayName;
-
-interface UiCommandShortcutProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof commandShortcutStyles> {}
-
-const UiCommandShortcut = ({
-  className,
-  variant,
-  ...rest
-}: UiCommandShortcutProps) => {
+function UiCommandList({ className, variant, ...props }: UiCommandListProps) {
   return (
-    <span
-      className={cn(commandShortcutStyles({ variant }), className)}
-      {...rest}
+    <CommandPrimitive.List
+      data-slot="command-list"
+      className={cn(commandListVariants({ variant }), className)}
+      {...props}
     />
   );
-};
-UiCommandShortcut.displayName = 'CommandShortcut';
+}
+
+export interface UiCommandEmptyProps
+  extends React.ComponentProps<typeof CommandPrimitive.Empty>,
+    VariantProps<typeof commandEmptyVariants> {}
+
+function UiCommandEmpty({ variant, ...props }: UiCommandEmptyProps) {
+  return (
+    <CommandPrimitive.Empty
+      data-slot="command-empty"
+      className={commandEmptyVariants({ variant })}
+      {...props}
+    />
+  );
+}
+
+export interface UiCommandGroupProps
+  extends React.ComponentProps<typeof CommandPrimitive.Group>,
+    VariantProps<typeof commandGroupVariants> {}
+
+function UiCommandGroup({ className, variant, ...props }: UiCommandGroupProps) {
+  return (
+    <CommandPrimitive.Group
+      data-slot="command-group"
+      className={cn(commandGroupVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+export interface UiCommandSeparatorProps
+  extends React.ComponentProps<typeof CommandPrimitive.Separator>,
+    VariantProps<typeof commandSeparatorVariants> {}
+
+function UiCommandSeparator({
+  className,
+  variant,
+  ...props
+}: UiCommandSeparatorProps) {
+  return (
+    <CommandPrimitive.Separator
+      data-slot="command-separator"
+      className={cn(commandSeparatorVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+export interface UiCommandItemProps
+  extends React.ComponentProps<typeof CommandPrimitive.Item>,
+    VariantProps<typeof commandItemVariants> {}
+
+function UiCommandItem({ className, variant, ...props }: UiCommandItemProps) {
+  return (
+    <CommandPrimitive.Item
+      data-slot="command-item"
+      className={cn(commandItemVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+export interface UiCommandShortcutProps
+  extends React.ComponentProps<'span'>,
+    VariantProps<typeof commandShortcutVariants> {}
+
+function UiCommandShortcut({
+  className,
+  variant,
+  ...props
+}: UiCommandShortcutProps) {
+  return (
+    <span
+      data-slot="command-shortcut"
+      className={cn(commandShortcutVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
 
 export {
   UiCommand,
@@ -218,6 +197,4 @@ export {
   UiCommandItem,
   UiCommandShortcut,
   UiCommandSeparator,
-  UiCommandLoading,
-  type UiCommandInputProps,
 };
