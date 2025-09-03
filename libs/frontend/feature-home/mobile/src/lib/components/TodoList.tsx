@@ -9,10 +9,9 @@ import {
   Platform,
   Keyboard,
 } from 'react-native';
-import { UiCard } from '@frontend/shared/ui/UiCard/UiCard';
 import { Plus } from 'lucide-react-native';
 import { TodoItem, Todo } from './TodoItem';
-import { useToast } from '@frontend/shared/ui/UiToaster/hooks/useToast';
+import { useToast } from '@frontend/shared/mobile-ui/Toast';
 
 export const TodoList = () => {
   const [todos, setTodos] = useState<Todo[]>([
@@ -21,7 +20,7 @@ export const TodoList = () => {
     { id: '3', text: 'Make it responsive', completed: false },
   ]);
   const [newTodo, setNewTodo] = useState('');
-  const { toast } = useToast();
+  const { showToast } = useToast();
 
   const addTodo = () => {
     if (newTodo.trim()) {
@@ -33,7 +32,7 @@ export const TodoList = () => {
       setTodos([...todos, todo]);
       setNewTodo('');
       Keyboard.dismiss();
-      toast({
+      showToast({
         title: 'Todo added!',
         description: 'Your new todo has been created successfully.',
       });
@@ -42,7 +41,7 @@ export const TodoList = () => {
 
   const updateTodo = (id: string, text: string) => {
     setTodos(todos.map((todo) => (todo.id === id ? { ...todo, text } : todo)));
-    toast({
+    showToast({
       title: 'Todo updated!',
       description: 'Your todo has been updated successfully.',
     });
@@ -55,7 +54,7 @@ export const TodoList = () => {
       )
     );
     const todo = todos.find((t) => t.id === id);
-    toast({
+    showToast({
       title: todo?.completed ? 'Todo unmarked!' : 'Todo completed!',
       description: todo?.completed
         ? 'Todo marked as incomplete.'
@@ -65,10 +64,10 @@ export const TodoList = () => {
 
   const deleteTodo = (id: string) => {
     setTodos(todos.filter((todo) => todo.id !== id));
-    toast({
+    showToast({
       title: 'Todo deleted!',
       description: 'Your todo has been removed successfully.',
-      variant: 'destructive',
+      variant: 'error',
     });
   };
 
@@ -87,7 +86,7 @@ export const TodoList = () => {
       >
         <View className="w-full px-4">
           {/* Add Todo Card */}
-          <UiCard className="p-6 mb-6 bg-card/60">
+          <View className="p-6 mb-6 bg-card/60">
             <View className="flex-row gap-3">
               <TextInput
                 placeholder="What needs to be done?"
@@ -112,16 +111,16 @@ export const TodoList = () => {
                 </Text>
               </View>
             )}
-          </UiCard>
+          </View>
 
           {/* Todo Items */}
           <View>
             {todos.length === 0 ? (
-              <UiCard className="p-8 bg-card/40">
+              <View className="p-8 bg-card/40">
                 <Text className="text-muted-foreground text-lg text-center">
                   No todos yet. Add one above to get started! ✨
                 </Text>
-              </UiCard>
+              </View>
             ) : (
               todos.map((todo) => (
                 <TodoItem

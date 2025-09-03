@@ -1,12 +1,8 @@
-import { join } from "path"
-import { createGlobPatternsForDependencies } from "@nx/react/tailwind"
+import { join } from 'path';
+import { createGlobPatternsForDependencies } from '@nx/react/tailwind';
 const {
   sharedTheme,
 } = require('../../libs/frontend/feature-themeing/src/lib/tailwind-theme');
-import { hairlineWidth } from "nativewind/theme"
-
-import { lightTheme } from "../../libs/frontend/shared/feature-themeing/src/lib/themes/light/light"
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: {
@@ -14,12 +10,12 @@ module.exports = {
     files: [
       join(
         __dirname,
-        "{src,pages,components,layouts,app}/**/*!(*.stories|*.spec).{ts,tsx,html}"
+        '{src,pages,components,layouts,app}/**/*!(*.stories|*.spec).{ts,tsx,html}'
       ),
-      ...createGlobPatternsForDependencies(__dirname)
-    ]
+      ...createGlobPatternsForDependencies(__dirname),
+    ],
   },
-  presets: [require("nativewind/preset")],
+  presets: [require('nativewind/preset')],
   theme: {
     container: sharedTheme.container,
     extend: {
@@ -30,4 +26,4 @@ module.exports = {
     },
   },
   plugins: [require('tailwindcss-animate')],
-}
+};

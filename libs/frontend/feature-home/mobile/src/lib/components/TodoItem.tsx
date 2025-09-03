@@ -6,9 +6,7 @@ import {
   TouchableOpacity,
   Keyboard,
 } from 'react-native';
-import { UiButton } from '@frontend/shared/ui/UiButton/UiButton';
-import { UiCard } from '@frontend/shared/ui/UiCard/UiCard';
-import { UiCheckbox } from '@frontend/shared/ui/UiCheckbox/UiCheckbox';
+import { Checkbox } from '@frontend/shared/mobile-ui/Checkbox/Checkbox';
 import { Edit2, Trash2, Check, X } from 'lucide-react-native';
 
 export interface Todo {
@@ -48,15 +46,13 @@ export const TodoItem = ({
   };
 
   return (
-    <UiCard
-      className={`p-4 mb-3 bg-card/80 ${
-        todo.completed ? 'opacity-60' : ''
-      }`}
+    <View
+      className={`p-4 mb-3 bg-card/80 ${todo.completed ? 'opacity-60' : ''}`}
     >
       <View className="flex-row items-center gap-3">
-        <UiCheckbox
+        <Checkbox
           checked={todo.completed}
-          onChange={() => onToggle(todo.id)}
+          onCheckedChange={() => onToggle(todo.id)}
           className="data-[state=checked]:bg-success data-[state=checked]:border-success"
         />
 
@@ -109,6 +105,6 @@ export const TodoItem = ({
           </View>
         )}
       </View>
-    </UiCard>
+    </View>
   );
 };

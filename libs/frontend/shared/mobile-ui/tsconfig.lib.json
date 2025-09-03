@@ -32,10 +32,5 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts"
-  ],
-  "references": [
-    {
-      "path": "../../../shared/utils/tsconfig.lib.json"
-    }
   ]
 }

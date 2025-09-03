@@ -4,7 +4,7 @@
     "outDir": "../../dist/out-tsc"
     //    "types": ["node"]
   },
-  "files": ["../../node_modules/@nx/expo/typings/svg.d.ts"],
+  "files": ["../../../node_modules/@nx/expo/typings/svg.d.ts"],
   "exclude": [
     "jest.config.ts",
     "**/*.spec.ts",
@@ -19,10 +19,5 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts"
-  ],
-  "references": [
-    {
-      "path": "../../shared/ui/tsconfig.lib.json"
-    }
   ]
 }
