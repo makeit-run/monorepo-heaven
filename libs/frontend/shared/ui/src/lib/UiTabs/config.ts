@@ -1,50 +1,57 @@
-import { cva } from "class-variance-authority"
+import { cva } from 'class-variance-authority';
 
-export const tabsListStyles = cva("inline-flex items-center justify-center", {
-  variants: {
-    variant: {
-      default: "gap-1 rounded-md border p-1"
-    },
-    color: {
-      primary: "border-primary"
-    }
-  },
-  defaultVariants: {
-    variant: "default",
-    color: "primary"
-  }
-})
-
-export const tabsTriggerStyles = cva(
-  "focus-visible:ring-ring inline-flex items-center justify-center whitespace-nowrap font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+export const tabsVariants = cva(
+  'flex flex-col',
   {
     variants: {
       variant: {
-        default:
-          "rounded px-2.5 py-1.5 text-[16px] data-[state=active]:text-white data-[state=active]:shadow-sm"
+        default: 'gap-2',
       },
-      color: {
-        primary:
-          "ring-offset-primary hover:bg-primary/20 data-[state=active]:bg-primary text-primary"
-      }
     },
     defaultVariants: {
-      variant: "default",
-      color: "primary"
-    }
+      variant: 'default',
+    },
   }
-)
+);
 
-export const tabsContentStyles = cva(
-  "focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+export const tabsListVariants = cva(
+  'inline-flex items-center justify-center w-fit',
   {
     variants: {
       variant: {
-        default: "mt-2"
-      }
+        default: 'bg-muted text-muted-foreground h-9 rounded-lg p-[3px]',
+      },
     },
     defaultVariants: {
-      variant: "default"
-    }
+      variant: 'default',
+    },
   }
-)
+);
+
+export const tabsTriggerVariants = cva(
+  'inline-flex items-center justify-center gap-1.5 whitespace-nowrap transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4',
+  {
+    variants: {
+      variant: {
+        default: 'data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground h-[calc(100%-1px)] flex-1 rounded-md border border-transparent px-2 py-1 text-sm font-medium focus-visible:ring-[3px] focus-visible:outline-1 data-[state=active]:shadow-sm',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  }
+);
+
+export const tabsContentVariants = cva(
+  'flex-1 outline-none',
+  {
+    variants: {
+      variant: {
+        default: '',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  }
+);

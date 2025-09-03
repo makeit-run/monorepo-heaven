@@ -3,21 +3,45 @@
 import { cn } from "@shared/utils/cn"
 import { motion, stagger, useAnimate, useInView } from "framer-motion"
 import { useEffect } from "react"
+import { VariantProps } from "class-variance-authority"
 
 import { UiText } from "../UiText"
+import {
+  typewriterVariants,
+  typewriterContainerVariants,
+  typewriterWordVariants,
+  typewriterCharVariants,
+  typewriterCursorVariants,
+  typewriterSmoothContainerVariants,
+  typewriterSmoothContentVariants,
+  typewriterSmoothCharVariants,
+  typewriterSmoothCursorVariants,
+} from "./config"
 
-export const UiTypewriter = ({
-  words,
-  className,
-  cursorClassName
-}: {
+interface UiTypewriterProps {
   words: {
     text: string
     className?: string
   }[]
   className?: string
   cursorClassName?: string
-}) => {
+  variant?: VariantProps<typeof typewriterVariants>['variant']
+  containerVariant?: VariantProps<typeof typewriterContainerVariants>['variant']
+  wordVariant?: VariantProps<typeof typewriterWordVariants>['variant']
+  charVariant?: VariantProps<typeof typewriterCharVariants>['variant']
+  cursorVariant?: VariantProps<typeof typewriterCursorVariants>['variant']
+}
+
+export const UiTypewriter = ({
+  words,
+  className,
+  cursorClassName,
+  variant = 'default',
+  containerVariant = 'default',
+  wordVariant = 'default',
+  charVariant = 'default',
+  cursorVariant = 'default'
+}: UiTypewriterProps) => {
   // split text inside of words into array of characters
   const wordsArray = words.map((word) => {
     return {
@@ -48,15 +72,15 @@ export const UiTypewriter = ({
 
   const renderWords = () => {
     return (
-      <motion.div ref={scope} className="inline">
+      <motion.div ref={scope} className={cn(typewriterContainerVariants({ variant: containerVariant }))}>
         {wordsArray.map((word, idx) => {
           return (
-            <div key={`word-${idx}`} className="inline-block">
+            <div key={`word-${idx}`} className={cn(typewriterWordVariants({ variant: wordVariant }))}>
               {word.text.map((char, index) => (
                 <motion.span
                   initial={{}}
                   key={`char-${index}`}
-                  className={cn(`hidden text-black opacity-0`, word.className)}
+                  className={cn(typewriterCharVariants({ variant: charVariant }), word.className)}
                 >
                   {char}
                 </motion.span>
@@ -69,12 +93,7 @@ export const UiTypewriter = ({
     )
   }
   return (
-    <div
-      className={cn(
-        "text-center text-base font-bold sm:text-xl md:text-3xl lg:text-5xl",
-        className
-      )}
-    >
+    <div className={cn(typewriterVariants({ variant }), className)}>
       {renderWords()}
       <motion.span
         initial={{
@@ -88,27 +107,34 @@ export const UiTypewriter = ({
           repeat: Infinity,
           repeatType: "reverse"
         }}
-        className={cn(
-          "inline-block h-4 w-[4px] rounded-sm bg-blue-500 md:h-6 lg:h-10",
-          cursorClassName
-        )}
+        className={cn(typewriterCursorVariants({ variant: cursorVariant }), cursorClassName)}
       ></motion.span>
     </div>
   )
 }
 
-export const UiTypewriterSmooth = ({
-  words,
-  className,
-  cursorClassName
-}: {
+interface UiTypewriterSmoothProps {
   words: {
     text: string
     className?: string
   }[]
   className?: string
   cursorClassName?: string
-}) => {
+  containerVariant?: VariantProps<typeof typewriterSmoothContainerVariants>['variant']
+  contentVariant?: VariantProps<typeof typewriterSmoothContentVariants>['variant']
+  charVariant?: VariantProps<typeof typewriterSmoothCharVariants>['variant']
+  cursorVariant?: VariantProps<typeof typewriterSmoothCursorVariants>['variant']
+}
+
+export const UiTypewriterSmooth = ({
+  words,
+  className,
+  cursorClassName,
+  containerVariant = 'default',
+  contentVariant = 'default',
+  charVariant = 'default',
+  cursorVariant = 'default'
+}: UiTypewriterSmoothProps) => {
   // split text inside of words into array of characters
   const wordsArray = words.map((word) => {
     return {
@@ -121,11 +147,11 @@ export const UiTypewriterSmooth = ({
       <div>
         {wordsArray.map((word, idx) => {
           return (
-            <div key={`word-${idx}`} className="inline-block">
+            <div key={`word-${idx}`} className={cn(typewriterWordVariants({ variant: 'default' }))}>
               {word.text.map((char, index) => (
                 <span
                   key={`char-${index}`}
-                  className={cn(`text-black dark:text-white`, word.className)}
+                  className={cn(typewriterSmoothCharVariants({ variant: charVariant }), word.className)}
                 >
                   {char}
                 </span>
@@ -139,9 +165,9 @@ export const UiTypewriterSmooth = ({
   }
 
   return (
-    <div className={cn("flex space-x-1", className)}>
+    <div className={cn(typewriterSmoothContainerVariants({ variant: containerVariant }), className)}>
       <motion.div
-        className="overflow-hidden"
+        className={cn(typewriterSmoothContentVariants({ variant: contentVariant }))}
         initial={{
           width: "0%"
         }}
@@ -171,10 +197,7 @@ export const UiTypewriterSmooth = ({
           repeat: Infinity,
           repeatType: "reverse"
         }}
-        className={cn(
-          "bg-primary block h-4 w-[4px] rounded-sm sm:h-6 xl:h-12",
-          cursorClassName
-        )}
+        className={cn(typewriterSmoothCursorVariants({ variant: cursorVariant }), cursorClassName)}
       ></motion.span>
     </div>
   )

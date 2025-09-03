@@ -1,10 +1,10 @@
-"use client"
+'use client';
 
-import * as ToastPrimitives from "@radix-ui/react-toast"
-import { cn } from "@shared/utils/cn"
-import { type VariantProps } from "class-variance-authority"
-import { BadgeAlert, BadgeCheck, BadgeInfo, Building, X } from "lucide-react"
-import * as React from "react"
+import * as ToastPrimitives from '@radix-ui/react-toast';
+import { cn } from '@shared/utils/cn';
+import { type VariantProps } from 'class-variance-authority';
+import { BadgeAlert, BadgeCheck, BadgeInfo, X } from 'lucide-react';
+import * as React from 'react';
 
 import {
   toastActionStyles,
@@ -12,25 +12,25 @@ import {
   toastDescriptionStyles,
   toastStyles,
   toastTitleStyles,
-  toastViewportStyles
-} from "./config"
+  toastViewportStyles,
+} from './config';
 
 export const getToastIcon = (
-  variant: VariantProps<typeof toastStyles>["variant"]
+  variant: VariantProps<typeof toastStyles>['variant']
 ) => {
   switch (variant) {
-    case "info":
-      return <BadgeInfo />
-    case "success":
-      return <BadgeCheck />
-    case "destructive":
-      return <BadgeAlert />
+    case 'info':
+      return <BadgeInfo />;
+    case 'success':
+      return <BadgeCheck />;
+    case 'destructive':
+      return <BadgeAlert />;
     default:
-      return <BadgeInfo />
+      return <BadgeInfo />;
   }
-}
+};
 
-export const UiToastProvider = ToastPrimitives.Provider
+export const UiToastProvider = ToastPrimitives.Provider;
 
 export const UiToastViewport = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Viewport>,
@@ -42,8 +42,8 @@ export const UiToastViewport = React.forwardRef<
     className={cn(toastViewportStyles({ variant }), className)}
     {...props}
   />
-))
-UiToastViewport.displayName = ToastPrimitives.Viewport.displayName
+));
+UiToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 export const UiToast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
@@ -56,14 +56,14 @@ export const UiToast = React.forwardRef<
       className={cn(toastStyles({ variant }), className)}
       {...props}
     >
-      <div className={"flex w-full items-center justify-between"}>
+      <div className={'flex w-full items-center justify-between'}>
         {props.children}
         {getToastIcon(variant)}
       </div>
     </ToastPrimitives.Root>
-  )
-})
-UiToast.displayName = ToastPrimitives.Root.displayName
+  );
+});
+UiToast.displayName = ToastPrimitives.Root.displayName;
 
 export const ToastAction = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Action>,
@@ -75,8 +75,8 @@ export const ToastAction = React.forwardRef<
     className={cn(toastActionStyles({ variant }), className)}
     {...props}
   />
-))
-ToastAction.displayName = ToastPrimitives.Action.displayName
+));
+ToastAction.displayName = ToastPrimitives.Action.displayName;
 
 export const UiToastClose = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Close>,
@@ -91,8 +91,8 @@ export const UiToastClose = React.forwardRef<
   >
     <X className="size-5" />
   </ToastPrimitives.Close>
-))
-UiToastClose.displayName = ToastPrimitives.Close.displayName
+));
+UiToastClose.displayName = ToastPrimitives.Close.displayName;
 
 export const UiToastTitle = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Title>,
@@ -104,8 +104,8 @@ export const UiToastTitle = React.forwardRef<
     className={cn(toastTitleStyles({ variant }), className)}
     {...props}
   />
-))
-UiToastTitle.displayName = ToastPrimitives.Title.displayName
+));
+UiToastTitle.displayName = ToastPrimitives.Title.displayName;
 
 export const UiToastDescription = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Description>,
@@ -117,9 +117,9 @@ export const UiToastDescription = React.forwardRef<
     className={cn(toastDescriptionStyles({ variant }), className)}
     {...props}
   />
-))
-UiToastDescription.displayName = ToastPrimitives.Description.displayName
+));
+UiToastDescription.displayName = ToastPrimitives.Description.displayName;
 
-export type ToastProps = React.ComponentPropsWithoutRef<typeof UiToast>
+export type ToastProps = React.ComponentPropsWithoutRef<typeof UiToast>;
 
-export type ToastActionElement = React.ReactElement<typeof ToastAction>
+export type ToastActionElement = React.ReactElement<typeof ToastAction>;

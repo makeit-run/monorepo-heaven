@@ -1,15 +1,15 @@
-import { cva } from "class-variance-authority"
+import { cva } from 'class-variance-authority';
 
-export const separatorStyles = cva("flex w-full items-center ", {
-  variants: {
-    variant: {
-      secondary: "h-px bg-secondary/10",
-      primary: "h-px bg-app-background",
-      default: "h-px bg-white/10",
-      thick: "h-0.5 bg-white/40"
-    }
-  },
-  defaultVariants: {
-    variant: "default"
+export const separatorVariants = cva(
+  'bg-border shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px',
+  {
+    variants: {
+      variant: {
+        default: '',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
   }
-})
+);

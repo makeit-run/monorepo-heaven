@@ -1,28 +1,28 @@
-"use client"
+'use client';
 
-import { cn } from "@shared/utils/cn"
-import React, { forwardRef, useRef } from "react"
-import { TimeValue, useDateSegment, useLocale, useTimeField } from "react-aria"
+import { cn } from '@shared/utils/cn';
+import React, { forwardRef, useRef } from 'react';
+import { TimeValue, useDateSegment, useLocale, useTimeField } from 'react-aria';
 import {
   DateFieldState,
   DateSegment as IDateSegment,
   TimeFieldStateOptions,
-  useTimeFieldState
-} from "react-stately"
+  useTimeFieldState,
+} from 'react-stately';
 
-import { dateSegmentStyles, timeFieldStyles, timePickerStyles } from "./config"
+import { dateSegmentStyles, timeFieldStyles, timePickerStyles } from './config';
 
 interface DateSegmentProps {
-  segment: IDateSegment
-  state: DateFieldState
+  segment: IDateSegment;
+  state: DateFieldState;
 }
 
 function UiDateSegment({ segment, state }: DateSegmentProps) {
-  const ref = useRef(null)
+  const ref = useRef(null);
 
   const {
-    segmentProps: { ...segmentProps }
-  } = useDateSegment(segment, state, ref)
+    segmentProps: { ...segmentProps },
+  } = useDateSegment(segment, state, ref);
 
   return (
     <div
@@ -30,23 +30,23 @@ function UiDateSegment({ segment, state }: DateSegmentProps) {
       ref={ref}
       className={dateSegmentStyles({
         type: segment?.type,
-        className: cn({ "text-muted-foreground": segment.isPlaceholder })
+        className: cn({ 'text-muted-foreground': segment.isPlaceholder }),
       })}
     >
       {segment.text}
     </div>
-  )
+  );
 }
 
 const UiTimeField = forwardRef<HTMLDivElement, UiTimeFieldProps>(
   (props, innerRef) => {
-    const { locale } = useLocale()
+    const { locale } = useLocale();
     const state = useTimeFieldState({
       ...props,
-      locale
-    })
-    const ref = innerRef as React.RefObject<HTMLDivElement>
-    const { fieldProps, labelProps } = useTimeField(props, state, ref)
+      locale,
+    });
+    const ref = innerRef as React.RefObject<HTMLDivElement>;
+    const { fieldProps } = useTimeField(props, state, ref);
 
     return (
       <div
@@ -54,30 +54,26 @@ const UiTimeField = forwardRef<HTMLDivElement, UiTimeFieldProps>(
         ref={ref}
         className={timeFieldStyles({
           className: cn(
-            { "cursor-not-allowed opacity-50": props.isDisabled },
+            { 'cursor-not-allowed opacity-50': props.isDisabled },
             props?.className
-          )
+          ),
         })}
       >
         {state.segments.map((segment, i) => (
           <UiDateSegment key={i} segment={segment} state={state} />
         ))}
       </div>
-    )
+    );
   }
-)
+);
 
-UiTimeField.displayName = "UiTimeField"
+UiTimeField.displayName = 'UiTimeField';
 
 interface UiTimeFieldProps
-  extends Omit<TimeFieldStateOptions<TimeValue>, "locale"> {
-  className?: string
+  extends Omit<TimeFieldStateOptions<TimeValue>, 'locale'> {
+  className?: string;
 }
 
-interface UiTimePickerProps
-  extends Omit<TimeFieldStateOptions<TimeValue>, "locale"> {
-  className?: string
-}
 const UiTimePicker = React.forwardRef<HTMLDivElement, UiTimeFieldProps>(
   ({ className, ...rest }, ref) => {
     return (
@@ -86,10 +82,10 @@ const UiTimePicker = React.forwardRef<HTMLDivElement, UiTimeFieldProps>(
         className={timePickerStyles({ className })}
         {...rest}
       />
-    )
+    );
   }
-)
+);
 
-UiTimePicker.displayName = "TimePicker"
+UiTimePicker.displayName = 'TimePicker';
 
-export { UiTimePicker }
+export { UiTimePicker };

@@ -7,5 +7,4 @@ export {
   UiSelectSeparator,
   UiSelectLabel,
   UiSelectContent,
-  type UiSelectProps
-} from "./UiSelect"
+} from './UiSelect';

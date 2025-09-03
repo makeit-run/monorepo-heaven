@@ -1,30 +1,26 @@
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import React from "react"
+'use client';
 
-import { UiText } from "../UiText"
-import { separatorStyles } from "./config"
+import * as React from 'react';
+import * as SeparatorPrimitive from '@radix-ui/react-separator';
 
-interface SidebarSeparatorProps extends VariantProps<typeof separatorStyles> {
-  text?: string
-  orientation?: "horizontal" | "vertical"
-  className?: string
-}
+import { cn } from '@shared/utils/cn';
+import { separatorVariants } from './config';
 
-export function UiSeparator({
-  variant,
+function UiSeparator({
   className,
-  text
-}: SidebarSeparatorProps) {
+  orientation = 'horizontal',
+  decorative = true,
+  ...props
+}: React.ComponentProps<typeof SeparatorPrimitive.Root>) {
   return (
-    <div className={cn(separatorStyles({ variant }), className)}>
-      {text && (
-        <UiText className={"bg-primary/30 pr-1"} variant={"body4-medium"}>
-          {text}
-        </UiText>
-      )}
-    </div>
-  )
+    <SeparatorPrimitive.Root
+      data-slot="separator"
+      decorative={decorative}
+      orientation={orientation}
+      className={cn(separatorVariants({ variant: 'default' }), className)}
+      {...props}
+    />
+  );
 }
 
-export default UiSeparator
+export { UiSeparator };

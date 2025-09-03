@@ -1,31 +1,55 @@
-"use client"
+'use client';
 
+import { VariantProps } from 'class-variance-authority';
 import {
-  switchRootStyles,
-  switchThumbStyles
-} from "@frontend/shared/ui/UiSwitch/config"
-import * as SwitchPrimitives from "@radix-ui/react-switch"
-import { cn } from "@shared/utils/cn"
-import { Moon, Sun } from "lucide-react"
-import * as React from "react"
+  switchVariants,
+  switchThumbVariants,
+} from '@frontend/shared/ui/UiSwitch/config';
+import {
+  themeSwitchVariants,
+  themeSwitchSunIconVariants,
+  themeSwitchThumbVariants,
+  themeSwitchMoonIconVariants,
+} from './config';
+import * as SwitchPrimitives from '@radix-ui/react-switch';
+import { cn } from '@shared/utils/cn';
+import { Moon, Sun } from 'lucide-react';
+import * as React from 'react';
 
 interface UiThemeSwitchProps
-  extends React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> {
-  checked: boolean
-  onCheckedChange: (checked: boolean) => void
+  extends React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>,
+    VariantProps<typeof themeSwitchVariants>,
+    VariantProps<typeof themeSwitchSunIconVariants>,
+    VariantProps<typeof themeSwitchThumbVariants>,
+    VariantProps<typeof themeSwitchMoonIconVariants> {
+  checked: boolean;
+  onCheckedChange: (checked: boolean) => void;
+  themeSwitchVariant?: VariantProps<typeof themeSwitchVariants>['variant'];
+  sunIconVariant?: VariantProps<typeof themeSwitchSunIconVariants>['variant'];
+  thumbVariant?: VariantProps<typeof themeSwitchThumbVariants>['variant'];
+  moonIconVariant?: VariantProps<typeof themeSwitchMoonIconVariants>['variant'];
 }
 
 const UiThemeSwitch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   UiThemeSwitchProps
->(({ className, checked, onCheckedChange, ...props }, ref) => {
+>(({ 
+  className, 
+  checked, 
+  onCheckedChange, 
+  themeSwitchVariant = 'default',
+  sunIconVariant = 'default',
+  thumbVariant = 'default',
+  moonIconVariant = 'default',
+  ...props 
+}, ref) => {
   return (
     <SwitchPrimitives.Root
       className={cn(
-        switchRootStyles({
-          size: "extraLarge"
+        switchVariants({
+          variant: 'default',
         }),
-        "relative data-[state=checked]:bg-white data-[state=unchecked]:bg-white",
+        themeSwitchVariants({ variant: themeSwitchVariant }),
         className
       )}
       checked={checked}
@@ -34,28 +58,28 @@ const UiThemeSwitch = React.forwardRef<
       {...props}
     >
       {/* Sun Icon (Light Mode) */}
-      <span className="absolute left-2 z-0 stroke-2 text-yellow-500">
+      <span className={cn(themeSwitchSunIconVariants({ variant: sunIconVariant }))}>
         <Sun size={18} />
       </span>
 
       {/* Switch Thumb - Now Fully Moving */}
       <SwitchPrimitives.Thumb
         className={cn(
-          switchThumbStyles({
-            size: "extraLarge"
+          switchThumbVariants({
+            variant: 'default',
           }),
-          "data-[state=checked]:bg-primary data-[state=unchecked]:bg-primary !z-[3]"
+          themeSwitchThumbVariants({ variant: thumbVariant })
         )}
       />
 
       {/* Moon Icon (Dark Mode) */}
-      <span className="absolute right-2 z-0 stroke-2 text-blue-600">
+      <span className={cn(themeSwitchMoonIconVariants({ variant: moonIconVariant }))}>
         <Moon size={18} />
       </span>
     </SwitchPrimitives.Root>
-  )
-})
+  );
+});
 
-UiThemeSwitch.displayName = "UiThemeSwitch"
+UiThemeSwitch.displayName = 'UiThemeSwitch';
 
-export { UiThemeSwitch }
+export { UiThemeSwitch };

@@ -1,40 +1,78 @@
-import * as TooltipPrimitive from "@radix-ui/react-tooltip"
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import * as React from "react"
+'use client';
 
-import { tooltipContentStyles } from "./config"
+import * as React from 'react';
+import * as TooltipPrimitive from '@radix-ui/react-tooltip';
+import { VariantProps } from 'class-variance-authority';
 
-const UiTooltipTrigger = TooltipPrimitive.Trigger
-const UiTooltipPortal = TooltipPrimitive.Portal
+import { cn } from '@shared/utils/cn';
+import { tooltipContentVariants, tooltipArrowVariants } from './config';
 
-interface UiTooltipProps
-  extends React.ComponentProps<typeof TooltipPrimitive.Root> {
-  providerProps?: React.ComponentProps<typeof TooltipPrimitive.Provider>
-}
+// Create context for variant propagation
+const TooltipContext = React.createContext<{
+  variant?: string;
+  arrowVariant?: string;
+}>({ variant: 'default', arrowVariant: 'default' });
 
-function UiTooltip({ providerProps, children, ...props }: UiTooltipProps) {
+function UiTooltipProvider({
+  delayDuration = 0,
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
   return (
-    <TooltipPrimitive.Provider {...providerProps}>
-      <TooltipPrimitive.Root {...props}>{children}</TooltipPrimitive.Root>
-    </TooltipPrimitive.Provider>
-  )
+    <TooltipPrimitive.Provider
+      data-slot="tooltip-provider"
+      delayDuration={delayDuration}
+      {...props}
+    />
+  );
 }
 
-UiTooltip.displayName = TooltipPrimitive.Content.displayName
+function UiTooltip({
+  variant = 'default',
+  arrowVariant = 'default',
+  children,
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Root> & {
+  variant?: string;
+  arrowVariant?: string;
+}) {
+  return (
+    <UiTooltipProvider>
+      <TooltipContext.Provider value={{ variant, arrowVariant }}>
+        <TooltipPrimitive.Root data-slot="tooltip" {...props}>
+          {children}
+        </TooltipPrimitive.Root>
+      </TooltipContext.Provider>
+    </UiTooltipProvider>
+  );
+}
 
-const UiTooltipContent = React.forwardRef<
-  React.ElementRef<typeof TooltipPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> &
-    VariantProps<typeof tooltipContentStyles>
->(({ className, variant, sideOffset = 4, ...props }, ref) => (
-  <TooltipPrimitive.Content
-    ref={ref}
-    sideOffset={sideOffset}
-    className={cn(tooltipContentStyles({ variant }), className)}
-    {...props}
-  />
-))
-UiTooltipContent.displayName = TooltipPrimitive.Content.displayName
+function UiTooltipTrigger({
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
+  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
+}
 
-export { UiTooltip, UiTooltipTrigger, UiTooltipContent, UiTooltipPortal }
+function UiTooltipContent({
+  className,
+  sideOffset = 0,
+  children,
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+  const { variant, arrowVariant } = React.useContext(TooltipContext);
+  
+  return (
+    <TooltipPrimitive.Portal>
+      <TooltipPrimitive.Content
+        data-slot="tooltip-content"
+        sideOffset={sideOffset}
+        className={cn(tooltipContentVariants({ variant: variant as any }), className)}
+        {...props}
+      >
+        {children}
+        <TooltipPrimitive.Arrow className={cn(tooltipArrowVariants({ variant: arrowVariant as any }))} />
+      </TooltipPrimitive.Content>
+    </TooltipPrimitive.Portal>
+  );
+}
+
+export { UiTooltip, UiTooltipTrigger, UiTooltipContent, UiTooltipProvider };

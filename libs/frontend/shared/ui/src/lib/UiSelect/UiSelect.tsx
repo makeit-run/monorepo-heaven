@@ -1,148 +1,218 @@
-import * as SelectPrimitive from "@radix-ui/react-select"
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import { ChevronDown } from "lucide-react"
-import * as React from "react"
+'use client';
 
+import * as React from 'react';
+import * as SelectPrimitive from '@radix-ui/react-select';
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+import { VariantProps } from 'class-variance-authority';
+
+import { cn } from '@shared/utils/cn';
+
+// Create context for variant propagation
+const SelectContext = React.createContext<{
+  variant?: string;
+  size?: 'sm' | 'default';
+}>({ variant: 'default', size: 'default' });
 import {
-  selectContentStyles,
-  selectItemStyles,
-  selectLabelStyles,
-  selectSeparatorStyles,
-  selectTriggerIconStyles,
-  selectTriggerStyles,
-  selectViewportStyles
-} from "./config"
+  selectTriggerVariants,
+  selectTriggerIconVariants,
+  selectContentVariants,
+  selectViewportVariants,
+  selectLabelVariants,
+  selectItemVariants,
+  selectItemIndicatorVariants,
+  selectItemIndicatorIconVariants,
+  selectSeparatorVariants,
+  selectScrollButtonVariants,
+  selectScrollButtonIconVariants,
+} from './config';
 
-const UiSelect = SelectPrimitive.Root
-type UiSelectProps = SelectPrimitive.SelectProps
-
-const UiSelectGroup = SelectPrimitive.Group
-
-const UiSelectValue = SelectPrimitive.Value
-
-interface UiSelectTriggerProps
-  extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>,
-    VariantProps<typeof selectTriggerStyles> {
-  withoutArrow?: boolean
-  placeholder?: string
-  iconStyle?: VariantProps<typeof selectTriggerIconStyles>
+function UiSelect({
+  variant = 'default',
+  size = 'default',
+  children,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Root> & {
+  variant?: string;
+  size?: 'sm' | 'default';
+}) {
+  return (
+    <SelectContext.Provider value={{ variant, size }}>
+      <SelectPrimitive.Root data-slot="select" {...props}>
+        {children}
+      </SelectPrimitive.Root>
+    </SelectContext.Provider>
+  );
 }
 
-const UiSelectTrigger = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Trigger>,
-  UiSelectTriggerProps
->(
-  (
-    {
-      className,
-      variant,
-      iconStyle,
-      withoutArrow,
-      children,
-      placeholder,
-      ...props
-    },
-    ref
-  ) => {
-    return (
-      <SelectPrimitive.Trigger
-        ref={ref}
-        className={cn(selectTriggerStyles({ variant }), className)}
-        {...props}
-      >
-        <SelectPrimitive.Value
-          placeholder={placeholder}
-          className={"truncate"}
-        />
-        {!withoutArrow && (
-          <SelectPrimitive.Icon asChild>
-            <ChevronDown
-              size={"22"}
-              className={selectTriggerIconStyles(iconStyle)}
-            />
-          </SelectPrimitive.Icon>
-        )}
-      </SelectPrimitive.Trigger>
-    )
-  }
-)
-UiSelectTrigger.displayName = SelectPrimitive.Trigger.displayName
+function UiSelectGroup({
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Group>) {
+  return <SelectPrimitive.Group data-slot="select-group" {...props} />;
+}
 
-interface UiSelectContentProps
-  extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>,
-    Omit<VariantProps<typeof selectContentStyles>, "position"> {}
+function UiSelectValue({
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Value>) {
+  return <SelectPrimitive.Value data-slot="select-value" {...props} />;
+}
 
-const UiSelectContent = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Content>,
-  UiSelectContentProps
->(({ className, variant, children, position = "popper", ...props }, ref) => (
-  <SelectPrimitive.Portal>
-    <SelectPrimitive.Content
-      ref={ref}
-      className={cn(selectContentStyles({ position, variant }), className)}
-      position={position}
+function UiSelectTrigger({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Trigger>) {
+  const { variant, size } = React.useContext(SelectContext);
+  
+  return (
+    <SelectPrimitive.Trigger
+      data-slot="select-trigger"
+      data-size={size}
+      className={cn(selectTriggerVariants({ variant: variant as any }), className)}
       {...props}
     >
-      <SelectPrimitive.Viewport className={selectViewportStyles({ position })}>
-        {children}
-      </SelectPrimitive.Viewport>
-    </SelectPrimitive.Content>
-  </SelectPrimitive.Portal>
-))
-UiSelectContent.displayName = SelectPrimitive.Content.displayName
-
-const UiSelectLabel = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Label>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label> &
-    VariantProps<typeof selectLabelStyles>
->(({ className, variant, ...props }, ref) => (
-  <SelectPrimitive.Label
-    ref={ref}
-    className={cn(selectLabelStyles({ variant }), className)}
-    {...props}
-  />
-))
-UiSelectLabel.displayName = SelectPrimitive.Label.displayName
-
-const UiSelectItem = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> &
-    VariantProps<typeof selectItemStyles>
->(({ className, variant, children, ...props }, ref) => (
-  <SelectPrimitive.Item
-    ref={ref}
-    className={selectItemStyles({ variant })}
-    {...props}
-  >
-    <SelectPrimitive.ItemText className={className}>
       {children}
-    </SelectPrimitive.ItemText>
-  </SelectPrimitive.Item>
-))
-UiSelectItem.displayName = SelectPrimitive.Item.displayName
+      <SelectPrimitive.Icon asChild>
+        <ChevronDownIcon className={cn(selectTriggerIconVariants({ variant: variant as any }))} />
+      </SelectPrimitive.Icon>
+    </SelectPrimitive.Trigger>
+  );
+}
 
-const UiSelectSeparator = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Separator>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator> &
-    VariantProps<typeof selectSeparatorStyles>
->(({ className, variant, ...props }, ref) => (
-  <SelectPrimitive.Separator
-    ref={ref}
-    className={cn(selectSeparatorStyles({ variant }), className)}
-    {...props}
-  />
-))
-UiSelectSeparator.displayName = SelectPrimitive.Separator.displayName
+function UiSelectContent({
+  className,
+  children,
+  position = 'popper',
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Content>) {
+  const { variant } = React.useContext(SelectContext);
+  
+  return (
+    <SelectPrimitive.Portal>
+      <SelectPrimitive.Content
+        data-slot="select-content"
+        className={cn(
+          selectContentVariants({ 
+            variant: variant as any, 
+            position: position === 'popper' ? 'popper' : 'item-aligned' 
+          }),
+          className
+        )}
+        position={position}
+        {...props}
+      >
+        <UiSelectScrollUpButton />
+        <SelectPrimitive.Viewport
+          className={cn(
+            selectViewportVariants({ 
+              variant: variant as any, 
+              position: position === 'popper' ? 'popper' : 'item-aligned' 
+            })
+          )}
+        >
+          {children}
+        </SelectPrimitive.Viewport>
+        <UiSelectScrollDownButton />
+      </SelectPrimitive.Content>
+    </SelectPrimitive.Portal>
+  );
+}
+
+function UiSelectLabel({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Label>) {
+  const { variant } = React.useContext(SelectContext);
+  
+  return (
+    <SelectPrimitive.Label
+      data-slot="select-label"
+      className={cn(selectLabelVariants({ variant: variant as any }), className)}
+      {...props}
+    />
+  );
+}
+
+function UiSelectItem({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Item>) {
+  const { variant } = React.useContext(SelectContext);
+  
+  return (
+    <SelectPrimitive.Item
+      data-slot="select-item"
+      className={cn(selectItemVariants({ variant: variant as any }), className)}
+      {...props}
+    >
+      <span className={cn(selectItemIndicatorVariants({ variant: variant as any }))}>
+        <SelectPrimitive.ItemIndicator>
+          <CheckIcon className={cn(selectItemIndicatorIconVariants({ variant: variant as any }))} />
+        </SelectPrimitive.ItemIndicator>
+      </span>
+      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+    </SelectPrimitive.Item>
+  );
+}
+
+function UiSelectSeparator({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Separator>) {
+  const { variant } = React.useContext(SelectContext);
+  
+  return (
+    <SelectPrimitive.Separator
+      data-slot="select-separator"
+      className={cn(selectSeparatorVariants({ variant: variant as any }), className)}
+      {...props}
+    />
+  );
+}
+
+function UiSelectScrollUpButton({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
+  const { variant } = React.useContext(SelectContext);
+  
+  return (
+    <SelectPrimitive.ScrollUpButton
+      data-slot="select-scroll-up-button"
+      className={cn(selectScrollButtonVariants({ variant: variant as any }), className)}
+      {...props}
+    >
+      <ChevronUpIcon className={cn(selectScrollButtonIconVariants({ variant: variant as any }))} />
+    </SelectPrimitive.ScrollUpButton>
+  );
+}
+
+function UiSelectScrollDownButton({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
+  const { variant } = React.useContext(SelectContext);
+  
+  return (
+    <SelectPrimitive.ScrollDownButton
+      data-slot="select-scroll-down-button"
+      className={cn(selectScrollButtonVariants({ variant: variant as any }), className)}
+      {...props}
+    >
+      <ChevronDownIcon className={cn(selectScrollButtonIconVariants({ variant: variant as any }))} />
+    </SelectPrimitive.ScrollDownButton>
+  );
+}
 
 export {
   UiSelect,
-  type UiSelectProps,
-  UiSelectGroup,
-  UiSelectValue,
-  UiSelectTrigger,
   UiSelectContent,
-  UiSelectLabel,
+  UiSelectGroup,
   UiSelectItem,
-  UiSelectSeparator
-}
+  UiSelectLabel,
+  UiSelectScrollDownButton,
+  UiSelectScrollUpButton,
+  UiSelectSeparator,
+  UiSelectTrigger,
+  UiSelectValue,
+};

@@ -1,20 +1,27 @@
-"use client"
+'use client';
 
-import { cn } from "@shared/utils/cn"
-import React from "react"
+import { cn } from '@shared/utils/cn';
+import React from 'react';
 
-import { UiText } from "../UiText"
+import { UiText } from '../UiText';
+import {
+  ratingShortVariants,
+  ratingFullVariants,
+  ratingStarsVariants,
+  ratingStarVariants,
+  ratingStarFilledVariants,
+} from './config';
 
-export type RatingVariant = "full" | "short"
+export type RatingVariant = 'full' | 'short';
 
 interface UiRatingProps {
-  onChange?: (value: number) => void
-  value: number | string
-  reviewsCount?: string | number
-  wrapperStyles?: string
-  starsWrapperStyles?: string
-  textStyles?: string
-  variant?: RatingVariant
+  onChange?: (value: number) => void;
+  value: number | string;
+  reviewsCount?: string | number;
+  wrapperStyles?: string;
+  starsWrapperStyles?: string;
+  textStyles?: string;
+  variant?: RatingVariant;
 }
 
 const Start = (props: React.SVGProps<SVGSVGElement>) => (
@@ -31,7 +38,7 @@ const Start = (props: React.SVGProps<SVGSVGElement>) => (
       stroke="inherit"
     />
   </svg>
-)
+);
 export const UiRating = React.forwardRef<HTMLDivElement, UiRatingProps>(
   (
     {
@@ -41,55 +48,63 @@ export const UiRating = React.forwardRef<HTMLDivElement, UiRatingProps>(
       reviewsCount,
       starsWrapperStyles,
       textStyles,
-      variant = "short"
+      variant = 'short',
     },
     ref
   ) => {
-    if (variant === "short") {
+    if (variant === 'short') {
       return (
-        <div className={"flex items-center justify-center gap-1"}>
-          <Start className={"fill-[#FFB906]"} />
+        <div className={cn(ratingShortVariants({ variant: 'default' }))}>
+          <Start
+            className={cn(ratingStarFilledVariants({ variant: 'default' }))}
+          />
           <div>
-            <UiText className={"font-medium"} variant={"body3-medium"}>
+            <UiText className={'font-medium'} variant={'body3-medium'}>
               {Number(value).toFixed(1)}
             </UiText>
           </div>
         </div>
-      )
+      );
     }
 
     return (
-      <div className={cn("flex flex-col items-center gap-2", wrapperStyles)}>
+      <div
+        className={cn(
+          ratingFullVariants({ variant: 'default' }),
+          wrapperStyles
+        )}
+      >
         <div
           className={cn(
-            `flex flex-row-reverse items-center gap-2 hover:cursor-default`,
-            starsWrapperStyles,
-            onChange &&
-              "hover:cursor-pointer [&_button:hover_svg]:fill-[#FFB906] [&_button:hover_~_button_svg]:fill-[#FFB906]"
+            ratingStarsVariants({
+              variant: onChange ? 'interactive' : 'default',
+            }),
+            starsWrapperStyles
           )}
         >
           {[5, 4, 3, 2, 1].map((item, index) => (
             <button
               key={item}
-              type={"button"}
+              type={'button'}
               onClick={() => onChange && onChange(item)}
             >
               <Start
-                className={cn(`fill-transparent stroke-[#FFB906]`, {
-                  "fill-[#FFB906]": item <= +value
-                })}
+                className={cn(
+                  ratingStarVariants({ variant: 'default' }),
+                  item <= +value && ratingStarVariants({ variant: 'filled' })
+                )}
               />
             </button>
           ))}
         </div>
 
         {reviewsCount && (
-          <UiText className={textStyles} variant={"body3-medium"}>
+          <UiText className={textStyles} variant={'body3-medium'}>
             ({reviewsCount} reviews)
           </UiText>
         )}
       </div>
-    )
+    );
   }
-)
-UiRating.displayName = "UiRating"
+);
+UiRating.displayName = 'UiRating';

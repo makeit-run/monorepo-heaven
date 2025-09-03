@@ -1,33 +1,39 @@
-"use client"
+'use client';
 
-import * as ProgressPrimitive from "@radix-ui/react-progress"
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import * as React from "react"
+import * as React from 'react';
+import * as ProgressPrimitive from '@radix-ui/react-progress';
+import { type VariantProps } from 'class-variance-authority';
 
-import { progressIndicatorStyles, progressStyles } from "./config"
+import { cn } from '@shared/utils/cn';
+import { progressVariants, progressIndicatorVariants } from './config';
 
-interface UiProgressProps
-  extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>,
-    VariantProps<typeof progressStyles> {
-  indicatorStyles?: VariantProps<typeof progressIndicatorStyles>
+export interface UiProgressProps
+  extends React.ComponentProps<typeof ProgressPrimitive.Root>,
+    VariantProps<typeof progressVariants> {
+  indicatorClassName?: string;
 }
 
-const UiProgress = React.forwardRef<
-  React.ElementRef<typeof ProgressPrimitive.Root>,
-  UiProgressProps
->(({ className, variant, indicatorStyles, value, ...props }, ref) => (
-  <ProgressPrimitive.Root
-    ref={ref}
-    className={cn(progressStyles({ variant }), className)}
-    {...props}
-  >
-    <ProgressPrimitive.Indicator
-      className={progressIndicatorStyles(indicatorStyles)}
-      style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
-    />
-  </ProgressPrimitive.Root>
-))
-UiProgress.displayName = ProgressPrimitive.Root.displayName
+function UiProgress({
+  className,
+  indicatorClassName,
+  variant,
+  size,
+  value,
+  ...props
+}: UiProgressProps) {
+  return (
+    <ProgressPrimitive.Root
+      data-slot="progress"
+      className={cn(progressVariants({ variant, size }), className)}
+      {...props}
+    >
+      <ProgressPrimitive.Indicator
+        data-slot="progress-indicator"
+        className={cn(progressIndicatorVariants({ variant }), indicatorClassName)}
+        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
+      />
+    </ProgressPrimitive.Root>
+  );
+}
 
-export { UiProgress }
+export { UiProgress };

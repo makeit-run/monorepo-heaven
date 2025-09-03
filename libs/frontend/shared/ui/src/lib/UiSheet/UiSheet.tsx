@@ -1,134 +1,137 @@
-"use client"
+'use client';
 
-import * as SheetPrimitive from "@radix-ui/react-dialog"
-import { cn } from "@shared/utils/cn"
-import { type VariantProps } from "class-variance-authority"
-import { X } from "lucide-react"
-import * as React from "react"
-import { ReactNode } from "react"
+import * as React from 'react';
+import * as SheetPrimitive from '@radix-ui/react-dialog';
+import { XIcon } from 'lucide-react';
 
-import { textStyles } from "../UiText/config"
-import { sheetVariants } from "./config"
+import { cn } from '@shared/utils/cn';
+import {
+  sheetOverlayVariants,
+  sheetContentVariants,
+  sheetCloseVariants,
+  sheetCloseIconVariants,
+  sheetHeaderVariants,
+  sheetFooterVariants,
+  sheetTitleVariants,
+  sheetDescriptionVariants,
+} from './config';
 
-const UiSheet = SheetPrimitive.Root
-const UiSheetTrigger = SheetPrimitive.Trigger
-const UiSheetClose = SheetPrimitive.Close
-const UiSheetPortal = SheetPrimitive.Portal
-
-const UiSheetOverlay = React.forwardRef<
-  React.ElementRef<typeof SheetPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
->(({ className, ...props }, ref) => (
-  <SheetPrimitive.Overlay
-    className={cn(
-      "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50",
-      className
-    )}
-    {...props}
-    ref={ref}
-  />
-))
-UiSheetOverlay.displayName = SheetPrimitive.Overlay.displayName
-
-interface SheetContentProps
-  extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
-    VariantProps<typeof sheetVariants> {
-  closeIcon?: ReactNode
+function UiSheet({
+  ...props
+}: React.ComponentProps<typeof SheetPrimitive.Root>) {
+  return <SheetPrimitive.Root data-slot="sheet" {...props} />;
 }
 
-const UiSheetContent = React.forwardRef<
-  React.ElementRef<typeof SheetPrimitive.Content>,
-  SheetContentProps
->(
-  (
-    { closeIcon, side = "right", variant, className, children, ...props },
-    ref
-  ) => (
+function UiSheetTrigger({
+  ...props
+}: React.ComponentProps<typeof SheetPrimitive.Trigger>) {
+  return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />;
+}
+
+function UiSheetClose({
+  ...props
+}: React.ComponentProps<typeof SheetPrimitive.Close>) {
+  return <SheetPrimitive.Close data-slot="sheet-close" {...props} />;
+}
+
+function UiSheetPortal({
+  ...props
+}: React.ComponentProps<typeof SheetPrimitive.Portal>) {
+  return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />;
+}
+
+function UiSheetOverlay({
+  className,
+  ...props
+}: React.ComponentProps<typeof SheetPrimitive.Overlay>) {
+  return (
+    <SheetPrimitive.Overlay
+      data-slot="sheet-overlay"
+      className={cn(sheetOverlayVariants({ variant: 'default' }), className)}
+      {...props}
+    />
+  );
+}
+
+function UiSheetContent({
+  className,
+  children,
+  side = 'right',
+  ...props
+}: React.ComponentProps<typeof SheetPrimitive.Content> & {
+  side?: 'top' | 'right' | 'bottom' | 'left';
+}) {
+  return (
     <UiSheetPortal>
       <UiSheetOverlay />
       <SheetPrimitive.Content
-        ref={ref}
-        className={cn(sheetVariants({ side, variant }), className)}
+        data-slot="sheet-content"
+        className={cn(sheetContentVariants({ variant: 'default', side }), className)}
         {...props}
       >
         {children}
-        <SheetPrimitive.Close className="focus:ring-ring z-100 absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-0 disabled:pointer-events-none data-[state=open]:bg-none">
-          <div className={"text-gray-500"}>
-            {closeIcon ? closeIcon : <X size={20} />}
-          </div>
+        <SheetPrimitive.Close className={cn(sheetCloseVariants({ variant: 'default' }))}>
+          <XIcon className={cn(sheetCloseIconVariants({ variant: 'default' }))} />
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>
       </SheetPrimitive.Content>
     </UiSheetPortal>
-  )
-)
-UiSheetContent.displayName = SheetPrimitive.Content.displayName
+  );
+}
 
-const UiSheetHeader = ({
+function UiSheetHeader({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div
+      data-slot="sheet-header"
+      className={cn(sheetHeaderVariants({ variant: 'default' }), className)}
+      {...props}
+    />
+  );
+}
+
+function UiSheetFooter({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div
+      data-slot="sheet-footer"
+      className={cn(sheetFooterVariants({ variant: 'default' }), className)}
+      {...props}
+    />
+  );
+}
+
+function UiSheetTitle({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      "flex flex-col space-y-2 text-center sm:text-left",
-      className
-    )}
-    {...props}
-  />
-)
-UiSheetHeader.displayName = "SheetHeader"
+}: React.ComponentProps<typeof SheetPrimitive.Title>) {
+  return (
+    <SheetPrimitive.Title
+      data-slot="sheet-title"
+      className={cn(sheetTitleVariants({ variant: 'default' }), className)}
+      {...props}
+    />
+  );
+}
 
-const UiSheetFooter = ({
+function UiSheetDescription({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
-      className
-    )}
-    {...props}
-  />
-)
-UiSheetFooter.displayName = "SheetFooter"
-
-const UiSheetTitle = React.forwardRef<
-  React.ElementRef<typeof SheetPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>
->(({ className, ...props }, ref) => (
-  <SheetPrimitive.Title
-    ref={ref}
-    className={textStyles({ variant: "h4", className })}
-    {...props}
-  />
-))
-UiSheetTitle.displayName = SheetPrimitive.Title.displayName
-
-const UiSheetDescription = React.forwardRef<
-  React.ElementRef<typeof SheetPrimitive.Description>,
-  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Description>
->(({ className, ...props }, ref) => (
-  <SheetPrimitive.Description
-    ref={ref}
-    className={textStyles({
-      variant: "body4",
-      color: 600,
-      className
-    })}
-    {...props}
-  />
-))
-UiSheetDescription.displayName = SheetPrimitive.Description.displayName
+}: React.ComponentProps<typeof SheetPrimitive.Description>) {
+  return (
+    <SheetPrimitive.Description
+      data-slot="sheet-description"
+      className={cn(sheetDescriptionVariants({ variant: 'default' }), className)}
+      {...props}
+    />
+  );
+}
 
 export {
   UiSheet,
-  UiSheetPortal,
-  UiSheetOverlay,
   UiSheetTrigger,
   UiSheetClose,
   UiSheetContent,
   UiSheetHeader,
   UiSheetFooter,
   UiSheetTitle,
-  UiSheetDescription
-}
+  UiSheetDescription,
+};

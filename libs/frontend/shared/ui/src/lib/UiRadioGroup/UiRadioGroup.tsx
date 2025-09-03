@@ -1,56 +1,63 @@
-"use client"
+'use client';
 
-import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import * as React from "react"
+import * as React from 'react';
+import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
+import { CircleIcon } from 'lucide-react';
+import { type VariantProps } from 'class-variance-authority';
 
+import { cn } from '@shared/utils/cn';
 import {
-  radioGroupIndicatorStyles,
-  radioGroupItemStyles,
-  radioGroupStyles
-} from "./config"
+  radioGroupVariants,
+  radioGroupItemVariants,
+  radioGroupIndicatorVariants,
+  radioGroupIndicatorIconVariants,
+} from './config';
 
-const UiRadioGroup = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> &
-    VariantProps<typeof radioGroupStyles>
->(({ className, variant, ...props }, ref) => (
-  <RadioGroupPrimitive.Root
-    ref={ref}
-    className={cn(radioGroupStyles({ variant }), className)}
-    {...props}
-  />
-))
-UiRadioGroup.displayName = RadioGroupPrimitive.Root.displayName
+export interface UiRadioGroupProps
+  extends React.ComponentProps<typeof RadioGroupPrimitive.Root>,
+    VariantProps<typeof radioGroupVariants> {}
 
-const UiRadioGroupIndicator = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Indicator>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Indicator> &
-    VariantProps<typeof radioGroupIndicatorStyles>
->(({ className, variant, children, ...props }, ref) => (
-  <RadioGroupPrimitive.Indicator
-    ref={ref}
-    className={cn(radioGroupIndicatorStyles({ variant }), className)}
-    {...props}
-  />
-))
-UiRadioGroupIndicator.displayName = "UiRadioGroupIndicator"
+function UiRadioGroup({
+  className,
+  variant,
+  orientation,
+  ...props
+}: UiRadioGroupProps) {
+  return (
+    <RadioGroupPrimitive.Root
+      data-slot="radio-group"
+      className={cn(radioGroupVariants({ variant, orientation }), className)}
+      {...props}
+    />
+  );
+}
 
-const UiRadioGroupItem = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> &
-    VariantProps<typeof radioGroupItemStyles>
->(({ className, variant, children, ...props }, ref) => (
-  <RadioGroupPrimitive.Item
-    ref={ref}
-    className={cn(radioGroupItemStyles({ variant }), className)}
-    {...props}
-  >
-    <div className="flex items-center">{children}</div>
-    <UiRadioGroupIndicator />
-  </RadioGroupPrimitive.Item>
-))
-UiRadioGroupItem.displayName = "RadioGroupItem"
+export interface UiRadioGroupItemProps
+  extends React.ComponentProps<typeof RadioGroupPrimitive.Item>,
+    VariantProps<typeof radioGroupItemVariants> {}
 
-export { UiRadioGroup, UiRadioGroupItem, UiRadioGroupIndicator }
+function UiRadioGroupItem({
+  className,
+  variant,
+  size,
+  ...props
+}: UiRadioGroupItemProps) {
+  return (
+    <RadioGroupPrimitive.Item
+      data-slot="radio-group-item"
+      className={cn(radioGroupItemVariants({ variant, size }), className)}
+      {...props}
+    >
+      <RadioGroupPrimitive.Indicator
+        data-slot="radio-group-indicator"
+        className={cn(radioGroupIndicatorVariants({ variant }))}
+      >
+        <CircleIcon
+          className={cn(radioGroupIndicatorIconVariants({ variant, size }))}
+        />
+      </RadioGroupPrimitive.Indicator>
+    </RadioGroupPrimitive.Item>
+  );
+}
+
+export { UiRadioGroup, UiRadioGroupItem };

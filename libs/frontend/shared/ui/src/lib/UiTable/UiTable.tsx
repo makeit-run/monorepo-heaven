@@ -1,117 +1,107 @@
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import * as React from "react"
+'use client';
 
+import * as React from 'react';
+
+import { cn } from '@shared/utils/cn';
 import {
-  tableBodyStyles,
-  tableCaptionStyles,
-  tableCellStyles,
-  tableFooterStyles,
-  tableHeaderStyles,
-  tableHeadStyles,
-  tableRowStyles,
-  tableStyles
-} from "./config"
+  tableContainerVariants,
+  tableVariants,
+  tableHeaderVariants,
+  tableBodyVariants,
+  tableFooterVariants,
+  tableRowVariants,
+  tableHeadVariants,
+  tableCellVariants,
+  tableCaptionVariants,
+} from './config';
 
-const UiTable = React.forwardRef<
-  HTMLTableElement,
-  React.HTMLAttributes<HTMLTableElement> & VariantProps<typeof tableStyles>
->(({ className, variant, ...props }, ref) => (
-  <div className="relative w-full overflow-auto">
-    <table
-      ref={ref}
-      className={cn(tableStyles({ variant }), className)}
+function UiTable({ className, ...props }: React.ComponentProps<'table'>) {
+  return (
+    <div
+      data-slot="table-container"
+      className={cn(tableContainerVariants({ variant: 'default' }))}
+    >
+      <table
+        data-slot="table"
+        className={cn(tableVariants({ variant: 'default' }), className)}
+        {...props}
+      />
+    </div>
+  );
+}
+
+function UiTableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
+  return (
+    <thead
+      data-slot="table-header"
+      className={cn(tableHeaderVariants({ variant: 'default' }), className)}
       {...props}
     />
-  </div>
-))
-UiTable.displayName = "Table"
+  );
+}
 
-const UiTableHeader = React.forwardRef<
-  HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement> &
-    VariantProps<typeof tableHeaderStyles>
->(({ className, variant, ...props }, ref) => (
-  <thead
-    ref={ref}
-    className={cn(tableHeaderStyles({ variant }), className)}
-    {...props}
-  />
-))
-UiTableHeader.displayName = "TableHeader"
+function UiTableBody({ className, ...props }: React.ComponentProps<'tbody'>) {
+  return (
+    <tbody
+      data-slot="table-body"
+      className={cn(tableBodyVariants({ variant: 'default' }), className)}
+      {...props}
+    />
+  );
+}
 
-const UiTableBody = React.forwardRef<
-  HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement> &
-    VariantProps<typeof tableBodyStyles>
->(({ className, variant, ...props }, ref) => (
-  <tbody
-    ref={ref}
-    className={tableBodyStyles({ className, variant })}
-    {...props}
-  />
-))
-UiTableBody.displayName = "TableBody"
+function UiTableFooter({ className, ...props }: React.ComponentProps<'tfoot'>) {
+  return (
+    <tfoot
+      data-slot="table-footer"
+      className={cn(tableFooterVariants({ variant: 'default' }), className)}
+      {...props}
+    />
+  );
+}
 
-const UiTableFooter = React.forwardRef<
-  HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement> &
-    VariantProps<typeof tableFooterStyles>
->(({ className, variant, ...props }, ref) => (
-  <tfoot
-    ref={ref}
-    className={cn(tableFooterStyles({ variant }), className)}
-    {...props}
-  />
-))
-UiTableFooter.displayName = "TableFooter"
+function UiTableRow({ className, ...props }: React.ComponentProps<'tr'>) {
+  return (
+    <tr
+      data-slot="table-row"
+      className={cn(tableRowVariants({ variant: 'default' }), className)}
+      {...props}
+    />
+  );
+}
 
-const UiTableRow = React.forwardRef<
-  HTMLTableRowElement,
-  React.HTMLAttributes<HTMLTableRowElement> &
-    VariantProps<typeof tableRowStyles>
->(({ className, variant, ...props }, ref) => (
-  <tr
-    ref={ref}
-    className={cn(tableRowStyles({ variant }), className)}
-    {...props}
-  />
-))
-UiTableRow.displayName = "TableRow"
+function UiTableHead({ className, ...props }: React.ComponentProps<'th'>) {
+  return (
+    <th
+      data-slot="table-head"
+      className={cn(tableHeadVariants({ variant: 'default' }), className)}
+      {...props}
+    />
+  );
+}
 
-const UiTableHead = React.forwardRef<
-  HTMLTableCellElement,
-  React.ThHTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
-  <th ref={ref} className={cn(tableHeadStyles(), className)} {...props} />
-))
-UiTableHead.displayName = "TableHead"
+function UiTableCell({ className, ...props }: React.ComponentProps<'td'>) {
+  return (
+    <td
+      data-slot="table-cell"
+      className={cn(tableCellVariants({ variant: 'default' }), className)}
+      {...props}
+    />
+  );
+}
 
-const UiTableCell = React.forwardRef<
-  HTMLTableCellElement,
-  React.TdHTMLAttributes<HTMLTableCellElement> &
-    VariantProps<typeof tableCellStyles>
->(({ className, variant, ...props }, ref) => (
-  <td
-    ref={ref}
-    className={cn(tableCellStyles({ variant }), className)}
-    {...props}
-  />
-))
-UiTableCell.displayName = "TableCell"
-
-const UiTableCaption = React.forwardRef<
-  HTMLTableCaptionElement,
-  React.HTMLAttributes<HTMLTableCaptionElement> &
-    VariantProps<typeof tableCaptionStyles>
->(({ className, variant, ...props }, ref) => (
-  <caption
-    ref={ref}
-    className={cn(tableCaptionStyles({ variant }), className)}
-    {...props}
-  />
-))
-UiTableCaption.displayName = "TableCaption"
+function UiTableCaption({
+  className,
+  ...props
+}: React.ComponentProps<'caption'>) {
+  return (
+    <caption
+      data-slot="table-caption"
+      className={cn(tableCaptionVariants({ variant: 'default' }), className)}
+      {...props}
+    />
+  );
+}
 
 export {
   UiTable,
@@ -121,5 +111,5 @@ export {
   UiTableHead,
   UiTableRow,
   UiTableCell,
-  UiTableCaption
-}
+  UiTableCaption,
+};

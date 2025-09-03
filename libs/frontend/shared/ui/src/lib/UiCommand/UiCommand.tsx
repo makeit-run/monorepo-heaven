@@ -77,7 +77,10 @@ function UiCommandDialog({
 
 export interface UiCommandInputProps
   extends React.ComponentProps<typeof CommandPrimitive.Input>,
-    VariantProps<typeof commandInputVariants> {}
+    VariantProps<typeof commandInputVariants> {
+  isLoading?: boolean;
+  icon?: React.ReactNode;
+}
 
 function UiCommandInput({ className, variant, ...props }: UiCommandInputProps) {
   return (

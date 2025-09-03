@@ -37,13 +37,13 @@ interface UiAutocompleteInputProps
 export interface UiAutocompleteProps extends UiAutocompleteInputProps {
   // commandProps?: ComponentProps<typeof UiCommand>
   // inputProps?: ComponentProps<typeof UiCommandInput>
-  search?: string;
-  onChangeSearch?: (value: string) => void;
-  onChangeIsOpen?: (value: boolean) => void;
-  onCloseCallback?: () => void;
+  search: string;
+  onChangeSearch: (value: string) => void;
+  onChangeIsOpen: (value: boolean) => void;
+  onCloseCallback: () => void;
   options: any[];
-  onSelect?: (value: any) => void;
-  isOpen?: boolean;
+  onSelect: (value: any) => void;
+  isOpen: boolean;
   isLoading?: boolean;
   customBody?: ReactNode;
   optionKey?: string | string[];
@@ -78,16 +78,16 @@ function UiAutocomplete({
 
   const onOpenList = () => {
     setOpen(true);
-    onChangeIsOpen && onChangeIsOpen(true);
+    onChangeIsOpen(true);
   };
 
   const onCloseList = () => {
     setOpen(false);
-    onChangeIsOpen && onChangeIsOpen(false);
+    onChangeIsOpen(false);
   };
 
   const onValueChange = (value: string) => {
-    onChangeSearch && onChangeSearch(value);
+    onChangeSearch(value);
 
     if (!mainOpen) {
       onOpenList();
@@ -95,18 +95,18 @@ function UiAutocomplete({
   };
 
   const onClearText = () => {
-    onChangeSearch && onChangeSearch('');
+    onChangeSearch('');
   };
 
   const onSelectHandler = (value: string) => {
-    onSelect && onSelect(value);
+    onSelect(value);
     onCloseList();
   };
 
   useEffect(() => {
     if (clickOutside) {
       onCloseList();
-      onCloseCallback && onCloseCallback();
+      onCloseCallback();
     }
   }, [clickOutside]);
 
@@ -117,7 +117,7 @@ function UiAutocomplete({
       shouldFilter={shouldFilter}
     >
       <UiAutocompleteInput
-        loading={isLoading}
+        isLoading={isLoading}
         value={search}
         onValueChange={onValueChange}
         onFocus={onOpenList}
@@ -172,7 +172,7 @@ function UiAutocompleteInput({
       )}
       {label && <UiLabel htmlFor={id}>{label}</UiLabel>}
       <UiCommandInput
-        loading={isLoading}
+        isLoading={isLoading}
         id={id}
         className={cn(
           autocompleteInputStyles({ size }),
@@ -229,7 +229,9 @@ function UiAutocompleteItem({
   if (!displayName) return null;
 
   const onSelectHandler = () => {
-    onSelect && onSelect(option);
+    if (onSelect) {
+      onSelect(option);
+    }
   };
 
   return (

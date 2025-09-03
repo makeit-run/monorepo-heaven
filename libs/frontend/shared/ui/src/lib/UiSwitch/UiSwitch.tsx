@@ -1,41 +1,27 @@
-"use client"
+'use client';
 
-import * as SwitchPrimitives from "@radix-ui/react-switch"
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
-import * as React from "react"
+import * as React from 'react';
+import * as SwitchPrimitive from '@radix-ui/react-switch';
 
-import { switchRootStyles, switchThumbStyles } from "./config"
+import { cn } from '@shared/utils/cn';
+import { switchVariants, switchThumbVariants } from './config';
 
-interface UiSwitchProps
-  extends Omit<
-      React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>,
-      "color"
-    >,
-    VariantProps<typeof switchRootStyles> {
-  thumbStyles?: VariantProps<typeof switchThumbStyles>
-}
-
-const UiSwitch = React.forwardRef<
-  React.ElementRef<typeof SwitchPrimitives.Root>,
-  UiSwitchProps
->(
-  (
-    { className, color, thumbStyles, size, variant, children, ...props },
-    ref
-  ) => (
-    <SwitchPrimitives.Root
-      className={cn(switchRootStyles({ color, variant, size }), className)}
-      ref={ref}
+function UiSwitch({
+  className,
+  ...props
+}: React.ComponentProps<typeof SwitchPrimitive.Root>) {
+  return (
+    <SwitchPrimitive.Root
+      data-slot="switch"
+      className={cn(switchVariants({ variant: 'default' }), className)}
       {...props}
     >
-      {children}
-      <SwitchPrimitives.Thumb
-        className={switchThumbStyles({ color, variant, size })}
+      <SwitchPrimitive.Thumb
+        data-slot="switch-thumb"
+        className={cn(switchThumbVariants({ variant: 'default' }))}
       />
-    </SwitchPrimitives.Root>
-  )
-)
-UiSwitch.displayName = SwitchPrimitives.Root.displayName
+    </SwitchPrimitive.Root>
+  );
+}
 
-export { UiSwitch }
+export { UiSwitch };

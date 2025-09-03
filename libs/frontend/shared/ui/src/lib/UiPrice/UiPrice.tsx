@@ -1,40 +1,66 @@
-import { cn } from "@shared/utils/cn"
-import numeral from "numeral"
+'use client';
 
-import { UiText } from "../UiText/UiText"
+import * as React from 'react';
+import { type VariantProps } from 'class-variance-authority';
+import numeral from 'numeral';
 
-interface UiPriceProps {
-  value: number
-  pattern?: string
-  currency?: string
-  className?: string
+import { cn } from '@shared/utils/cn';
+import {
+  priceVariants,
+  priceCurrencyVariants,
+  priceBaseVariants,
+  priceDecimalsVariants,
+} from './config';
+
+export interface UiPriceProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof priceVariants> {
+  value: number;
+  pattern?: string;
+  currency?: string;
+  hideDecimals?: boolean;
+  hideCurrency?: boolean;
 }
-export const UiPrice = ({
-  value,
-  pattern,
+
+function UiPrice({
   className,
-  currency = "$"
-}: UiPriceProps) => {
-  const formattedString = numeral(value).format(pattern || "(0,0.00)")
-  const base = formattedString.split(".")?.[0]
-  const decimals = formattedString.split(".")?.[1]
+  variant,
+  size,
+  alignment,
+  value,
+  pattern = '(0,0.00)',
+  currency = '$',
+  hideDecimals = false,
+  hideCurrency = false,
+  ...props
+}: UiPriceProps) {
+  const formattedString = numeral(value).format(pattern);
+  const parts = formattedString.split('.');
+  const base = parts[0] || '0';
+  const decimals = parts[1];
+  const hasDecimals = !hideDecimals && decimals !== undefined;
 
   return (
     <div
-      className={cn(
-        "text-primary flex flex-nowrap items-start gap-0.5 py-2",
-        className
-      )}
+      data-slot="price"
+      className={cn(priceVariants({ variant, size, alignment }), className)}
+      {...props}
     >
-      <UiText className={"!leading-0 text-nowrap"} variant={"body3-medium"}>
-        {currency}
-      </UiText>
-      <UiText className={"!text-nowrap !leading-[30px]"} variant={"h3"}>
+      {!hideCurrency && (
+        <span className={cn(priceCurrencyVariants({ variant, size }))}>
+          {currency}
+        </span>
+      )}
+      <span className={cn(priceBaseVariants({ variant, size }))}>
         {base}
-      </UiText>
-      <UiText className={"!leading-0 text-nowrap"} variant={"body3-medium"}>
-        {decimals}
-      </UiText>
+      </span>
+      {hasDecimals && (
+        <span className={cn(priceDecimalsVariants({ variant, size }))}>
+          .{decimals}
+        </span>
+      )}
     </div>
-  )
+  );
 }
+
+export { UiPrice };

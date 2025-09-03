@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority';
 
-export const tableContainerVariants = cva(
-  'relative w-full overflow-x-auto',
+export const typewriterVariants = cva(
+  'text-center text-base font-bold sm:text-xl md:text-3xl lg:text-5xl',
   {
     variants: {
       variant: {
@@ -14,8 +14,8 @@ export const tableContainerVariants = cva(
   }
 );
 
-export const tableVariants = cva(
-  'w-full caption-bottom text-sm',
+export const typewriterContainerVariants = cva(
+  'inline',
   {
     variants: {
       variant: {
@@ -28,8 +28,8 @@ export const tableVariants = cva(
   }
 );
 
-export const tableHeaderVariants = cva(
-  '[&_tr]:border-b',
+export const typewriterWordVariants = cva(
+  'inline-block',
   {
     variants: {
       variant: {
@@ -42,8 +42,8 @@ export const tableHeaderVariants = cva(
   }
 );
 
-export const tableBodyVariants = cva(
-  '[&_tr:last-child]:border-0',
+export const typewriterCharVariants = cva(
+  'hidden text-black opacity-0',
   {
     variants: {
       variant: {
@@ -56,8 +56,8 @@ export const tableBodyVariants = cva(
   }
 );
 
-export const tableFooterVariants = cva(
-  'bg-muted/50 border-t font-medium [&>tr]:last:border-b-0',
+export const typewriterCursorVariants = cva(
+  'inline-block h-4 w-[4px] rounded-sm bg-blue-500 md:h-6 lg:h-10',
   {
     variants: {
       variant: {
@@ -70,8 +70,8 @@ export const tableFooterVariants = cva(
   }
 );
 
-export const tableRowVariants = cva(
-  'hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors',
+export const typewriterSmoothContainerVariants = cva(
+  'flex space-x-1',
   {
     variants: {
       variant: {
@@ -84,8 +84,8 @@ export const tableRowVariants = cva(
   }
 );
 
-export const tableHeadVariants = cva(
-  'text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+export const typewriterSmoothContentVariants = cva(
+  'overflow-hidden',
   {
     variants: {
       variant: {
@@ -98,8 +98,8 @@ export const tableHeadVariants = cva(
   }
 );
 
-export const tableCellVariants = cva(
-  'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+export const typewriterSmoothCharVariants = cva(
+  'text-black dark:text-white',
   {
     variants: {
       variant: {
@@ -112,8 +112,8 @@ export const tableCellVariants = cva(
   }
 );
 
-export const tableCaptionVariants = cva(
-  'text-muted-foreground mt-4 text-sm',
+export const typewriterSmoothCursorVariants = cva(
+  'bg-primary block h-4 w-[4px] rounded-sm sm:h-6 xl:h-12',
   {
     variants: {
       variant: {

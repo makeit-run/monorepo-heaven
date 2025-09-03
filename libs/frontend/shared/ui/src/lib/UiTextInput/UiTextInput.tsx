@@ -9,11 +9,22 @@ import {
 import * as React from "react"
 
 import { UiLabel } from "../UiLabel"
-import { inputStyles, labelStyles } from "./config"
+import {
+  inputStyles,
+  labelStyles,
+  textInputWrapperVariants,
+  textInputContainerVariants,
+  textInputIconVariants,
+  textInputErrorVariants,
+} from "./config"
 
 export interface TextInputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "color">,
-    VariantProps<typeof inputStyles> {
+    VariantProps<typeof inputStyles>,
+    VariantProps<typeof textInputWrapperVariants>,
+    VariantProps<typeof textInputContainerVariants>,
+    VariantProps<typeof textInputIconVariants>,
+    VariantProps<typeof textInputErrorVariants> {
   label?: string
   labelProps?: DetailedHTMLProps<
     LabelHTMLAttributes<HTMLLabelElement>,
@@ -24,6 +35,10 @@ export interface TextInputProps
   icon?: React.ReactNode
   iconPosition?: "left" | "right"
   wrapperClassName?: string
+  wrapperVariant?: VariantProps<typeof textInputWrapperVariants>['variant']
+  containerVariant?: VariantProps<typeof textInputContainerVariants>['variant']
+  iconVariant?: VariantProps<typeof textInputIconVariants>['variant']
+  errorVariant?: VariantProps<typeof textInputErrorVariants>['variant']
 }
 
 export const UiTextInput = forwardRef<HTMLInputElement, TextInputProps>(
@@ -35,14 +50,18 @@ export const UiTextInput = forwardRef<HTMLInputElement, TextInputProps>(
       label,
       icon,
       autoComplete,
-      variant,
-      size,
-      color,
+      variant = 'default',
+      size = 'default',
+      color = 'default',
       id,
       labelProps,
       error,
       iconPosition,
       wrapperClassName,
+      wrapperVariant = 'default',
+      containerVariant = 'default',
+      iconVariant = 'default',
+      errorVariant = 'default',
       ...props
     },
     ref
@@ -50,7 +69,7 @@ export const UiTextInput = forwardRef<HTMLInputElement, TextInputProps>(
     return (
       <div
         className={cn(
-          "font-roboto inline-block text-left",
+          textInputWrapperVariants({ variant: wrapperVariant }),
           fullWidth ? "w-full" : "w-auto",
           wrapperClassName
         )}
@@ -71,7 +90,7 @@ export const UiTextInput = forwardRef<HTMLInputElement, TextInputProps>(
         )}
         <div
           className={cn(
-            "relative flex flex-row items-center",
+            textInputContainerVariants({ variant: containerVariant }),
             iconPosition === "right" && "flex-row-reverse"
           )}
         >
@@ -80,7 +99,6 @@ export const UiTextInput = forwardRef<HTMLInputElement, TextInputProps>(
             autoComplete={autoComplete}
             autoCapitalize="none"
             className={cn(
-              "w-full",
               inputStyles({ size, variant, color }),
               error && "border-red-500",
               icon && (iconPosition === "right" ? "pr-15" : "pl-15"),
@@ -92,14 +110,14 @@ export const UiTextInput = forwardRef<HTMLInputElement, TextInputProps>(
           />
           <div
             className={cn(
-              "absolute left-0.5 top-1/2 flex -translate-y-1/2 translate-x-1/2 cursor-pointer items-center justify-center text-inherit transition-all duration-500",
+              textInputIconVariants({ variant: iconVariant }),
               iconPosition === "right" && "right-0.5 -translate-x-1/2"
             )}
           >
             {icon}
           </div>
         </div>
-        {error && <p className="px-1 pt-1.5 text-xs text-red-600">{error}</p>}
+        {error && <p className={cn(textInputErrorVariants({ variant: errorVariant }))}>{error}</p>}
       </div>
     )
   }
