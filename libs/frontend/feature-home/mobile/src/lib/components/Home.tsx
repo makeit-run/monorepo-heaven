@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { TodoList } from './TodoList';
 import { ArrowLeft } from 'lucide-react-native';
+import { Text } from '@frontend/shared/mobile-ui/Text';
 
 export const Home = () => {
   return (

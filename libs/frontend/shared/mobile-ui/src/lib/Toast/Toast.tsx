@@ -66,7 +66,6 @@ export function Toast({
   closeClassName,
 }: ToastProps) {
   const ToastIcon = getToastIcon(variant);
-
   return (
     <ToastPrimitive.Root
       type="foreground"

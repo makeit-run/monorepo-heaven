@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Keyboard,
-} from 'react-native';
+import { View, Keyboard } from 'react-native';
 import { Checkbox } from '@frontend/shared/mobile-ui/Checkbox/Checkbox';
 import { Edit2, Trash2, Check, X } from 'lucide-react-native';
+import { Text } from '@frontend/shared/mobile-ui/Text';
+import { TextInput } from '@frontend/shared/mobile-ui/TextInput';
+import { Button } from '@frontend/shared/mobile-ui/Button';
+import { LucideIcon } from '@frontend/shared/mobile-ui/LucideIcon';
 
 export interface Todo {
   id: string;
@@ -62,22 +60,17 @@ export const TodoItem = ({
               value={editText}
               onChangeText={setEditText}
               onSubmitEditing={handleSave}
-              className="flex-1 border border-primary/20 rounded-lg px-3 py-2 text-base"
+              containerClassName={'flex-1'}
+              className="border border-primary/20 rounded-lg px-3 py-2 text-base "
               autoFocus
               returnKeyType="done"
             />
-            <TouchableOpacity
-              onPress={handleSave}
-              className="bg-success rounded-lg p-2"
-            >
-              <Check className="h-4 w-4" color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={handleCancel}
-              className="bg-destructive/10 rounded-lg p-2"
-            >
-              <X className="h-4 w-4" color="#ef4444" />
-            </TouchableOpacity>
+            <Button onPress={handleSave} className="bg-success">
+              <LucideIcon icon={Check} className={'text-white'} />
+            </Button>
+            <Button onPress={handleCancel} variant={'destructive'}>
+              <LucideIcon icon={X} className={'text-white'} />
+            </Button>
           </View>
         ) : (
           <View className="flex-1 flex-row items-center justify-between">
@@ -89,18 +82,12 @@ export const TodoItem = ({
               {todo.text}
             </Text>
             <View className="flex-row items-center gap-2">
-              <TouchableOpacity
-                onPress={() => setIsEditing(true)}
-                className="p-2"
-              >
-                <Edit2 className="h-4 w-4" color="#6366f1" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => onDelete(todo.id)}
-                className="p-2"
-              >
-                <Trash2 className="h-4 w-4" color="#ef4444" />
-              </TouchableOpacity>
+              <Button onPress={() => setIsEditing(true)} className="p-2">
+                <LucideIcon icon={Edit2} className={'text-white'} />
+              </Button>
+              <Button onPress={() => onDelete(todo.id)} className="p-2">
+                <LucideIcon icon={Trash2} className={'text-white'} />
+              </Button>
             </View>
           </View>
         )}

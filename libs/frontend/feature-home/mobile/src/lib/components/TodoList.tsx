@@ -55,6 +55,7 @@ export const TodoList = () => {
     );
     const todo = todos.find((t) => t.id === id);
     showToast({
+      variant: 'success',
       title: todo?.completed ? 'Todo unmarked!' : 'Todo completed!',
       description: todo?.completed
         ? 'Todo marked as incomplete.'
