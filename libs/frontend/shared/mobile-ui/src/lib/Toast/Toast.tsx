@@ -1,56 +1,55 @@
-import { cn } from "@shared/utils/cn"
+import { cn } from '@shared/utils/cn';
 import {
   AlertCircle,
   AlertTriangle,
   CheckCircle,
   Info,
-  X
-} from "lucide-react-native"
-import * as React from "react"
-import { View } from "react-native"
-import { type VariantProps } from "tailwind-variants"
+  X,
+} from 'lucide-react-native';
+import { View } from 'react-native';
+import { type VariantProps } from 'tailwind-variants';
 
-import * as ToastPrimitive from "../@Primitives/components/Toast/ToastPrimitive"
-import { LucideIcon } from "../LucideIcon"
-import { Text, TextClassContext } from "../Text"
+import * as ToastPrimitive from '../@Primitives/components/Toast/ToastPrimitive';
+import { LucideIcon } from '../LucideIcon';
+import { Text, TextClassContext } from '../Text';
 import {
   toastActionVariants,
   toastDescriptionVariants,
   toastTitleVariants,
-  toastVariants
-} from "./config"
+  toastVariants,
+} from './config';
 
-export type ToastVariant = VariantProps<typeof toastVariants>["variant"]
+export type ToastVariant = VariantProps<typeof toastVariants>['variant'];
 
 export interface ToastProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  variant?: ToastVariant
-  title?: string
-  description?: string
-  actionLabel?: string
-  onAction?: () => void
-  showClose?: boolean
-  titleClassName?: string
-  descriptionClassName?: string
-  actionClassName?: string
-  closeClassName?: string
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  variant?: ToastVariant;
+  title?: string;
+  description?: string;
+  actionLabel?: string;
+  onAction?: () => void;
+  showClose?: boolean;
+  titleClassName?: string;
+  descriptionClassName?: string;
+  actionClassName?: string;
+  closeClassName?: string;
 }
 
 const getToastIcon = (variant?: ToastVariant) => {
   switch (variant) {
-    case "success":
-      return CheckCircle
-    case "error":
-      return AlertCircle
-    case "warning":
-      return AlertTriangle
-    case "info":
-    case "gray":
+    case 'success':
+      return CheckCircle;
+    case 'error':
+      return AlertCircle;
+    case 'warning':
+      return AlertTriangle;
+    case 'info':
+    case 'gray':
     default:
-      return Info
+      return Info;
   }
-}
+};
 
 export function Toast({
   open,
@@ -64,9 +63,9 @@ export function Toast({
   titleClassName,
   descriptionClassName,
   actionClassName,
-  closeClassName
+  closeClassName,
 }: ToastProps) {
-  const ToastIcon = getToastIcon(variant)
+  const ToastIcon = getToastIcon(variant);
 
   return (
     <ToastPrimitive.Root
@@ -80,8 +79,8 @@ export function Toast({
           <LucideIcon
             icon={ToastIcon}
             className={cn(
-              "size-5",
-              variant === "warning" ? "text-black" : "text-white"
+              'size-5',
+              variant === 'warning' ? 'text-black' : 'text-white'
             )}
           />
         </View>
@@ -96,7 +95,7 @@ export function Toast({
           {description && (
             <TextClassContext.Provider
               value={toastDescriptionVariants({
-                variant
+                variant,
               })}
             >
               <ToastPrimitive.Description>
@@ -118,17 +117,17 @@ export function Toast({
           </TextClassContext.Provider>
         )}
         {showClose && (
-          <ToastPrimitive.Close className={cn("p-1", closeClassName)}>
+          <ToastPrimitive.Close className={cn('p-1', closeClassName)}>
             <LucideIcon
               icon={X}
               className={cn(
-                "size-5",
-                variant === "warning" ? "text-black" : "text-white"
+                'size-5',
+                variant === 'warning' ? 'text-black' : 'text-white'
               )}
             />
           </ToastPrimitive.Close>
         )}
       </View>
     </ToastPrimitive.Root>
-  )
+  );
 }

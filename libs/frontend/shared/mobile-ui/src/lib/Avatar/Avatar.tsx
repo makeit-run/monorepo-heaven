@@ -1,48 +1,73 @@
-import { cn } from "@shared/utils/cn"
-import * as React from "react"
+import React from 'react';
+import { cn } from '@shared/utils/cn';
+import { VariantProps } from 'class-variance-authority';
+import * as AvatarPrimitive from '../@Primitives/components/Avatar';
+import {
+  avatarVariants,
+  avatarImageVariants,
+  avatarFallbackVariants,
+} from './config';
 
-import * as AvatarPrimitive from "../@Primitives/components/Avatar"
+// Create context for variant propagation
+const AvatarContext = React.createContext<{
+  variant?: VariantProps<typeof avatarVariants>['variant'];
+  size?: VariantProps<typeof avatarVariants>['size'];
+}>({ variant: 'default', size: 'md' });
 
-const Avatar = React.forwardRef<
-  AvatarPrimitive.RootRef,
-  AvatarPrimitive.RootProps
->(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Root
-    ref={ref}
-    className={cn(
-      "relative flex size-10 shrink-0 overflow-hidden rounded-full",
-      className
-    )}
-    {...props}
-  />
-))
-Avatar.displayName = AvatarPrimitive.Root.displayName
+function Avatar({
+  className,
+  variant = 'default',
+  size = 'md',
+  children,
+  ...props
+}: AvatarPrimitive.RootProps &
+  React.RefAttributes<AvatarPrimitive.RootRef> &
+  VariantProps<typeof avatarVariants>) {
+  return (
+    <AvatarContext.Provider value={{ variant, size }}>
+      <AvatarPrimitive.Root
+        className={cn(avatarVariants({ variant, size }), className)}
+        {...props}
+      >
+        {children}
+      </AvatarPrimitive.Root>
+    </AvatarContext.Provider>
+  );
+}
 
-const AvatarImage = React.forwardRef<
-  AvatarPrimitive.ImageRef,
-  AvatarPrimitive.ImageProps
->(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Image
-    ref={ref}
-    className={cn("aspect-square size-full", className)}
-    {...props}
-  />
-))
-AvatarImage.displayName = AvatarPrimitive.Image.displayName
+function AvatarImage({
+  className,
+  ...props
+}: AvatarPrimitive.ImageProps & React.RefAttributes<AvatarPrimitive.ImageRef>) {
+  const { variant } = React.useContext(AvatarContext);
 
-const AvatarFallback = React.forwardRef<
-  AvatarPrimitive.FallbackRef,
-  AvatarPrimitive.FallbackProps
->(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Fallback
-    ref={ref}
-    className={cn(
-      "bg-muted flex size-full items-center justify-center rounded-full",
-      className
-    )}
-    {...props}
-  />
-))
-AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
+  return (
+    <AvatarPrimitive.Image
+      className={cn(
+        avatarImageVariants({ variant: variant as any }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
 
-export { Avatar, AvatarFallback, AvatarImage }
+function AvatarFallback({
+  className,
+  ...props
+}: AvatarPrimitive.FallbackProps &
+  React.RefAttributes<AvatarPrimitive.FallbackRef>) {
+  const { variant } = React.useContext(AvatarContext);
+
+  return (
+    <AvatarPrimitive.Fallback
+      className={cn(
+        avatarFallbackVariants({ variant: variant as any }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export { Avatar, AvatarFallback, AvatarImage };

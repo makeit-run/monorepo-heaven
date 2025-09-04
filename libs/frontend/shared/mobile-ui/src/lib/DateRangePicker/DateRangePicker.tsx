@@ -1,30 +1,38 @@
-import DateTimePicker from "react-native-ui-datepicker"
-import { DatePickerRangeProps } from "react-native-ui-datepicker/src/datetime-picker"
+import DateTimePicker from 'react-native-ui-datepicker';
 
-import { dateRangePickerVariants } from "@frontend/shared/mobile-ui/DateRangePicker/config"
+import { dateRangePickerVariants } from '@frontend/shared/mobile-ui/DateRangePicker/config';
+import type { Dayjs } from 'dayjs';
+type DateTimePickerProps = React.ComponentProps<typeof DateTimePicker>;
 
-interface DateRangePickerProps extends Omit<DatePickerRangeProps, "mode"> {}
+type DateRangePickerProps = Omit<DateTimePickerProps, 'mode'> & {
+  onChange: (params: {
+    startDate: string | number | Dayjs | Date | null | undefined;
+    endDate: string | number | Dayjs | Date | null | undefined;
+  }) => void;
+};
 
 export function DateRangePicker({
   classNames,
   ...props
 }: DateRangePickerProps) {
-  const slots = dateRangePickerVariants()
+  const slots = dateRangePickerVariants();
 
   const getSlotsStyles = () => {
-    return Object.entries(slots).reduce((acc, [key, styles]) => {
-      acc[key] = styles()
-      return acc
-    }, {})
-  }
+    return Object.entries(slots).reduce(
+      (acc: any, [key, styles]: [string, any]) => {
+        acc[key] = styles();
+        return acc;
+      },
+      {}
+    );
+  };
 
   return (
     <DateTimePicker
-      // if need monday as a start of week
       firstDayOfWeek={1}
       mode="range"
       classNames={{ ...getSlotsStyles(), ...classNames }}
       {...props}
     />
-  )
+  );
 }

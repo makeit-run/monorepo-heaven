@@ -1,60 +1,77 @@
-import { tv } from 'tailwind-variants';
+import { cva } from 'class-variance-authority';
+import { Platform } from 'react-native';
+import { cn } from '@shared/utils/cn';
 
-export const checkboxVariants = tv({
-  base: 'flex self-center aria-[disabled=true]:opacity-50 items-center justify-center rounded-sm border-2 overflow-hidden',
-  variants: {
-    variant: {
-      default: 'border-primary bg-white',
-      secondary: 'border-gray-300 bg-white',
+export const checkboxVariants = cva(
+  cn(
+    'border-input dark:bg-input/30 size-4 shrink-0 rounded-[4px] border shadow-sm shadow-black/5',
+    Platform.select({
+      web: 'focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive peer cursor-default outline-none transition-shadow focus-visible:ring-[3px] disabled:cursor-not-allowed',
+      native: 'overflow-hidden',
+    })
+  ),
+  {
+    variants: {
+      variant: {
+        default: '',
+      },
+      size: {
+        sm: 'size-3',
+        md: 'size-4',
+        lg: 'size-5',
+      },
     },
-    size: {
-      // xs: "size-[18px]",
-      sm: 'h-[25px] w-[25px]',
-      md: 'h-[27px] w-[27px]',
-      lg: 'h-[29px] w-[29px]',
+    defaultVariants: {
+      variant: 'default',
+      size: 'md',
     },
-  },
-  defaultVariants: {
-    variant: 'default',
-    size: 'md',
-  },
-});
+  }
+);
 
-export const checkboxIndicatorVariants = tv({
-  base: 'flex items-center justify-center h-full w-full',
-  variants: {
-    variant: {
-      default: 'bg-primary',
-      secondary: 'bg-gray-300',
+export const checkboxCheckedVariants = cva(
+  'border-primary',
+  {
+    variants: {
+      variant: {
+        default: '',
+      },
     },
-    size: {
-      xs: 'size-full',
-      sm: 'size-full',
-      md: 'size-full',
-      lg: 'size-full',
+    defaultVariants: {
+      variant: 'default',
     },
-  },
-  defaultVariants: {
-    variant: 'default',
-    size: 'md',
-  },
-});
+  }
+);
 
-export const iconVariants = tv({
-  base: 'flex items-center justify-center',
-  variants: {
-    variant: {
-      default: 'text-white',
-      secondary: 'text-white',
+export const checkboxIndicatorVariants = cva(
+  'bg-primary h-full w-full items-center justify-center',
+  {
+    variants: {
+      variant: {
+        default: '',
+      },
     },
-    size: {
-      sm: 'h-[23px] w-[23px]',
-      md: 'h-[25px] w-[25px]',
-      lg: 'h-[27px] w-[27px]',
+    defaultVariants: {
+      variant: 'default',
     },
-  },
-  defaultVariants: {
-    variant: 'default',
-    size: 'md',
-  },
-});
+  }
+);
+
+export const checkboxIconVariants = cva(
+  'text-primary-foreground',
+  {
+    variants: {
+      variant: {
+        default: '',
+      },
+      size: {
+        sm: '',
+        md: '',
+        lg: '',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'md',
+    },
+  }
+);

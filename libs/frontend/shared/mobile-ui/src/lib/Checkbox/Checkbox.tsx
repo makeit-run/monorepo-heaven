@@ -1,56 +1,73 @@
-import { cn } from "@shared/utils/cn"
-import { Check } from "lucide-react-native"
-import * as React from "react"
-import { View } from "react-native"
-import { type VariantProps } from "tailwind-variants"
-
-import * as CheckboxPrimitive from "../@Primitives/components/Checkbox/CheckboxPrimitive"
-import { LucideIcon } from "../LucideIcon"
+import React from 'react';
+import { cn } from '@shared/utils/cn';
+import { VariantProps } from 'class-variance-authority';
+import * as CheckboxPrimitive from '../@Primitives/components/Checkbox';
+import { Check } from 'lucide-react-native';
+import { Platform } from 'react-native';
+import { LucideIcon } from '../LucideIcon/LucideIcon';
 import {
-  checkboxIndicatorVariants,
   checkboxVariants,
-  iconVariants
-} from "./config"
+  checkboxCheckedVariants,
+  checkboxIndicatorVariants,
+  checkboxIconVariants,
+} from './config';
 
-type CheckboxProps = React.ComponentPropsWithoutRef<
-  typeof CheckboxPrimitive.Root
-> &
+// Create context for variant propagation
+const CheckboxContext = React.createContext<{
+  variant?: VariantProps<typeof checkboxVariants>['variant'];
+  size?: VariantProps<typeof checkboxVariants>['size'];
+}>({ variant: 'default', size: 'md' });
+const DEFAULT_HIT_SLOP = 24;
+
+function Checkbox({
+  className,
+  variant = 'default',
+  size = 'md',
+  checkedClassName,
+  indicatorClassName,
+  iconClassName,
+  ...props
+}: CheckboxPrimitive.RootProps &
+  React.RefAttributes<CheckboxPrimitive.RootRef> &
   VariantProps<typeof checkboxVariants> & {
-    className?: string
-    indicatorClassName?: string
-  }
+    checkedClassName?: string;
+    indicatorClassName?: string;
+    iconClassName?: string;
+  }) {
+  const iconSize = size === 'sm' ? 10 : size === 'lg' ? 14 : 12;
 
-const Checkbox = React.forwardRef<
-  React.ElementRef<typeof CheckboxPrimitive.Root>,
-  CheckboxProps
->(({ className, variant, size, indicatorClassName, ...props }, ref) => {
   return (
-    <CheckboxPrimitive.Root
-      ref={ref}
-      className={cn(checkboxVariants({ variant, size, className }))}
-      {...props}
-    >
-      <CheckboxPrimitive.Indicator
+    <CheckboxContext.Provider value={{ variant, size }}>
+      <CheckboxPrimitive.Root
         className={cn(
-          checkboxIndicatorVariants({
-            variant,
-            size,
-            className: indicatorClassName
-          })
+          checkboxVariants({ variant, size }),
+          props.checked &&
+            cn(checkboxCheckedVariants({ variant }), checkedClassName),
+          props.disabled && 'opacity-50',
+          className
         )}
+        hitSlop={DEFAULT_HIT_SLOP}
+        {...props}
       >
-        <View className="flex size-full items-center justify-center">
+        <CheckboxPrimitive.Indicator
+          className={cn(
+            checkboxIndicatorVariants({ variant }),
+            indicatorClassName
+          )}
+        >
           <LucideIcon
             icon={Check}
-            className={cn(iconVariants({ size, variant }))}
+            size={iconSize}
+            strokeWidth={Platform.OS === 'web' ? 2.5 : 3.5}
+            className={cn(
+              checkboxIconVariants({ variant, size }),
+              iconClassName
+            )}
           />
-        </View>
-      </CheckboxPrimitive.Indicator>
-    </CheckboxPrimitive.Root>
-  )
-})
+        </CheckboxPrimitive.Indicator>
+      </CheckboxPrimitive.Root>
+    </CheckboxContext.Provider>
+  );
+}
 
-Checkbox.displayName = "Checkbox"
-
-export { Checkbox }
-export type { CheckboxProps }
+export { Checkbox };

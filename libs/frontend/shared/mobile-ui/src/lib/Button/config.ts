@@ -1,77 +1,99 @@
-import { tv } from "tailwind-variants"
+import { cva } from 'class-variance-authority';
+import { Platform } from 'react-native';
+import { cn } from '@shared/utils/cn';
 
-export const buttonVariants = tv({
-  base: "group flex  items-center justify-center",
-  variants: {
-    rounded: {
-      small: "rounded-[10px]",
-      full: "rounded-full"
+export const buttonVariants = cva(
+  cn(
+    'group shrink-0 flex-row items-center justify-center gap-2 rounded-md shadow-none',
+    Platform.select({
+      web: "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive whitespace-nowrap outline-none transition-all focus-visible:ring-[3px] disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+    })
+  ),
+  {
+    variants: {
+      variant: {
+        default: cn(
+          'bg-primary active:bg-primary/90 shadow-sm shadow-black/5',
+          Platform.select({ web: 'hover:bg-primary/90' })
+        ),
+        destructive: cn(
+          'bg-destructive active:bg-destructive/90 dark:bg-destructive/60 shadow-sm shadow-black/5',
+          Platform.select({
+            web: 'hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40',
+          })
+        ),
+        outline: cn(
+          'border-border bg-background active:bg-accent dark:bg-input/30 dark:border-input dark:active:bg-input/50 border shadow-sm shadow-black/5',
+          Platform.select({
+            web: 'hover:bg-accent dark:hover:bg-input/50',
+          })
+        ),
+        secondary: cn(
+          'bg-secondary active:bg-secondary/80 shadow-sm shadow-black/5',
+          Platform.select({ web: 'hover:bg-secondary/80' })
+        ),
+        ghost: cn(
+          'active:bg-accent dark:active:bg-accent/50',
+          Platform.select({ web: 'hover:bg-accent dark:hover:bg-accent/50' })
+        ),
+        link: '',
+      },
+      size: {
+        default: cn(
+          'h-10 px-4 py-2 sm:h-9',
+          Platform.select({ web: 'has-[>svg]:px-3' })
+        ),
+        sm: cn(
+          'h-9 gap-1.5 rounded-md px-3 sm:h-8',
+          Platform.select({ web: 'has-[>svg]:px-2.5' })
+        ),
+        lg: cn(
+          'h-11 rounded-md px-6 sm:h-10',
+          Platform.select({ web: 'has-[>svg]:px-4' })
+        ),
+        icon: 'h-10 w-10 sm:h-9 sm:w-9',
+      },
     },
-    variant: {
-      default:
-        "bg-primary active:bg-primary-900 disabled:bg-black-50 border border-primary disabled:border-black-200",
-      destructive: "bg-error active:opacity-60",
-      outline: "border border-primary bg-transparent active:opacity-80",
-      tertiary: "h-min p-0",
-      accent: "bg-accent active:bg-accent-500 disabled:bg-black-50"
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
     },
-    paddingX: {
-      default: "px-[9px]",
-      md: "px-[25px]",
-      lg: "px-[40px]"
-    },
-    paddingY: {
-      default: "py-[8px]"
-    },
-    size: {
-      default: "h-[40px]",
-      sm: "h-[36px]",
-      lg: "h-[50px]",
-      icon: "size-[40px]",
-      iconSmall: "size-[26px]",
-      none: ""
-    }
-  },
-  defaultVariants: {
-    paddingX: "default",
-    paddingY: "default",
-    size: "default",
-    rounded: "full",
-    variant: "default"
-  },
-  compoundVariants: [
-    {
-      variant: "tertiary",
-      class: "h-min"
-    }
-  ]
-})
-
-export const buttonTextVariants = tv({
-  base: "font-medium",
-
-  variants: {
-    variant: {
-      default:
-        "text-black-50 group-active:text-tertiary-500 group-disabled:text-black-300",
-      destructive: "text-text-50",
-      outline: "group-active:text-tertiary-500 text-text-primary",
-      secondary: "text-primary-500 group-disabled:text-black-300",
-      tertiary:
-        "text-primary-500 group-active:underline group-disabled:text-black-300",
-      accent: "text-text-50"
-    },
-    size: {
-      default: "native:!text-[14px]",
-      sm: "native:!text-[12px]",
-      lg: "native:!text-[16px]",
-      icon: "",
-      iconSmall: "",
-      none: ""
-    }
-  },
-  defaultVariants: {
-    variant: "default",
-    size: "default"
   }
-})
+);
+
+export const buttonTextVariants = cva(
+  cn(
+    'text-foreground text-sm font-medium',
+    Platform.select({ web: 'pointer-events-none transition-colors' })
+  ),
+  {
+    variants: {
+      variant: {
+        default: 'text-primary-foreground',
+        destructive: 'text-white',
+        outline: cn(
+          'group-active:text-accent-foreground',
+          Platform.select({ web: 'group-hover:text-accent-foreground' })
+        ),
+        secondary: 'text-secondary-foreground',
+        ghost: 'group-active:text-accent-foreground',
+        link: cn(
+          'text-primary group-active:underline',
+          Platform.select({
+            web: 'underline-offset-4 hover:underline group-hover:underline',
+          })
+        ),
+      },
+      size: {
+        default: '',
+        sm: '',
+        lg: '',
+        icon: '',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
+    },
+  }
+);

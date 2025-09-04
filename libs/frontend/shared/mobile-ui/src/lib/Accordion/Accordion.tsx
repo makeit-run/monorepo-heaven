@@ -1,197 +1,182 @@
-import { cn } from "@shared/utils/cn"
-import { ChevronDown } from "lucide-react-native"
-import * as React from "react"
-import { Platform, Pressable, View } from "react-native"
+import React from 'react';
+import { LucideIcon } from '../LucideIcon';
+import { TextClassContext } from '../Text/Text';
+import * as AccordionPrimitive from '../@Primitives/components/Accordion';
+import { ChevronDown } from 'lucide-react-native';
+import { Platform, Pressable, View } from 'react-native';
 import Animated, {
-  Extrapolation,
-  FadeIn,
   FadeOutUp,
-  interpolate,
   LayoutAnimationConfig,
   LinearTransition,
   useAnimatedStyle,
   useDerivedValue,
-  withTiming
-} from "react-native-reanimated"
-import { type VariantProps } from "tailwind-variants"
-
-import * as AccordionPrimitive from "../@Primitives/components/Accordion"
-import { LucideIcon } from "../LucideIcon"
-import { Text, TextClassContext } from "../Text"
+  withTiming,
+} from 'react-native-reanimated';
+import { cn } from '@shared/utils/cn';
+import { VariantProps } from 'class-variance-authority';
 import {
-  accordionContentTextVariants,
-  accordionContentVariants,
+  accordionVariants,
   accordionItemVariants,
-  accordionTriggerTextVariants,
   accordionTriggerVariants,
-  accordionVariants
-} from "./config"
+  accordionTriggerTextVariants,
+  accordionContentVariants,
+  accordionContentInnerVariants,
+  accordionChevronVariants,
+} from './config';
 
-export type AccordionVariantContextType = {
-  size?: VariantProps<typeof accordionVariants>["size"]
-  color?: VariantProps<typeof accordionVariants>["color"]
-}
+// Create context for variant propagation
+const AccordionContext = React.createContext<{
+  variant?: VariantProps<typeof accordionVariants>['variant'];
+}>({ variant: 'default' });
 
-export const AccordionVariantContext =
-  React.createContext<AccordionVariantContextType>({})
-
-const Accordion = React.forwardRef<
-  AccordionPrimitive.RootRef,
-  AccordionPrimitive.RootProps & AccordionVariantContextType
->(({ children, size, color, ...props }, ref) => {
+function Accordion({
+  children,
+  variant = 'default',
+  ...props
+}: Omit<AccordionPrimitive.RootProps, 'asChild'> &
+  React.RefAttributes<AccordionPrimitive.RootRef> &
+  VariantProps<typeof accordionVariants>) {
   return (
-    <AccordionVariantContext.Provider value={{ size, color }}>
+    <AccordionContext.Provider value={{ variant }}>
       <LayoutAnimationConfig skipEntering>
         <AccordionPrimitive.Root
-          ref={ref}
-          {...props}
-          asChild={Platform.OS !== "web"}
+          {...(props as AccordionPrimitive.RootProps)}
+          asChild={Platform.OS !== 'web'}
         >
-          <Animated.View layout={LinearTransition.duration(200)}>
+          <Animated.View
+            className={cn(accordionVariants({ variant }))}
+            layout={LinearTransition.duration(200)}
+          >
             {children}
           </Animated.View>
         </AccordionPrimitive.Root>
       </LayoutAnimationConfig>
-    </AccordionVariantContext.Provider>
-  )
-})
-Accordion.displayName = AccordionPrimitive.Root.displayName
+    </AccordionContext.Provider>
+  );
+}
 
-const AccordionItem = React.forwardRef<
-  AccordionPrimitive.ItemRef,
-  AccordionPrimitive.ItemProps
->(({ className, value, ...props }, ref) => {
-  const { size, color } = React.useContext(AccordionVariantContext)
+function AccordionItem({
+  children,
+  className,
+  value,
+  ...props
+}: AccordionPrimitive.ItemProps &
+  React.RefAttributes<AccordionPrimitive.ItemRef>) {
+  const { variant } = React.useContext(AccordionContext);
+
   return (
-    <Animated.View
-      className={"overflow-hidden"}
-      layout={LinearTransition.duration(200)}
+    <AccordionPrimitive.Item
+      className={cn(
+        accordionItemVariants({ variant: variant as any }),
+        Platform.select({ web: 'last:border-b-0' }),
+        className
+      )}
+      value={value}
+      asChild
+      {...props}
     >
-      <AccordionPrimitive.Item
-        ref={ref}
-        className={cn(accordionItemVariants({ size, color }), className)}
-        value={value}
-        {...props}
-      />
-    </Animated.View>
-  )
-})
-AccordionItem.displayName = AccordionPrimitive.Item.displayName
+      <Animated.View
+        className="native:overflow-hidden"
+        layout={Platform.select({ native: LinearTransition.duration(200) })}
+      >
+        {children}
+      </Animated.View>
+    </AccordionPrimitive.Item>
+  );
+}
 
-const Trigger = Platform.OS === "web" ? View : Pressable
+const Trigger = Platform.OS === 'web' ? View : Pressable;
 
-type AccordionTriggerProps = React.ComponentPropsWithoutRef<
-  typeof AccordionPrimitive.Trigger
->
+function AccordionTrigger({
+  className,
+  children,
+  ...props
+}: AccordionPrimitive.TriggerProps & {
+  children?: React.ReactNode;
+} & React.RefAttributes<AccordionPrimitive.TriggerRef>) {
+  const { variant } = React.useContext(AccordionContext);
+  const { isExpanded } = AccordionPrimitive.useItemContext();
 
-const AccordionTrigger = React.forwardRef<
-  AccordionPrimitive.TriggerRef,
-  AccordionTriggerProps
->(({ className, children, ...props }, ref) => {
-  const { isExpanded } = AccordionPrimitive.useItemContext()
-  const progress = useDerivedValue(() =>
-    isExpanded
-      ? withTiming(1, { duration: 250 })
-      : withTiming(0, { duration: 200 })
-  )
-  const chevronStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${progress.value * 180}deg` }],
-    opacity: interpolate(progress.value, [0, 1], [1, 0.8], Extrapolation.CLAMP)
-  }))
-
-  const { size, color } = React.useContext(AccordionVariantContext)
+  const progress = useDerivedValue(
+    () =>
+      isExpanded
+        ? withTiming(1, { duration: 250 })
+        : withTiming(0, { duration: 200 }),
+    [isExpanded]
+  );
+  const chevronStyle = useAnimatedStyle(
+    () => ({
+      transform: [{ rotate: `${progress.value * 180}deg` }],
+    }),
+    [progress]
+  );
 
   return (
-    <TextClassContext.Provider value="native:text-lg font-medium">
-      <AccordionPrimitive.Header className="flex">
-        <AccordionPrimitive.Trigger ref={ref} {...props} asChild>
+    <TextClassContext.Provider
+      value={cn(
+        accordionTriggerTextVariants({ variant: variant as any }),
+        Platform.select({ web: 'group-hover:underline' })
+      )}
+    >
+      <AccordionPrimitive.Header>
+        <AccordionPrimitive.Trigger {...props} asChild>
           <Trigger
-            className={cn(accordionTriggerVariants({ size, color }), className)}
-          >
-            {typeof children === "string" ? (
-              <Text
-                className={cn(
-                  accordionTriggerTextVariants({ size, color }),
-                  className
-                )}
-              >
-                {children}
-              </Text>
-            ) : (
-              <>{children}</>
+            className={cn(
+              accordionTriggerVariants({ variant: variant as any }),
+              Platform.select({
+                web: 'focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 outline-none transition-all hover:underline focus-visible:ring-[3px] disabled:pointer-events-none [&[data-state=open]>svg]:rotate-180',
+              }),
+              className
             )}
+          >
+            <>{children}</>
             <Animated.View style={chevronStyle}>
               <LucideIcon
                 icon={ChevronDown}
-                className={"text-primary size-[20px] shrink-0"}
+                className={cn(
+                  accordionChevronVariants({ variant: variant as any })
+                )}
               />
             </Animated.View>
           </Trigger>
         </AccordionPrimitive.Trigger>
       </AccordionPrimitive.Header>
     </TextClassContext.Provider>
-  )
-})
-
-AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
-
-type AccordionContentProps = React.ComponentPropsWithoutRef<
-  typeof AccordionPrimitive.Content
->
-
-const AccordionContent = React.forwardRef<
-  AccordionPrimitive.ContentRef,
-  AccordionContentProps
->(({ className, children, ...props }, ref) => {
-  const { isExpanded } = AccordionPrimitive.useItemContext()
-  const { size, color } = React.useContext(AccordionVariantContext)
-  return (
-    <TextClassContext.Provider value="native:text-lg">
-      <AccordionPrimitive.Content
-        ref={ref}
-        className={cn(accordionContentVariants({ size, color }))}
-        {...props}
-      >
-        <InnerContent className={cn("pb-4", className)}>
-          {typeof children === "string" ? (
-            <Text
-              className={cn(
-                accordionContentTextVariants({ size, color }),
-                className
-              )}
-            >
-              {children}
-            </Text>
-          ) : (
-            <>{children}</>
-          )}
-        </InnerContent>
-      </AccordionPrimitive.Content>
-    </TextClassContext.Provider>
-  )
-})
-
-function InnerContent({
-  children,
-  className
-}: {
-  children: React.ReactNode
-  className?: string
-}) {
-  if (Platform.OS === "web") {
-    return <View className={cn("pb-4", className)}>{children}</View>
-  }
-  return (
-    <Animated.View
-      entering={FadeIn}
-      exiting={FadeOutUp.duration(200)}
-      className={cn("pb-4", className)}
-    >
-      {children}
-    </Animated.View>
-  )
+  );
 }
 
-AccordionContent.displayName = AccordionPrimitive.Content.displayName
+function AccordionContent({
+  className,
+  children,
+  ...props
+}: AccordionPrimitive.ContentProps &
+  React.RefAttributes<AccordionPrimitive.ContentRef>) {
+  const { variant } = React.useContext(AccordionContext);
+  const { isExpanded } = AccordionPrimitive.useItemContext();
 
-export { Accordion, AccordionContent, AccordionItem, AccordionTrigger }
+  return (
+    <TextClassContext.Provider value="text-sm">
+      <AccordionPrimitive.Content
+        className={cn(
+          accordionContentVariants({ variant: variant as any }),
+          Platform.select({
+            web: isExpanded ? 'animate-accordion-down' : 'animate-accordion-up',
+          })
+        )}
+        {...props}
+      >
+        <Animated.View
+          exiting={Platform.select({ native: FadeOutUp.duration(200) })}
+          className={cn(
+            accordionContentInnerVariants({ variant: variant as any }),
+            className
+          )}
+        >
+          {children}
+        </Animated.View>
+      </AccordionPrimitive.Content>
+    </TextClassContext.Provider>
+  );
+}
+
+export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };

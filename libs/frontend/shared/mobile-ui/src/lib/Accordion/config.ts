@@ -1,117 +1,99 @@
-import { tv } from "tailwind-variants"
+import { cva } from 'class-variance-authority';
 
-export const accordionTriggerVariants = tv({
-  base: " group flex flex-row items-center justify-between",
-
-  variants: {
-    size: {
-      sm: "py-1",
-      md: "py-2",
-      lg: "py-3"
+export const accordionVariants = cva(
+  '',
+  {
+    variants: {
+      variant: {
+        default: '',
+      },
     },
-    color: {
-      primary: "bg-transparent",
-      secondary: "bg-primary-50"
-    }
-  },
-  defaultVariants: {
-    size: "md",
-    color: "primary"
-  }
-})
-
-export const accordionTriggerTextVariants = tv({
-  base: "",
-
-  variants: {
-    size: {
-      sm: "text-sm",
-      md: "text-base",
-      lg: "text-lg"
+    defaultVariants: {
+      variant: 'default',
     },
-    color: {
-      primary: "text-text-primary",
-      secondary: "text-secondary"
-    }
-  },
-  defaultVariants: {
-    size: "md",
-    color: "primary"
   }
-})
+);
 
-export const accordionContentVariants = tv({
-  base: "overflow-hidden text-sm ",
-  variants: {
-    size: {
-      sm: "py-1",
-      md: "py-2",
-      lg: "py-3"
+export const accordionItemVariants = cva(
+  'border-border border-b',
+  {
+    variants: {
+      variant: {
+        default: '',
+      },
     },
-    color: {
-      primary: "bg-transparent",
-      secondary: "bg-secondary-50"
-    }
-  },
-  defaultVariants: {
-    size: "md",
-    color: "primary"
+    defaultVariants: {
+      variant: 'default',
+    },
   }
-})
+);
 
-export const accordionContentTextVariants = tv({
-  base: "overflow-hidden text-sm",
-  variants: {
-    size: {
-      sm: "text-sm",
-      md: "text-base",
-      lg: "text-lg"
+export const accordionTriggerVariants = cva(
+  'flex-row items-start justify-between gap-4 rounded-md py-4 disabled:opacity-50',
+  {
+    variants: {
+      variant: {
+        default: '',
+      },
     },
-    color: {
-      primary: "text-text-primary",
-      secondary: "text-secondary"
-    }
-  },
-  defaultVariants: {
-    size: "md",
-    color: "primary"
+    defaultVariants: {
+      variant: 'default',
+    },
   }
-})
+);
 
-export const accordionItemVariants = tv({
-  base: "",
-  variants: {
-    size: {
-      sm: "",
-      md: "",
-      lg: ""
+export const accordionTriggerTextVariants = cva(
+  'text-left text-sm font-medium',
+  {
+    variants: {
+      variant: {
+        default: '',
+      },
     },
-    color: {
-      primary: "border-b border-primary",
-      secondary: "border-b border-secondary"
-    }
-  },
-  defaultVariants: {
-    size: "md",
-    color: "primary"
+    defaultVariants: {
+      variant: 'default',
+    },
   }
-})
+);
 
-export const accordionVariants = tv({
-  base: "",
-  variants: {
-    size: {
-      sm: "",
-      md: "",
-      lg: ""
+export const accordionContentVariants = cva(
+  'overflow-hidden',
+  {
+    variants: {
+      variant: {
+        default: '',
+      },
     },
-    color: {
-      primary: "",
-      secondary: ""
-    }
-  },
-  defaultVariants: {
-    size: "md",
-    color: "primary"
+    defaultVariants: {
+      variant: 'default',
+    },
   }
-})
+);
+
+export const accordionContentInnerVariants = cva(
+  'pb-4',
+  {
+    variants: {
+      variant: {
+        default: '',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  }
+);
+
+export const accordionChevronVariants = cva(
+  'text-primary size-[20px] shrink-0',
+  {
+    variants: {
+      variant: {
+        default: '',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  }
+);

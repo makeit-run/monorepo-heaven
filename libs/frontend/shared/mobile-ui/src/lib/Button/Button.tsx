@@ -1,128 +1,45 @@
-import { cn } from "@shared/utils/cn"
-import * as React from "react"
-import { ReactElement } from "react"
-import { ActivityIndicator, Pressable, View } from "react-native"
-import { type VariantProps } from "tailwind-variants"
+import React from 'react';
+import { TextClassContext } from '../Text/Text';
+import { type VariantProps } from 'class-variance-authority';
+import { Pressable } from 'react-native';
+import { cn } from '@shared/utils/cn';
+import { buttonVariants, buttonTextVariants } from './config';
 
-import { Text, TextClassContext } from "../Text"
-import { buttonTextVariants, buttonVariants } from "./config"
+// Create context for variant propagation  
+const ButtonContext = React.createContext<{
+  variant?: VariantProps<typeof buttonVariants>['variant'];
+  size?: VariantProps<typeof buttonVariants>['size'];
+}>({ variant: 'default', size: 'default' });
 
-// Icon can either be a ReactElement or a component that takes className
-type IconType = ReactElement | React.ComponentType<{ className?: string }>
+type ButtonProps = React.ComponentProps<typeof Pressable> &
+  React.RefAttributes<typeof Pressable> &
+  VariantProps<typeof buttonVariants>;
 
-type ButtonProps = React.ComponentPropsWithoutRef<typeof Pressable> &
-  VariantProps<typeof buttonVariants> & {
-    className?: string
-    icon?: IconType
-    iconPosition?: "left" | "right"
-    iconClassName?: string
-    loading?: boolean
-  }
-
-const Button = React.forwardRef<
-  React.ElementRef<typeof Pressable>,
-  ButtonProps
->(
-  (
-    {
-      className,
-      variant,
-      size,
-      rounded,
-      children,
-      icon,
-      iconPosition = "left",
-      iconClassName,
-      loading,
-      paddingX,
-      paddingY,
-      ...props
-    },
-    ref
-  ) => {
-    const textClass = buttonTextVariants({
-      variant,
-      size
-    })
-
-    // Render icon based on its type
-    const renderIcon = () => {
-      if (!icon) return null
-
-      if (React.isValidElement(icon)) {
-        return icon
-      }
-
-      // Component type icon (like LucideIcon)
-      const IconComponent = icon as React.ComponentType<{ className?: string }>
-      return <IconComponent className={iconClassName} />
-    }
-
-    const renderContent = () => {
-      if (loading) {
-        return (
-          <View className="flex flex-row items-center justify-center">
-            <ActivityIndicator
-              size="small"
-              color={variant === "outline" ? "#6366F1" : "#FFFFFF"}
-            />
-          </View>
-        )
-      }
-      if (!icon) {
-        return typeof children === "string" ? (
-          <Text className={textClass}>{children}</Text>
-        ) : (
-          children
-        )
-      }
-
-      const isIconsSize = size && ["icon", "iconSmall"]?.includes(size)
-      const IconElement = renderIcon()
-
-      return (
-        <View
-          className={cn(
-            "flex flex-row items-center justify-center gap-1.5",
-            iconPosition === "right" && "flex-row-reverse"
-          )}
-        >
-          {IconElement && (
-            <View className={cn(!isIconsSize && "mr-2")}>{IconElement}</View>
-          )}
-
-          {typeof children === "string" ? (
-            <Text className={textClass}>{children}</Text>
-          ) : (
-            <>{children}</>
-          )}
-        </View>
-      )
-    }
-
-    return (
-      <TextClassContext.Provider value={textClass}>
+function Button({ 
+  className, 
+  variant = 'default', 
+  size = 'default',
+  children, 
+  ...props 
+}: ButtonProps) {
+  return (
+    <ButtonContext.Provider value={{ variant, size }}>
+      <TextClassContext.Provider value={buttonTextVariants({ variant, size })}>
         <Pressable
-          className={buttonVariants({
-            variant,
-            paddingX,
-            paddingY,
-            rounded,
-            size,
+          className={cn(
+            props.disabled && 'opacity-50',
+            buttonVariants({ variant, size }),
             className
-          })}
-          ref={ref}
+          )}
           role="button"
           {...props}
         >
-          {renderContent()}
+          {children}
         </Pressable>
       </TextClassContext.Provider>
-    )
-  }
-)
+    </ButtonContext.Provider>
+  );
+}
 
-Button.displayName = "Button"
-
-export { Button }
-export type { ButtonProps }
+export { Button, buttonTextVariants, buttonVariants };
+export type { ButtonProps };
