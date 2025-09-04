@@ -1,14 +1,14 @@
-import { cn } from "@shared/utils/cn"
-import { VariantProps } from "class-variance-authority"
+import { cn } from '@shared/utils/cn';
+import { VariantProps } from 'class-variance-authority';
 import {
   DetailedHTMLProps,
   forwardRef,
   InputHTMLAttributes,
-  LabelHTMLAttributes
-} from "react"
-import * as React from "react"
+  LabelHTMLAttributes,
+} from 'react';
+import * as React from 'react';
 
-import { UiLabel } from "../UiLabel"
+import { UiLabel } from '../UiLabel';
 import {
   inputStyles,
   labelStyles,
@@ -16,36 +16,40 @@ import {
   textInputContainerVariants,
   textInputIconVariants,
   textInputErrorVariants,
-} from "./config"
+} from './config';
 
-export interface TextInputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "color">,
-    VariantProps<typeof inputStyles>,
-    VariantProps<typeof textInputWrapperVariants>,
-    VariantProps<typeof textInputContainerVariants>,
-    VariantProps<typeof textInputIconVariants>,
-    VariantProps<typeof textInputErrorVariants> {
-  label?: string
-  labelProps?: DetailedHTMLProps<
-    LabelHTMLAttributes<HTMLLabelElement>,
-    HTMLLabelElement
-  >
-  error?: string
-  fullWidth?: boolean
-  icon?: React.ReactNode
-  iconPosition?: "left" | "right"
-  wrapperClassName?: string
-  wrapperVariant?: VariantProps<typeof textInputWrapperVariants>['variant']
-  containerVariant?: VariantProps<typeof textInputContainerVariants>['variant']
-  iconVariant?: VariantProps<typeof textInputIconVariants>['variant']
-  errorVariant?: VariantProps<typeof textInputErrorVariants>['variant']
-}
+type TextInputProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'size' | 'color'
+> &
+  VariantProps<typeof inputStyles> &
+  VariantProps<typeof textInputWrapperVariants> &
+  VariantProps<typeof textInputContainerVariants> &
+  VariantProps<typeof textInputIconVariants> &
+  VariantProps<typeof textInputErrorVariants> & {
+    label?: string;
+    labelProps?: DetailedHTMLProps<
+      LabelHTMLAttributes<HTMLLabelElement>,
+      HTMLLabelElement
+    >;
+    error?: string;
+    fullWidth?: boolean;
+    icon?: React.ReactNode;
+    iconPosition?: 'left' | 'right';
+    wrapperClassName?: string;
+    wrapperVariant?: VariantProps<typeof textInputWrapperVariants>['variant'];
+    containerVariant?: VariantProps<
+      typeof textInputContainerVariants
+    >['variant'];
+    iconVariant?: VariantProps<typeof textInputIconVariants>['variant'];
+    errorVariant?: VariantProps<typeof textInputErrorVariants>['variant'];
+  };
 
 export const UiTextInput = forwardRef<HTMLInputElement, TextInputProps>(
   (
     {
       className,
-      type = "text",
+      type = 'text',
       fullWidth = true,
       label,
       icon,
@@ -70,7 +74,7 @@ export const UiTextInput = forwardRef<HTMLInputElement, TextInputProps>(
       <div
         className={cn(
           textInputWrapperVariants({ variant: wrapperVariant }),
-          fullWidth ? "w-full" : "w-auto",
+          fullWidth ? 'w-full' : 'w-auto',
           wrapperClassName
         )}
       >
@@ -91,7 +95,7 @@ export const UiTextInput = forwardRef<HTMLInputElement, TextInputProps>(
         <div
           className={cn(
             textInputContainerVariants({ variant: containerVariant }),
-            iconPosition === "right" && "flex-row-reverse"
+            iconPosition === 'right' && 'flex-row-reverse'
           )}
         >
           <input
@@ -100,8 +104,8 @@ export const UiTextInput = forwardRef<HTMLInputElement, TextInputProps>(
             autoCapitalize="none"
             className={cn(
               inputStyles({ size, variant, color }),
-              error && "border-red-500",
-              icon && (iconPosition === "right" ? "pr-15" : "pl-15"),
+              error && 'border-red-500',
+              icon && (iconPosition === 'right' ? 'pr-15' : 'pl-15'),
               className
             )}
             ref={ref}
@@ -111,16 +115,20 @@ export const UiTextInput = forwardRef<HTMLInputElement, TextInputProps>(
           <div
             className={cn(
               textInputIconVariants({ variant: iconVariant }),
-              iconPosition === "right" && "right-0.5 -translate-x-1/2"
+              iconPosition === 'right' && 'right-0.5 -translate-x-1/2'
             )}
           >
             {icon}
           </div>
         </div>
-        {error && <p className={cn(textInputErrorVariants({ variant: errorVariant }))}>{error}</p>}
+        {error && (
+          <p className={cn(textInputErrorVariants({ variant: errorVariant }))}>
+            {error}
+          </p>
+        )}
       </div>
-    )
+    );
   }
-)
+);
 
-UiTextInput.displayName = "Input"
+UiTextInput.displayName = 'Input';

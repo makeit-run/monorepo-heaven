@@ -40,6 +40,7 @@ export const TodoList = () => {
   };
 
   const toggleTodo = (id: string) => {
+    console.log('blalblba');
     setTodos(
       todos.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
@@ -76,7 +77,7 @@ export const TodoList = () => {
     <div className="w-full max-w-2xl mx-auto space-y-6">
       {/* Add Todo Card */}
       <UiCard className="p-6 border-0 bg-card/60 backdrop-blur-sm shadow-lg">
-        <div className="flex gap-3">
+        <div className="flex flex-row items-center gap-3">
           <UiTextInput
             placeholder="What needs to be done?"
             value={newTodo}
@@ -86,7 +87,7 @@ export const TodoList = () => {
           />
           <UiButton
             onClick={addTodo}
-            className="bg-gradient-to-r from-primary to-primary-glow hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-primary/30"
+            className="hover:opacity-90 transition-all duration-300 shadow-lg "
           >
             <Plus className="h-5 w-5" />
           </UiButton>

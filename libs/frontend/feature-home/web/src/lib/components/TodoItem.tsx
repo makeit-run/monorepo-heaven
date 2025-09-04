@@ -59,8 +59,7 @@ export const TodoItem = ({
       <div className="flex items-center gap-3">
         <UiCheckbox
           checked={todo.completed}
-          onChange={() => onToggle(todo.id)}
-          className="data-[state=checked]:bg-success data-[state=checked]:border-success"
+          onClick={() => onToggle(todo.id)}
         />
 
         {isEditing ? (
@@ -73,15 +72,12 @@ export const TodoItem = ({
               autoFocus
             />
             <UiButton
-              size="small"
               onClick={handleSave}
               className="bg-success hover:bg-success/90"
             >
               <Check className="h-4 w-4" />
             </UiButton>
             <UiButton
-              size="small"
-              variant="contained"
               onClick={handleCancel}
               className="border-destructive/20 text-destructive hover:bg-destructive/10"
             >
@@ -100,7 +96,6 @@ export const TodoItem = ({
             </span>
             <div className="flex items-center gap-2">
               <UiButton
-                size="small"
                 variant="ghost"
                 onClick={() => setIsEditing(true)}
                 className="text-primary hover:text-primary hover:bg-primary/10"
@@ -108,7 +103,6 @@ export const TodoItem = ({
                 <Edit2 className="h-4 w-4" />
               </UiButton>
               <UiButton
-                size="small"
                 variant="ghost"
                 onClick={() => onDelete(todo.id)}
                 className="text-destructive hover:text-destructive hover:bg-destructive/10"
